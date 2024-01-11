@@ -1,0 +1,44 @@
+.container {
+	width: 24em;
+}
+
+.header {
+	display: block;
+	text-align: center;
+	margin: 0;
+}
+
+.faIcon:hover {
+	cursor: pointer;
+	opacity: 70%;
+}
+
+.error {
+	margin-top: 1em;
+	text-align: center;
+	color: red;
+}
+
+.headerContainer {
+	text-align: center;
+}
+
+.logo {
+	width: 12em;
+	margin-bottom: 2em;
+}
+
+.linkContainer {
+	text-align: center;
+	margin-top: 1em;
+}
+
+.button {
+	background-color: #0096FF;
+	&:disabled,
+	&[data-disabled] {
+		cursor: default;
+		opacity: 0.6;
+		color: #FFF;
+	}
+  }
