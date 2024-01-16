@@ -1,26 +1,25 @@
 import classnames from './auth-footer.module.scss';
 import { LoadingOverlay } from '@mantine/core';
-import { Dispatch, SetStateAction } from 'react';
+import { useNavigate } from 'react-router-dom';
  
 export default function AuthFooter(props: {
-	errorMessage: string,
-	isLoading: boolean,
+	errorMessage: string
+	isLoading: boolean
 	loginOrRegisterText: string
-	setIsLogin: Dispatch<SetStateAction<boolean>>,
-	isLogin: boolean
+	loginOrRegisterPath: string
 }) {
-	/**
-	 * Changes state from login page to register page or vice versa
-	 */
-	const invertIsLogin = () => {
-		props.setIsLogin(!props.isLogin);
-	};
+	const navigate = useNavigate();
 
 	return (
 		<>
 			{/* Link to either register or login depending on which is currently active */}
 			<div className={classnames.linkContainer}>
-				<span className={classnames.navText} onClick={invertIsLogin}>{props.loginOrRegisterText}</span>
+				<span 
+					className={classnames.navRegisterOrLogin} 
+					onClick={() => navigate(props.loginOrRegisterPath)}
+				>
+					{props.loginOrRegisterText}
+				</span>
 			</div>
 
 			{/* Error message from API call */}

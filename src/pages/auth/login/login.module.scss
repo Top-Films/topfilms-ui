@@ -1,0 +1,30 @@
+.button {
+	background-color: #0096FF;
+	&:disabled,
+	&[data-disabled] {
+		cursor: default;
+		opacity: 0.6;
+		color: #FFF;
+	}
+}
+
+.linkContainer {
+	text-align: right;
+	margin: 0;
+}
+
+.navForgotPassword {
+	font-size: 12px;
+	color: #0096FF;
+}
+
+.navForgotPassword:hover {
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+.navForgotPassword:active {
+	text-decoration: underline;
+	cursor: pointer;
+	opacity: 0.7;
+}

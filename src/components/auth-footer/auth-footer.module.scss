@@ -1,20 +1,18 @@
-
-
 .linkContainer {
 	text-align: center;
 	margin-top: 1em;
 }
 
-.navText {
+.navRegisterOrLogin {
 	color: #0096FF;
 }
 
-.navText:hover {
+.navRegisterOrLogin:hover {
 	text-decoration: underline;
 	cursor: pointer;
 }
 
-.navText:active {
+.navRegisterOrLogin:active {
 	text-decoration: underline;
 	cursor: pointer;
 	opacity: 0.7;

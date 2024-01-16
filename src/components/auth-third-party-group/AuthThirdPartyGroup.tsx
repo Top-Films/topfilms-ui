@@ -1,6 +1,6 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import classnames from './third-party-group.module.scss';
+import classnames from './auth-third-party-group.module.scss';
 import {
 	Divider, 
 	Group
@@ -9,8 +9,8 @@ import { faGoogle, faDiscord, faGithub } from '@fortawesome/free-brands-svg-icon
 import ThirdPartyEmailPassword from 'supertokens-web-js/recipe/thirdpartyemailpassword';
 import STGeneralError from 'supertokens-web-js/lib/build/error';
  
-export default function ThirdPartyGroup(props: {
-	setErrorMessage: React.Dispatch<React.SetStateAction<string>>,
+export default function AuthThirdPartyGroup(props: {
+	setErrorMessage: React.Dispatch<React.SetStateAction<string>>
 	setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
 }) {
 	/**

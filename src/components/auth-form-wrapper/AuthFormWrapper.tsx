@@ -5,19 +5,20 @@ import {
 import { containerBackgroundColor, mainFontColor } from '../../styles/style-constants';
 import logo from '/topfilms/png/logo-white-no-background.png';
 import { Dispatch, ReactNode, SetStateAction } from 'react';
-import ThirdPartyGroup from '../third-party-group/ThirdPartyGroup';
 import AuthFooter from '../auth-footer/AuthFooter';
+import AuthThirdPartyGroup from '../auth-third-party-group/AuthThirdPartyGroup';
  
 export default function AuthFormWrapper(props: {
-	children: ReactNode,
-	formHeader: string,
-	setIsLoading: Dispatch<SetStateAction<boolean>>,
+	children: ReactNode
+	formHeader: string
+	setIsLoading: Dispatch<SetStateAction<boolean>>
 	isLoading: boolean
-	setErrorMessage: Dispatch<SetStateAction<string>>,
+	setErrorMessage: Dispatch<SetStateAction<string>>
 	errorMessage: string
-	setIsLogin: Dispatch<SetStateAction<boolean>>,
-	isLogin: boolean,
 	loginOrRegisterText: string
+	loginOrRegisterPath: string
+	enableThirdParty: boolean
+
 }) {
 	return (
 		<div className={classnames.container}>
@@ -40,10 +41,13 @@ export default function AuthFormWrapper(props: {
 
 				{props.children}
 
-				<ThirdPartyGroup setIsLoading={props.setIsLoading} setErrorMessage={props.setErrorMessage} />
+				{props.enableThirdParty
+					? <AuthThirdPartyGroup setIsLoading={props.setIsLoading} setErrorMessage={props.setErrorMessage} />
+					: <></>
+				}
 			</Box>
 			
-			<AuthFooter errorMessage={props.errorMessage} isLoading={props.isLoading} setIsLogin={props.setIsLogin} isLogin={props.isLogin} loginOrRegisterText={props.loginOrRegisterText} />
+			<AuthFooter errorMessage={props.errorMessage} isLoading={props.isLoading} loginOrRegisterText={props.loginOrRegisterText} loginOrRegisterPath={props.loginOrRegisterPath} />
 		</div>
 	);
 }
