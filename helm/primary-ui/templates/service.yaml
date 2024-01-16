@@ -10,4 +10,5 @@ spec:
       targetPort: { { .Values.service.targetPort } }
       protocol: TCP
       name: http
-  selector: { { - include "primary-ui.selectorLabels" . | nindent 4 } }
+  selector:
+    {{- include "auth-api.selectorLabels" . | nindent 4 }}
