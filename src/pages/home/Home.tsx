@@ -1,8 +1,9 @@
 import axios from 'axios';
+import { Environment } from '../../util/Environment';
 
 export default function Home() {
 	const testSpring = async () => {
-		const res = await axios.get((import.meta.env.PRIMARY_API_URL ?? 'http://localhost:8080') + '/test');
+		const res = await axios.get(Environment.getAPIUrl() + '/test');
 		console.log(res.data);
 	};
 	
