@@ -1,0 +1,10 @@
+
+.button {
+	background-color: #0096FF;
+	&:disabled,
+	&[data-disabled] {
+		cursor: default;
+		opacity: 0.6;
+		color: #FFF;
+	}
+}

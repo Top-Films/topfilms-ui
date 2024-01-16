@@ -1,0 +1,27 @@
+
+
+.linkContainer {
+	text-align: center;
+	margin-top: 1em;
+}
+
+.navText {
+	color: #0096FF;
+}
+
+.navText:hover {
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+.navText:active {
+	text-decoration: underline;
+	cursor: pointer;
+	opacity: 0.7;
+}
+
+.error {
+	margin-top: 1em;
+	text-align: center;
+	color: red;
+}
