@@ -8,6 +8,7 @@ import {
 import { faGoogle, faDiscord, faGithub } from '@fortawesome/free-brands-svg-icons';
 import ThirdPartyEmailPassword from 'supertokens-web-js/recipe/thirdpartyemailpassword';
 import STGeneralError from 'supertokens-web-js/lib/build/error';
+import { Environment } from '../../util/Environment';
  
 export default function AuthThirdPartyGroup(props: {
 	setErrorMessage: React.Dispatch<React.SetStateAction<string>>
@@ -45,7 +46,7 @@ export default function AuthThirdPartyGroup(props: {
 			// Go to third party 
 			const authUrl = await ThirdPartyEmailPassword.getAuthorisationURLWithQueryParamsAndSetState({
 				thirdPartyId,
-				frontendRedirectURI: `http://localhost:3000/auth/callback/${thirdPartyId}`
+				frontendRedirectURI: `${Environment.getFrontendUrl()}/auth/callback/${thirdPartyId}`
 			});
 			window.location.assign(authUrl);
 			props.setIsLoading(false);
