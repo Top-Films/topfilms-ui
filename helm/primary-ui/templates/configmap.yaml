@@ -1,8 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: {{ .Release.Name }}-configmap
-data:
-  AUTHENTICATION_API_URL: https://auth.topfilms.co
-  FRONTEND_URL: https://topfilms.co
-  PRIMARY_API_URL: https://api.auth.topfilms.co

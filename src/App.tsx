@@ -11,12 +11,13 @@ import Login from './pages/auth/login/Login';
 import Register from './pages/auth/register/Register';
 import Root from './pages/root/Root';
 import ResetPassword from './pages/auth/reset-password/ResetPassword';
+import { Environment } from './util/Environment';
 
 SuperTokens.init({
 	appInfo: {
 		appName: 'Top Films',
-		apiDomain: import.meta.env.AUTHENTICATION_API_URL ?? 'http://localhost:3001',
-		websiteDomain: import.meta.env.FRONTEND_URL ?? 'http://localhost:3000'
+		apiDomain: Environment.getAuthAPIUrl(),
+		websiteDomain: Environment.getFrontendUrl()
 	},
 	recipeList: [
 		ThirdPartyEmailPassword.init({
@@ -38,7 +39,7 @@ SuperTokens.init({
 						shouldDoInterceptionBasedOnUrl(url, apiDomain, sessionTokenBackendDomain) {
 							try {
 								console.log(url);
-								if (url.startsWith(import.meta.env.PRIMARY_API_URL ?? 'http://localhost:8080')) {
+								if (url.startsWith(Environment.getAPIUrl())) {
 									return true;
 								}
 							} catch (e) {
@@ -68,12 +69,12 @@ const router = createBrowserRouter(
 	)
 );
 
-const App = () => (
-	<SuperTokensWrapper>
-		<MantineProvider>
-			<RouterProvider router={router} />
-		</MantineProvider>
-	</SuperTokensWrapper>
-);
-
-export default App;
+export default function App() {
+	return (
+		<SuperTokensWrapper>
+			<MantineProvider>
+				<RouterProvider router={router} />
+			</MantineProvider>
+		</SuperTokensWrapper>
+	);
+}
