@@ -11,4 +11,4 @@ spec:
       protocol: TCP
       name: http
   selector:
-    {{- include "auth-api.selectorLabels" . | nindent 4 }}
+    {{- include "primary-ui.selectorLabels" . | nindent 4 }}
