@@ -1,0 +1,40 @@
+@import '../../global.scss';
+
+.header {
+  height: rem(56px);
+  margin-bottom: rem(120px);
+  background-color: $light_background_color;
+  border-bottom: rem(1px) solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
+  padding-left: var(--mantine-spacing-md);
+  padding-right: var(--mantine-spacing-md);
+}
+
+.inner {
+  height: rem(56px);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.link {
+  display: block;
+  line-height: 1;
+  padding: rem(8px) rem(12px);
+  border-radius: var(--mantine-radius-sm);
+  text-decoration: none;
+  color: #fff;
+  font-size: var(--mantine-font-size-sm);
+  font-weight: 500;
+}
+
+.link:hover {
+	background-color: $lighter_background_color;
+}
+
+[data-active] {
+	background-color: $lighter_background_color;
+}
+
+.logo {
+	width: 7em;
+}

@@ -3,7 +3,7 @@ import { MantineProvider } from '@mantine/core';
 import { Route, RouterProvider, createBrowserRouter, createRoutesFromElements } from 'react-router-dom';
 import SuperTokens, { SuperTokensWrapper } from 'supertokens-auth-react';
 import Session from 'supertokens-auth-react/recipe/session';
-import ThirdPartyEmailPassword, { Google, Github, Discord } from 'supertokens-auth-react/recipe/thirdpartyemailpassword';
+import ThirdPartyEmailPassword, { Google, Discord, Twitter } from 'supertokens-auth-react/recipe/thirdpartyemailpassword';
 import Auth from './pages/auth/Auth';
 import Home from './pages/home/Home';
 import ThirdPartyCallback from './pages/auth/third-party-callback/ThirdPartyCallback';
@@ -16,15 +16,15 @@ import { Environment } from './util/Environment';
 SuperTokens.init({
 	appInfo: {
 		appName: 'Top Films',
-		apiDomain: Environment.getAuthAPIUrl(),
-		websiteDomain: Environment.getFrontendUrl()
+		apiDomain: Environment.authUrl(),
+		websiteDomain: Environment.frontendUrl()
 	},
 	recipeList: [
 		ThirdPartyEmailPassword.init({
 			signInAndUpFeature: {
 				providers: [
 					Google.init(),
-					Github.init(),
+					Twitter.init(),
 					Discord.init()
 				]
 			}
@@ -39,7 +39,7 @@ SuperTokens.init({
 						shouldDoInterceptionBasedOnUrl(url, apiDomain, sessionTokenBackendDomain) {
 							try {
 								console.log(url);
-								if (url.startsWith(Environment.getAPIUrl())) {
+								if (url.startsWith(Environment.apiUrl())) {
 									return true;
 								}
 							} catch (e) {

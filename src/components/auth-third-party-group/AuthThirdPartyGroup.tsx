@@ -5,7 +5,7 @@ import {
 	Divider, 
 	Group
 } from '@mantine/core';
-import { faGoogle, faDiscord, faGithub } from '@fortawesome/free-brands-svg-icons';
+import { faGoogle, faDiscord, faTwitter } from '@fortawesome/free-brands-svg-icons';
 import ThirdPartyEmailPassword from 'supertokens-web-js/recipe/thirdpartyemailpassword';
 import STGeneralError from 'supertokens-web-js/lib/build/error';
 import { Environment } from '../../util/Environment';
@@ -22,10 +22,10 @@ export default function AuthThirdPartyGroup(props: {
 	};
 
 	/**
-	 * Sign in or up with github
+	 * Sign in or up with twitter
 	 */
-	const onGitHubClick = async () => {
-		onClickThirdParty('github');
+	const onTwitterClick = async () => {
+		onClickThirdParty('twitter');
 	};
 
 	/**
@@ -46,7 +46,7 @@ export default function AuthThirdPartyGroup(props: {
 			// Go to third party 
 			const authUrl = await ThirdPartyEmailPassword.getAuthorisationURLWithQueryParamsAndSetState({
 				thirdPartyId,
-				frontendRedirectURI: `${Environment.getFrontendUrl()}/auth/callback/${thirdPartyId}`
+				frontendRedirectURI: `${Environment.frontendUrl()}/auth/callback/${thirdPartyId}`
 			});
 			window.location.assign(authUrl);
 			props.setIsLoading(false);
@@ -69,7 +69,7 @@ export default function AuthThirdPartyGroup(props: {
 			{/* Icons for third party OAuth sign in */}
 			<Group justify='center' mt='md' gap='xl'>
 				<FontAwesomeIcon className={classnames.faIcon} icon={faGoogle} size='xl' onClick={onGoogleClick} />
-				<FontAwesomeIcon className={classnames.faIcon} icon={faGithub} size='xl' onClick={onGitHubClick} />
+				<FontAwesomeIcon className={classnames.faIcon} icon={faTwitter} size='xl' onClick={onTwitterClick} />
 				<FontAwesomeIcon className={classnames.faIcon} icon={faDiscord} size='xl' onClick={onDiscordClick} />
 			</Group>
 		</>
