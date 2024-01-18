@@ -1,10 +1,8 @@
 import classnames from './auth-footer.module.scss';
-import { LoadingOverlay } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
  
 export default function AuthFooter(props: {
 	errorMessage: string
-	isLoading: boolean
 	loginOrRegisterText: string
 	loginOrRegisterPath: string
 }) {
@@ -12,6 +10,9 @@ export default function AuthFooter(props: {
 
 	return (
 		<>
+			{/* Error message from API call */}
+			<p className={classnames.error}>{props.errorMessage}</p>
+
 			{/* Link to either register or login depending on which is currently active */}
 			<div className={classnames.linkContainer}>
 				<span 
@@ -21,26 +22,6 @@ export default function AuthFooter(props: {
 					{props.loginOrRegisterText}
 				</span>
 			</div>
-
-			{/* Error message from API call */}
-			<p className={classnames.error}>{props.errorMessage}</p>
-
-			{/* Display spinner overlay while waiting for API response */}
-			<LoadingOverlay 
-				visible={props.isLoading} 
-				zIndex={1000} 
-				overlayProps={
-					{ 
-						backgroundOpacity: 0.10, 
-						blur: 1 
-					}
-				} 
-				loaderProps={
-					{ 
-						type: 'bars', 
-						color: '#000' 
-					}
-				} />
 		</>
 	);
 }

@@ -1,0 +1,12 @@
+@import '../../global.scss';
+
+.main {
+	padding-bottom: $footer_height;
+}
+
+.footer {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	height: $footer_height;
+}
