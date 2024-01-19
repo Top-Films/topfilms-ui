@@ -1,3 +1,5 @@
+import { Group } from '@mantine/core';
+import { FOOTER_LINKS } from '../../shared/constants/constants';
 import classnames from './auth-footer.module.scss';
 import { useNavigate } from 'react-router-dom';
  
@@ -7,6 +9,19 @@ export default function AuthFooter(props: {
 	loginOrRegisterPath: string
 }) {
 	const navigate = useNavigate();
+
+	const items = FOOTER_LINKS.map(link => (
+		<span 
+			key={link.label} 
+			className={classnames.link} 
+			onClick={e => {
+				e.preventDefault();
+				navigate(link.link);
+			}}
+		>
+			{link.label}
+		</span>
+	));
 
 	return (
 		<>
@@ -22,6 +37,8 @@ export default function AuthFooter(props: {
 					{props.loginOrRegisterText}
 				</span>
 			</div>
+
+			<Group justify='center' mt={'2em'}>{items}</Group>
 		</>
 	);
 }

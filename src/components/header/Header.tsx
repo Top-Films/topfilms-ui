@@ -1,13 +1,10 @@
 import { Button, Group } from '@mantine/core';
 import classnames from './header.module.scss';
-import { useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 
 const links = [
-	{ link: '/about', label: 'About' },
-	{ link: '/home', label: 'Home' },
-	{ link: '/learn', label: 'Learn' },
-	{ link: '/community', label: 'Community' }
+	{ link: 'about', label: 'About' },
+	{ link: 'discover', label: 'Discover' }
 ];
 
 export default function Header() {
@@ -17,22 +14,21 @@ export default function Header() {
 		return;
 	}
 
-	const [active, setActive] = useState(links[0].link);
 	const navigate = useNavigate();
 
 	const items = links.map(link => (
-		<span
+		<NavLink
 			key={link.label}
-			className={classnames.link}
-			data-active={active === link.link || undefined}
-			onClick={e => {
-				e.preventDefault();
-				setActive(link.link);
-				navigate(link.link);
-			}}
+			to={link.link}
+			className={({ isActive }) =>
+				[
+					classnames.link,
+					isActive ? classnames.active : ''
+				].join(' ')
+			}
 		>
 			{link.label}
-		</span>
+		</NavLink>
 	));
 
 	return (

@@ -5,13 +5,16 @@ import SuperTokens, { SuperTokensWrapper } from 'supertokens-auth-react';
 import Session from 'supertokens-auth-react/recipe/session';
 import ThirdPartyEmailPassword, { Google, Discord, Twitter } from 'supertokens-auth-react/recipe/thirdpartyemailpassword';
 import Auth from './pages/auth/Auth';
-import Home from './pages/home/Home';
 import ThirdPartyCallback from './pages/auth/third-party-callback/ThirdPartyCallback';
 import Login from './pages/auth/login/Login';
 import Register from './pages/auth/register/Register';
 import Root from './pages/root/Root';
 import ResetPassword from './pages/auth/reset-password/ResetPassword';
-import { Environment } from './util/Environment';
+import { Environment } from './shared/util/Environment';
+import About from './pages/about/About';
+import Discover from './pages/discover/Discover';
+import Privacy from './pages/privacy/Privacy';
+import Terms from './pages/terms/Terms';
 
 SuperTokens.init({
 	appInfo: {
@@ -58,7 +61,11 @@ SuperTokens.init({
 const router = createBrowserRouter(
 	createRoutesFromElements(
 		<Route path='/' element={<Root />}>
-			<Route path='home' element={<Home />} />
+			<Route path='about' element={<About />} />
+			<Route path='discover' element={<Discover />} />
+			<Route path='contact' element={<About />} />
+			<Route path='privacy' element={<Privacy />} />
+			<Route path='terms' element={<Terms />} />
 			<Route path='auth' element={<Auth />}> 
 				<Route path='login' element={<Login />}/>
 				<Route path='register' element={<Register />}/>

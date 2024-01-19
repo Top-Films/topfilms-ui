@@ -8,7 +8,7 @@ import {
 import { faGoogle, faDiscord, faTwitter } from '@fortawesome/free-brands-svg-icons';
 import ThirdPartyEmailPassword from 'supertokens-web-js/recipe/thirdpartyemailpassword';
 import STGeneralError from 'supertokens-web-js/lib/build/error';
-import { Environment } from '../../util/Environment';
+import { Environment } from '../../shared/util/Environment';
  
 export default function AuthThirdPartyGroup(props: {
 	setErrorMessage: React.Dispatch<React.SetStateAction<string>>

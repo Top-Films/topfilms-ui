@@ -1,12 +1,7 @@
 import { Group } from '@mantine/core';
 import classnames from './footer.module.scss';
 import { useLocation, useNavigate } from 'react-router-dom';
-
-const links = [
-	{ link: '#', label: 'Contact' },
-	{ link: '#', label: 'Privacy' },
-	{ link: '#', label: 'Terms' }
-];
+import { FOOTER_LINKS } from '../../shared/constants/constants';
 
 export function Footer() {
 	// Don't show header for auth screen
@@ -16,7 +11,7 @@ export function Footer() {
 	}
 
 	const navigate = useNavigate();
-	const items = links.map(link => (
+	const items = FOOTER_LINKS.map(link => (
 		<span 
 			key={link.label} 
 			className={classnames.link} 

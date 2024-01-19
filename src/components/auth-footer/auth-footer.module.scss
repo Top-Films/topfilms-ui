@@ -1,6 +1,8 @@
+@import '../../global.scss';
+
 .linkContainer {
 	text-align: center;
-	margin-top: 1em;
+	margin-top: 2em;
 }
 
 .navRegisterOrLogin {
@@ -19,7 +21,25 @@
 }
 
 .error {
-	margin-top: 1em;
+	margin-top: 2em;
 	text-align: center;
 	color: red;
+}
+
+.links {
+	@media (max-width: $mantine-breakpoint-sm) {
+	  margin-top: var(--mantine-spacing-lg);
+	  margin-bottom: var(--mantine-spacing-sm);
+	}
+}
+
+.link {
+	color: #909090;
+	font-size: 14px;
+}
+
+.link:hover {
+	opacity: 0.7;
+	text-decoration: underline;
+	cursor: pointer;
 }
