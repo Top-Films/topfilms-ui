@@ -38,7 +38,7 @@ export default function AuthFooter(props: {
 				</span>
 			</div>
 
-			<Group justify='center' mt={'2em'}>{items}</Group>
+			<Group justify='center' mt={'1em'}>{items}</Group>
 		</>
 	);
 }

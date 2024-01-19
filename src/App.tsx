@@ -41,12 +41,12 @@ SuperTokens.init({
 						...oI,
 						shouldDoInterceptionBasedOnUrl(url, apiDomain, sessionTokenBackendDomain) {
 							try {
-								console.log(url);
 								if (url.startsWith(Environment.apiUrl())) {
 									return true;
 								}
 							} catch (e) {
 								console.error(e);
+								return false;
 							}
 
 							return oI.shouldDoInterceptionBasedOnUrl(url, apiDomain, sessionTokenBackendDomain);
@@ -63,15 +63,15 @@ const router = createBrowserRouter(
 		<Route path='/' element={<Root />}>
 			<Route path='about' element={<About />} />
 			<Route path='discover' element={<Discover />} />
-			<Route path='contact' element={<About />} />
-			<Route path='privacy' element={<Privacy />} />
-			<Route path='terms' element={<Terms />} />
 			<Route path='auth' element={<Auth />}> 
 				<Route path='login' element={<Login />}/>
 				<Route path='register' element={<Register />}/>
 				<Route path='reset-password' element={<ResetPassword />}/>
 				<Route path='callback/:providerId' element={<ThirdPartyCallback />} />
 			</Route>
+			<Route path='contact' element={<About />} />
+			<Route path='privacy' element={<Privacy />} />
+			<Route path='terms' element={<Terms />} />
 		</Route>
 	)
 );

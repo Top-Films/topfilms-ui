@@ -1,8 +1,10 @@
 @import '../../global.scss';
 
+$spacing: 1em;
+
 .linkContainer {
 	text-align: center;
-	margin-top: 2em;
+	margin-top: $spacing;
 }
 
 .navRegisterOrLogin {
@@ -21,16 +23,9 @@
 }
 
 .error {
-	margin-top: 2em;
+	margin-top: $spacing;
 	text-align: center;
 	color: red;
-}
-
-.links {
-	@media (max-width: $mantine-breakpoint-sm) {
-	  margin-top: var(--mantine-spacing-lg);
-	  margin-bottom: var(--mantine-spacing-sm);
-	}
 }
 
 .link {

@@ -3,12 +3,15 @@
 .contentWrapper {
 	position: relative;
 	min-height: 100vh;
-	padding: 0 0 $footer_height;
+	padding-bottom: $footer_height;
+
+	@media (max-width: $mantine-breakpoint-sm) {
+		padding-bottom: $footer_height_breakpoint;
+	}
 }
 
 .footer {
 	position: absolute;
-	height: $footer_height;
 	width: 100%;
 	bottom: 0;
     left: 0;

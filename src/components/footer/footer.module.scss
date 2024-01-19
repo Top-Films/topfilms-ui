@@ -9,6 +9,11 @@ $font_color: #b5b5b5;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
+
+	@media (max-width: $mantine-breakpoint-sm) {
+		height: $footer_height_breakpoint;
+		flex-direction: column;
+	}
 }
 
 .logo {
@@ -47,5 +52,5 @@ $font_color: #b5b5b5;
 	@media (max-width: $mantine-breakpoint-sm) {
 		margin-top: var(--mantine-spacing-lg);
 		margin-bottom: var(--mantine-spacing-sm);
-	  }
+	}
 }
