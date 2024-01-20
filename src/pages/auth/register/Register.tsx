@@ -6,7 +6,7 @@ import {
 	TextInput 
 } from '@mantine/core';
 import { hasLength, isEmail, matchesField, useForm } from '@mantine/form';
-import { mainBackgroundColor, mainFontColor } from '../../../styles/style-constants';
+import { mainBackgroundColor, mainFontColor } from '../../../shared/styles/style-constants';
 import { FormEvent, useState } from 'react';
 import ThirdPartyEmailPassword from 'supertokens-web-js/recipe/thirdpartyemailpassword';
 import STGeneralError from 'supertokens-web-js/lib/build/error';

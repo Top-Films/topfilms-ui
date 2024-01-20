@@ -6,8 +6,12 @@ $lightest_background_color: #3c424b;
 
 $main_font_color: #fff;
 
+$auth_element_spacing: 1em;
+
 $footer_height: 5em;
 $footer_height_breakpoint: 12em;
+
+$link_color: #0096FF;
 
 // Global styles
 body {
@@ -16,3 +20,8 @@ body {
     background-color: $main_background_color;
 	color: $main_font_color;
 }
+
+a {
+	color: $link_color;
+}
+

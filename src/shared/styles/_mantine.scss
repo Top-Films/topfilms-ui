@@ -12,18 +12,6 @@ $mantine-breakpoint-xl: '88em';
   @return #{math.div(math.div($value, $value * 0 + 1), 16)}rem;
 }
 
-@mixin light {
-  [data-mantine-color-scheme='light'] & {
-    @content;
-  }
-}
-
-@mixin dark {
-  [data-mantine-color-scheme='dark'] & {
-    @content;
-  }
-}
-
 @mixin hover {
   @media (hover: hover) {
     &:hover {

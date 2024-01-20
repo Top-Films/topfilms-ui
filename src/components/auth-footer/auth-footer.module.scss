@@ -1,14 +1,12 @@
 @import '../../global.scss';
 
-$spacing: 1em;
-
 .linkContainer {
 	text-align: center;
-	margin-top: $spacing;
+	margin-top: $auth_element_spacing;
 }
 
 .navRegisterOrLogin {
-	color: #0096FF;
+	color: $link_color;;
 }
 
 .navRegisterOrLogin:hover {
@@ -23,7 +21,7 @@ $spacing: 1em;
 }
 
 .error {
-	margin-top: $spacing;
+	margin-top: $auth_element_spacing;
 	text-align: center;
 	color: red;
 }

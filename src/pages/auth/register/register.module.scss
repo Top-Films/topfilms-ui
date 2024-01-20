@@ -1,5 +1,7 @@
+@import '../../../global.scss';
+
 .button {
-	background-color: #0096FF;
+	background-color: $link_color;;
 	&:disabled,
 	&[data-disabled] {
 		cursor: default;

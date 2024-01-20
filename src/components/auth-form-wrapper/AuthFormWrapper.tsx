@@ -2,7 +2,7 @@ import classnames from './auth-form-wrapper.module.scss';
 import {
 	Box, LoadingOverlay
 } from '@mantine/core';
-import { containerBackgroundColor, mainFontColor } from '../../styles/style-constants';
+import { containerBackgroundColor, mainFontColor } from '../../shared/styles/style-constants';
 import { Dispatch, ReactNode, SetStateAction } from 'react';
 import AuthFooter from '../auth-footer/AuthFooter';
 import AuthThirdPartyGroup from '../auth-third-party-group/AuthThirdPartyGroup';

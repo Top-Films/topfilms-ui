@@ -15,10 +15,12 @@ import About from './pages/about/About';
 import Discover from './pages/discover/Discover';
 import Privacy from './pages/privacy/Privacy';
 import Terms from './pages/terms/Terms';
+import Contact from './pages/contact/Contact';
+import { APP_NAME } from './shared/constants/constants';
 
 SuperTokens.init({
 	appInfo: {
-		appName: 'Top Films',
+		appName: APP_NAME,
 		apiDomain: Environment.authUrl(),
 		websiteDomain: Environment.frontendUrl()
 	},
@@ -69,7 +71,7 @@ const router = createBrowserRouter(
 				<Route path='reset-password' element={<ResetPassword />}/>
 				<Route path='callback/:providerId' element={<ThirdPartyCallback />} />
 			</Route>
-			<Route path='contact' element={<About />} />
+			<Route path='contact' element={<Contact />} />
 			<Route path='privacy' element={<Privacy />} />
 			<Route path='terms' element={<Terms />} />
 		</Route>

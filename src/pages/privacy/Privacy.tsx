@@ -1,8 +1,8 @@
-import classnames from './privacy.module.scss';
+import InformationPageWrapper from '../../components/information-page-wrapper/InformationPageWrapper';
 
 export default function Privacy() {
 	return (
-		<div className={classnames.container}>
+		<InformationPageWrapper>
 			<h1>Top Films&apos; Privacy Policy</h1>
 			<h4>Last updated: January 17, 2024</h4>
 			<hr />
@@ -245,6 +245,6 @@ export default function Privacy() {
 					<p>By email: maxmorhardt13@gmail.com</p>
 				</li>
 			</ul>
-		</div>
+		</InformationPageWrapper>
 	);
 }

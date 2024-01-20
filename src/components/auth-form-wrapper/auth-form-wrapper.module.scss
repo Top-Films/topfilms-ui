@@ -1,3 +1,5 @@
+@import '../../global.scss';
+
 .container {
 	width: 22em;
 }
@@ -8,7 +10,7 @@
 
 .logo {
 	width: 10em;
-	margin-bottom: 2em;
+	margin-bottom: $auth_element_spacing;
 }
 
 .formHeader {

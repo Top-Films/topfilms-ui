@@ -1,4 +1,4 @@
-# Install and build app
+# Build app
 FROM node:20.10.0-alpine as build
 
 USER root

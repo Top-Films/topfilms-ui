@@ -4,14 +4,14 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    
     "build": "tsc && vite build",
-	"test": "echo TODO",
-	"dev": "vite"
+    "test": "echo TODO",
+    "dev": "vite"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.5.1",
     "@fortawesome/free-brands-svg-icons": "^6.5.1",
+    "@fortawesome/free-solid-svg-icons": "^6.5.1",
     "@fortawesome/react-fontawesome": "^0.2.0",
     "@mantine/core": "^7.4.0",
     "@mantine/form": "^7.4.0",

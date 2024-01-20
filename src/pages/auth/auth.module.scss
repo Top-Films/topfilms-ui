@@ -1,5 +1,7 @@
+@import '../../global.scss';
+
 .container {
 	display: flex;
 	justify-content: center;
-	padding-top: 1em;
+	padding-top: $auth_element_spacing;
 }
