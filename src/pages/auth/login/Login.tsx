@@ -28,8 +28,7 @@ export default function Login() {
 		validate: {
 			email: isEmail('Invalid email'),
 			password: hasLength({ min: 1 })
-		},
-		validateInputOnChange: true
+		}
 	});
 
 	// Get error query param from third party callback to display message to user
@@ -112,7 +111,6 @@ export default function Login() {
 			<form onSubmit={e => onClickSubmit(e)}>
 				<TextInput
 					label='Email'
-					className={classnames.input}
 					styles={{
 						input: { 
 							backgroundColor: mainBackgroundColor,
@@ -134,7 +132,6 @@ export default function Login() {
 
 				<PasswordInput
 					label='Password'
-					className={classnames.input}
 					styles={{
 						input: { 
 							backgroundColor: mainBackgroundColor,

@@ -7,7 +7,7 @@ export default function Terms() {
 			<h4>Last updated: January 18, 2024</h4>
 			<hr />
 
-			<p>These terms and conditions outline the rules and regulations for the use of Top Films&apos; Website, located at https://topfilms.co.</p>
+			<p>These terms and conditions outline the rules and regulations for the use of Top Films&apos; Website, located at <a target='_blank' href='https://topfilms.co' rel='noreferrer'>https://topfilms.co</a></p>
 			<p>By accessing this website we assume you accept these terms and conditions. Do not continue to use Top Films if you do not agree to take all of the terms and conditions stated on this page.</p>
 			<p>The following terminology applies to these Terms and Conditions, Privacy Statement and Disclaimer Notice and all Agreements: &quot;Client&quot;, &quot;You&quot; and &quot;Your&quot; refers to you, the person log on this website and compliant to the Company&apos;s terms and conditions. &quot;The Company&quot;, &quot;Ourselves&quot;, &quot;We&quot;, &quot;Our&quot; and &quot;Us&quot;, refers to our Company. &quot;Party&quot;, &quot;Parties&quot;, or &quot;Us&quot;, refers to both the Client and ourselves. All terms refer to the offer, acceptance and consideration of payment necessary to undertake the process of our assistance to the Client in the most appropriate manner for the express purpose of meeting the Client&apos;s needs in respect of provision of the Company&apos;s stated services, in accordance with and subject to, prevailing law of us. Any use of the above terminology or other words in the singular, plural, capitalization and/or he/she or they, are taken as interchangeable and therefore as referring to same.</p>
 
@@ -24,7 +24,7 @@ export default function Terms() {
 				<li>Reproduce, duplicate or copy material from Top Films</li>
 				<li>Redistribute content from Top Films</li>
 			</ul>
-			<p>This Agreement shall begin on the date hereof. Our Terms and Conditions were created with the help of the <a href='https://www.termsandconditionsgenerator.com/'>Free Terms and Conditions Generator</a>.</p>
+			<p>This Agreement shall begin on the date hereof. Our Terms and Conditions were created with the help of the <a target='_blank' href='https://www.termsandconditionsgenerator.com/' rel='noreferrer'>Free Terms and Conditions Generator</a>.</p>
 			<p>Parts of this website offer an opportunity for users to post and exchange opinions and information in certain areas of the website. Top Films does not filter, edit, publish or review Comments prior to their presence on the website. Comments do not reflect the views and opinions of Top Films,its agents and/or affiliates. Comments reflect the views and opinions of the person who post their views and opinions. To the extent permitted by applicable laws, Top Films shall not be liable for the Comments or for any liability, damages or expenses caused and/or suffered as a result of any use of and/or posting of and/or appearance of the Comments on this website.</p>
 			<p>Top Films reserves the right to monitor all Comments and to remove any Comments which can be considered inappropriate, offensive or causes breach of these Terms and Conditions.</p>
 			<p>You warrant and represent that:</p>

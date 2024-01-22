@@ -37,7 +37,7 @@ SuperTokens.init({
 		Session.init({
 			tokenTransferMethod: 'header',
 			override: {
-				// Add interceptor for resource servers
+				// Add interceptor for resource server(s)
 				functions(oI) {
 					return {
 						...oI,

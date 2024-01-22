@@ -10,13 +10,13 @@ import AuthThirdPartyGroup from '../auth-third-party-group/AuthThirdPartyGroup';
 export default function AuthFormWrapper(props: {
 	children: ReactNode
 	formHeader: string
-	setIsLoading: Dispatch<SetStateAction<boolean>>
-	isLoading: boolean
-	setErrorMessage: Dispatch<SetStateAction<string>>
-	errorMessage: string
 	loginOrRegisterText: string
 	loginOrRegisterPath: string
 	enableThirdParty: boolean
+	setIsLoading?: Dispatch<SetStateAction<boolean>>
+	isLoading: boolean
+	setErrorMessage?: Dispatch<SetStateAction<string>>
+	errorMessage: string
 }) {
 	return (
 		<div className={classnames.container}>
@@ -39,11 +39,11 @@ export default function AuthFormWrapper(props: {
 					borderRadius: theme.radius.md
 				})}
 			>
-				<h1 className={classnames.formHeader}>{props.formHeader}</h1>
+				<h2 className={classnames.formHeader}>{props.formHeader}</h2>
 
 				{props.children}
-
-				{props.enableThirdParty
+				
+				{props.setIsLoading && props.setErrorMessage && props.enableThirdParty
 					? <AuthThirdPartyGroup setIsLoading={props.setIsLoading} setErrorMessage={props.setErrorMessage} />
 					: <></>
 				}

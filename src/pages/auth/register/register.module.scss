@@ -1,11 +1,1 @@
-@import '../../../global.scss';
-
-.button {
-	background-color: $link_color;;
-	&:disabled,
-	&[data-disabled] {
-		cursor: default;
-		opacity: 0.6;
-		color: #FFF;
-	}
-}
+@import '../../../shared/styles/auth.scss';

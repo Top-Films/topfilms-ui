@@ -25,7 +25,7 @@ export default function Contact() {
 			<h2>Customer Support</h2>
 			<ul>
 				<li>
-					<p>If you have any issues with your account or need help with our services, our dedicated customer support team is here to assist you</p>
+					<p>If you have any issues with your account or need help with our services, our dedicated customer support team is here to assist you.</p>
 				</li>
 			</ul>
 			<br />
@@ -33,7 +33,7 @@ export default function Contact() {
 			<h2>Feedback and Suggestions</h2>
 			<ul>
 				<li>
-					<p>We value your input! If you have suggestions, feedback, or ideas to share, please do so</p>
+					<p>We value your input! If you have suggestions, feedback, or ideas to share, please do so.</p>
 				</li>
 			</ul>
 			<br />
@@ -41,13 +41,13 @@ export default function Contact() {
 			<h2>Contact Information</h2>
 			<ul>
 				<li>
-					<p>Email: maxmorhardt13@gmail.com</p>
+					<p>Email: <a href='mailto:maxmorhardt13@gmail.com'>maxmorhardt13@gmail.com</a></p>
 				</li>
 				<li>
-					<p>Feel free to contribute or raise an issue on our <a href='https://github.com/Top-Films'>GitHub Repository</a></p>
+					<p>Feel free to contribute or raise an issue on our <a target='_blank' href='https://github.com/Top-Films' rel='noreferrer'>GitHub Repository</a></p>
 				</li>
 				<li>
-					<p>View our <a href='https://trello.com/b/UwA6fNAw/top-films'>Trello board</a> to see our development progress</p>
+					<p>View our <a target='_blank' href='https://trello.com/b/UwA6fNAw/top-films' rel='noreferrer'>Trello board</a> to see our development progress</p>
 				</li>
 			</ul>
 		</InformationPageWrapper>
