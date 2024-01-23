@@ -1,11 +1,10 @@
 import classnames from './auth-form-wrapper.module.scss';
-import {
-	Box, LoadingOverlay
-} from '@mantine/core';
+import { Box } from '@mantine/core';
 import { containerBackgroundColor, mainFontColor } from '../../shared/styles/style-constants';
 import { Dispatch, ReactNode, SetStateAction } from 'react';
 import AuthFooter from '../auth-footer/AuthFooter';
 import AuthThirdPartyGroup from '../auth-third-party-group/AuthThirdPartyGroup';
+import Loader from '../loader/Loader';
  
 export default function AuthFormWrapper(props: {
 	children: ReactNode
@@ -52,22 +51,7 @@ export default function AuthFormWrapper(props: {
 			<AuthFooter errorMessage={props.errorMessage} loginOrRegisterText={props.loginOrRegisterText} loginOrRegisterPath={props.loginOrRegisterPath} />
 
 			{/* Display spinner overlay while waiting for API response */}
-			<LoadingOverlay 
-				visible={props.isLoading} 
-				zIndex={1000} 
-				overlayProps={
-					{ 
-						backgroundOpacity: 0.10, 
-						blur: 1 
-					}
-				} 
-				loaderProps={
-					{ 
-						type: 'bars', 
-						color: '#000' 
-					}
-				} 
-			/>
+			<Loader isLoading={props.isLoading} />
 		</div>
 	);
 }

@@ -11,13 +11,14 @@ import { FormEvent, useState } from 'react';
 import ThirdPartyEmailPassword from 'supertokens-web-js/recipe/thirdpartyemailpassword';
 import STGeneralError from 'supertokens-web-js/lib/build/error';
 import AuthFormWrapper from '../../../components/auth-form-wrapper/AuthFormWrapper';
+import { useNavigate } from 'react-router-dom';
+import { POST_AUTH_REDIRECT_PATH } from '../../../shared/constants/constants';
  
 export default function Register() {
-	// States
 	const [isLoading, setIsLoading] = useState(false);
 	const [errorMessage, setErrorMessage] = useState('');
+	const navigate = useNavigate();
 
-	// Form
 	const form = useForm({
 		initialValues: {
 			email: '',
@@ -66,7 +67,7 @@ export default function Register() {
 				setErrorMessage('Registration failed. Please try again later');
 			// Successful register
 			} else if (response.status === 'OK') {
-				window.location.assign('/home');
+				navigate(POST_AUTH_REDIRECT_PATH);
 			// Unexpected error
 			} else {
 				setErrorMessage('Unexpected error occurred. Please try again later');
@@ -159,7 +160,9 @@ export default function Register() {
 						type='submit' 
 						disabled={!form.isValid()}
 						className={classnames.button}
-					>Submit</Button>
+					>
+						Submit
+					</Button>
 				</Group>
 			</form>	
 		</AuthFormWrapper>

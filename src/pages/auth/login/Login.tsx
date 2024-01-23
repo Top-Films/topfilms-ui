@@ -12,6 +12,7 @@ import STGeneralError from 'supertokens-web-js/lib/build/error';
 import { FormEvent, useEffect, useState } from 'react';
 import AuthFormWrapper from '../../../components/auth-form-wrapper/AuthFormWrapper';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import { POST_AUTH_REDIRECT_PATH } from '../../../shared/constants/constants';
 
 export default function Login() {
 	// States
@@ -77,7 +78,7 @@ export default function Login() {
 			} else if (response.status === 'WRONG_CREDENTIALS_ERROR') { 
 				setErrorMessage('The provided credentials are invalid');
 			} else if (response.status === 'OK') {
-				window.location.assign('/home');
+				navigate(POST_AUTH_REDIRECT_PATH);
 			// Unexpected error
 			} else {
 				setErrorMessage('Unexpected error occurred. Please try again later');
@@ -163,7 +164,9 @@ export default function Login() {
 						type='submit' 
 						disabled={!form.isValid()}
 						className={classnames.button}
-					>Submit</Button>
+					>
+						Submit
+					</Button>
 				</Group>
 			</form>
 		</AuthFormWrapper>

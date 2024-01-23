@@ -23,6 +23,6 @@ export class Environment {
 	// Enable/Disable strict mode. Note: always false in prododuction
 	// Useful for testing third party auth, sometimes API calls are made twice and invalidated in strict mode
 	static strictMode(): boolean {
-		return true;
+		return false;
 	}
 }

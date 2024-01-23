@@ -1,7 +1,7 @@
 import AuthFormWrapper from '../auth-form-wrapper/AuthFormWrapper';
 import classnames from './auth-reset-password.module.scss';
 
-export function ResetPasswordSuccess() {	
+export default function ResetPasswordSuccess() {	
 	return (
 		<AuthFormWrapper
 			formHeader='Success'

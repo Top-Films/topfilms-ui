@@ -13,7 +13,7 @@ $footer_height_breakpoint: 12em;
 
 $link_color: #0096FF;
 
-// Global styles
+// Set theme and remove default margin/padding
 body {
     margin: 0;
     padding: 0;
@@ -21,7 +21,15 @@ body {
 	color: $main_font_color;
 }
 
+// Change link color to make background better
 a {
 	color: $link_color;
 }
 
+// Change all inputs autofill background color
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active{
+    -webkit-box-shadow: 0 0 0 30px $main_background_color inset !important;
+}

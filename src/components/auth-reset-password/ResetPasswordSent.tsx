@@ -1,6 +1,6 @@
 import AuthFormWrapper from '../auth-form-wrapper/AuthFormWrapper';
 
-export function ResetPasswordSent() {
+export default function ResetPasswordSent() {
 	return (
 		<AuthFormWrapper
 			formHeader='Email Sent'
@@ -10,8 +10,7 @@ export function ResetPasswordSent() {
 			loginOrRegisterPath='/auth/login'
 			enableThirdParty={false}
 		>
-			<p>Your password reset link has been sent.</p>
-			<p>Please check your inbox, including spam or junk folder, and follow the instructions provided in the email.</p>
+			<p>Your password reset link has been sent if it exists in our system.</p>
 			<p><strong>Important:</strong> The password reset link is time-sensitive and will expire. If you encounter any issues, please contact our support team.</p>
 		</AuthFormWrapper>
 	);

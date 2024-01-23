@@ -1,7 +1,8 @@
-import { LoadingOverlay } from '@mantine/core';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ThirdPartyEmailPassword from 'supertokens-web-js/recipe/thirdpartyemailpassword';
+import { POST_AUTH_REDIRECT_PATH } from '../../../shared/constants/constants';
+import Loader from '../../../components/loader/Loader';
 
 export default function ThirdPartyCallback() {
 	const navigate = useNavigate();
@@ -10,22 +11,17 @@ export default function ThirdPartyCallback() {
 			try {
 				const response = await ThirdPartyEmailPassword.thirdPartySignInAndUp();
 				if (response.status !== 'OK') {
-					navigate('/auth?error=thirdParty');
+					navigate('/auth/login?error=thirdParty');
 				}
 		
-				navigate('/home');
+				navigate(POST_AUTH_REDIRECT_PATH);
 			} catch (_) {
-				navigate('/auth?error=thirdParty');
+				navigate('/auth/login?error=thirdParty');
 			}
 		})();
 	}, []);
 
 	return (
-		<LoadingOverlay 
-			visible={true} 
-			zIndex={1000}
-			overlayProps={{ backgroundOpacity: 0.10, blur: 1 }} 
-			loaderProps={{ type: 'bars', color: '#000' }} 
-		/>
+		<Loader isLoading={true} />
 	);
 }

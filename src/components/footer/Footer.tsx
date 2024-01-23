@@ -4,13 +4,16 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { FOOTER_LINKS } from '../../shared/constants/constants';
 
 export function Footer() {
-	// Don't show header for auth screen
 	const { pathname } = useLocation();
+	const navigate = useNavigate();
+
+	// Don't show header for auth screen
 	if (pathname.startsWith('/auth')) {
-		return;
+		return (
+			<></>
+		);
 	}
 
-	const navigate = useNavigate();
 	const items = FOOTER_LINKS.map(link => (
 		<span 
 			key={link.label} 

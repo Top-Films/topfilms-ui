@@ -17,6 +17,7 @@ import Privacy from './pages/privacy/Privacy';
 import Terms from './pages/terms/Terms';
 import Contact from './pages/contact/Contact';
 import { APP_NAME } from './shared/constants/constants';
+import Home from './pages/home/Home';
 
 SuperTokens.init({
 	appInfo: {
@@ -63,6 +64,7 @@ SuperTokens.init({
 const router = createBrowserRouter(
 	createRoutesFromElements(
 		<Route path='/' element={<Root />}>
+			<Route path='home' element={<Home />} />
 			<Route path='about' element={<About />} />
 			<Route path='discover' element={<Discover />} />
 			<Route path='auth' element={<Auth />}> 
@@ -81,7 +83,7 @@ const router = createBrowserRouter(
 export default function App() {
 	return (
 		<SuperTokensWrapper>
-			<MantineProvider>
+			<MantineProvider defaultColorScheme='dark'>
 				<RouterProvider router={router} />
 			</MantineProvider>
 		</SuperTokensWrapper>

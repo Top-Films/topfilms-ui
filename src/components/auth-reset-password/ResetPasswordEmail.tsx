@@ -8,7 +8,7 @@ import { Button, Group, TextInput } from '@mantine/core';
 import { mainBackgroundColor, mainFontColor } from '../../shared/styles/style-constants';
 import classnames from './auth-reset-password.module.scss';
 
-export function ResetPasswordEmail() {
+export default function ResetPasswordEmail() {
 	const [isLoading, setIsLoading] = useState(false);
 	const [errorMessage, setErrorMessage] = useState('');
 	const navigate = useNavigate();
