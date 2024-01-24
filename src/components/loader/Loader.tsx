@@ -1,5 +1,6 @@
 import { LoadingOverlay } from '@mantine/core';
 
+// Loading overlay
 export default function Loader(props: {
 	isLoading: boolean
 }) {

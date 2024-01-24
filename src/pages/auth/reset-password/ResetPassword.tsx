@@ -1,5 +1,5 @@
 import { useSearchParams } from 'react-router-dom';
-import { ResetPasswordEmail, ResetPasswordNewPassword, ResetPasswordSent, ResetPasswordSuccess } from '../../../components/auth-reset-password';
+import { ResetPasswordEmail, ResetPasswordNewPassword, ResetPasswordSent, ResetPasswordSuccess } from '../../../components/auth/auth-reset-password';
 
 export default function ResetPassword() {
 	const [searchParams] = useSearchParams();

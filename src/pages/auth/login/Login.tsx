@@ -1,26 +1,20 @@
-import classnames from './login.module.scss';
-import {
-	Button, 
-	Group, 
-	PasswordInput, 
-	TextInput 
-} from '@mantine/core';
+import { Group } from '@mantine/core';
 import { hasLength, isEmail, useForm } from '@mantine/form';
-import { mainBackgroundColor, mainFontColor } from '../../../shared/styles/style-constants';
-import ThirdPartyEmailPassword from 'supertokens-web-js/recipe/thirdpartyemailpassword';
-import STGeneralError from 'supertokens-web-js/lib/build/error';
 import { FormEvent, useEffect, useState } from 'react';
-import AuthFormWrapper from '../../../components/auth-form-wrapper/AuthFormWrapper';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import STGeneralError from 'supertokens-web-js/lib/build/error';
+import ThirdPartyEmailPassword from 'supertokens-web-js/recipe/thirdpartyemailpassword';
+import AuthFormWrapper from '../../../components/auth/auth-form-wrapper/AuthFormWrapper';
+import { TFSubmitButton } from '../../../components/button';
+import { TFPasswordInput, TFTextInput } from '../../../components/input';
 import { POST_AUTH_REDIRECT_PATH } from '../../../shared/constants/constants';
+import classnames from './login.module.scss';
 
 export default function Login() {
-	// States
+	const navigate = useNavigate();
 	const [isLoading, setIsLoading] = useState(false);
 	const [errorMessage, setErrorMessage] = useState('');
-	const navigate = useNavigate();
 		
-	// Define form
 	const form = useForm({
 		initialValues: {
 			email: '',
@@ -40,11 +34,6 @@ export default function Login() {
 		}
 	}, []);
 
-	/**
-	 * Submits email password auth
-	 * 
-	 * @param e submit form event
-	 */
 	const onClickSubmit = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault(); // Days of pain because of you
 		setIsLoading(true);
@@ -110,43 +99,8 @@ export default function Login() {
 		>
 			{/* Form for email password auth */}
 			<form onSubmit={e => onClickSubmit(e)}>
-				<TextInput
-					label='Email'
-					styles={{
-						input: { 
-							backgroundColor: mainBackgroundColor,
-							borderColor: mainBackgroundColor,
-							color: mainFontColor,
-							marginBottom: '10px'
-						},
-						label: {
-							marginBottom: '10px'
-						},
-						error: {
-							marginTop: '5px',
-							marginBottom: '15px'
-						}
-					}}
-					withAsterisk
-					{...form.getInputProps('email')}
-				/>
-
-				<PasswordInput
-					label='Password'
-					styles={{
-						input: { 
-							backgroundColor: mainBackgroundColor,
-							borderColor: mainBackgroundColor,
-							color: mainFontColor,
-							marginBottom: '10px'
-						},
-						label: {
-							marginBottom: '10px'
-						}
-					}}
-					withAsterisk
-					{...form.getInputProps('password')}
-				/>
+				<TFTextInput label='Email' form={form} formInputProp='email'/>
+				<TFPasswordInput label='Password' form={form} formInputProp='password' />
 
 				{/* Link to forgot password page */}
 				<div className={classnames.linkContainer}>
@@ -160,13 +114,7 @@ export default function Login() {
 
 				{/* Submit email password auth */}
 				<Group justify='center' mt='md'>
-					<Button 
-						type='submit' 
-						disabled={!form.isValid()}
-						className={classnames.button}
-					>
-						Submit
-					</Button>
+					<TFSubmitButton />
 				</Group>
 			</form>
 		</AuthFormWrapper>

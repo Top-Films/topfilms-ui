@@ -1,7 +1,7 @@
+import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import InformationPageWrapper from '../../components/information-page-wrapper/InformationPageWrapper';
 import classnames from './contact.module.scss';
-import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
 
 export default function Contact() {
 	return (

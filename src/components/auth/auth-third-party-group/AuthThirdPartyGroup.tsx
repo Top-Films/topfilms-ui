@@ -1,14 +1,11 @@
-import React from 'react';
+import { faDiscord, faGoogle, faTwitter } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import classnames from './auth-third-party-group.module.scss';
-import {
-	Divider, 
-	Group
-} from '@mantine/core';
-import { faGoogle, faDiscord, faTwitter } from '@fortawesome/free-brands-svg-icons';
-import ThirdPartyEmailPassword from 'supertokens-web-js/recipe/thirdpartyemailpassword';
+import { Divider, Group } from '@mantine/core';
+import React from 'react';
 import STGeneralError from 'supertokens-web-js/lib/build/error';
-import { Environment } from '../../shared/util/Environment';
+import ThirdPartyEmailPassword from 'supertokens-web-js/recipe/thirdpartyemailpassword';
+import { Environment } from '../../../shared/util/Environment';
+import classnames from './auth-third-party-group.module.scss';
  
 export default function AuthThirdPartyGroup(props: {
 	setErrorMessage: React.Dispatch<React.SetStateAction<string>>
@@ -51,8 +48,10 @@ export default function AuthThirdPartyGroup(props: {
 			window.location.assign(authUrl);
 			props.setIsLoading(false);
 		} catch (e: unknown) {
+			// Super Tokens error
 			if (e instanceof STGeneralError) {
 				props.setErrorMessage(e.message);
+			// Unkown error
 			} else {
 				props.setErrorMessage('Oops! Something went wrong.');
 			}

@@ -1,20 +1,13 @@
 import { Group } from '@mantine/core';
+import { useNavigate } from 'react-router-dom';
+import { FOOTER_LINKS, TOP_FILMS_LOGO_FULL } from '../../shared/constants/constants';
 import classnames from './footer.module.scss';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { FOOTER_LINKS } from '../../shared/constants/constants';
 
-export function Footer() {
-	const { pathname } = useLocation();
+export default function Footer() {
 	const navigate = useNavigate();
 
-	// Don't show header for auth screen
-	if (pathname.startsWith('/auth')) {
-		return (
-			<></>
-		);
-	}
-
-	const items = FOOTER_LINKS.map(link => (
+	// Map footer links to elements
+	const links = FOOTER_LINKS.map(link => (
 		<span 
 			key={link.label} 
 			className={classnames.link} 
@@ -31,11 +24,11 @@ export function Footer() {
 		<div className={classnames.footer}>
 			<img 
 				className={classnames.logo} 
-				src='https://raw.githubusercontent.com/Top-Films/assets/main/png/top-films-logo-gray-transparent.png'
+				src={TOP_FILMS_LOGO_FULL}
 				alt='Top Films Logo'
 			/>
 			<h3 className={classnames.copy}>© 2024 Top Films. All rights reserved</h3>
-			<Group className={classnames.links} >{items}</Group>
+			<Group className={classnames.links} >{links}</Group>
 		</div>
 	);
 }

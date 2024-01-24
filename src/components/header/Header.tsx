@@ -1,24 +1,14 @@
-import classnames from './header.module.scss';
-import { NavLink, useLocation, useNavigate } from 'react-router-dom';
-import {
-	Avatar,
-	UnstyledButton,
-	Group,
-	Menu,
-	Button,
-	Skeleton,
-	Burger,
-	Drawer,
-	ScrollArea,
-	Divider,
-	rem
-} from '@mantine/core';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faGear, faRightFromBracket, faTrash, faUser } from '@fortawesome/free-solid-svg-icons';
-import Session from 'supertokens-web-js/recipe/session';
-import { useEffect, useState } from 'react';
+import { Burger, Group, Skeleton } from '@mantine/core';
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
-import { SMALL_BREAKPOINT_EM } from '../../shared/styles/style-constants';
+import { useEffect, useState } from 'react';
+import { NavLink } from 'react-router-dom';
+import Session from 'supertokens-web-js/recipe/session';
+import { TOP_FILMS_LOGO_FULL, TOP_FILMS_LOGO_TEXTLESS } from '../../shared/constants/constants';
+import { SMALL_BREAKPOINT_EM } from '../../shared/styles/variables';
+import HeaderAnonymous from './header-anonymous/HeaderAnonymous';
+import HeaderAuthenticated from './header-authenticated/HeaderAuthenticated';
+import HeaderDrawer from './header-drawer/HeaderDrawer';
+import classnames from './header.module.scss';
 
 const links = [
 	{ link: 'home', label: 'Home' },
@@ -27,13 +17,12 @@ const links = [
 ];
 
 export default function Header() {
-	const { pathname } = useLocation();
-	const navigate = useNavigate();
 	const [isAuthenticated, setIsAuthenticated] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
 	const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
 	const isMobile = useMediaQuery(`(max-width: ${SMALL_BREAKPOINT_EM})`);
 
+	// Nav paths based on links
 	const items = links.map(link => (
 		<NavLink
 			key={link.label}
@@ -48,139 +37,62 @@ export default function Header() {
 			{link.label}
 		</NavLink>
 	));
-
+	
+	// Check auth status on component load
 	useEffect(() => {
 		setIsLoading(true);
-		// Need to wait before authenticated status has updated
-		setTimeout(() => {
-			checkAuthenticated();
-			setIsLoading(false);
-		}, 2000);
-		console.log(isMobile);
+		(async () => {
+			try {
+				const isAuthenticatedStatus = await Session.doesSessionExist();
+				setIsAuthenticated(isAuthenticatedStatus);
+			} catch (_) {
+				setIsAuthenticated(false);
+			} finally {
+				setIsLoading(false);
+			}
+		})();
 	}, []);
-
-	const checkAuthenticated = async () => {
-		try {
-			const isAuthenticatedStatus = await Session.doesSessionExist();
-			setIsAuthenticated(isAuthenticatedStatus);
-		} catch (_) {
-			setIsAuthenticated(false);
-		}
-	};
-
-	const onSignOut = async () => {
-		await Session.signOut();
-		setIsAuthenticated(false);
-		navigate('/home');
-	};
-
-	// Don't show header for auth screen
-	if (pathname.startsWith('/auth')) {
-		return (<></>);
-	}
 
 	return (
 		<div className={classnames.header}>
 			<div className={classnames.inner}>
-				<Drawer
-					opened={drawerOpened}
-					onClose={closeDrawer}
-					size='60%'
-					padding='md'
-					title='Top Films'
-					hiddenFrom='sm'
-					zIndex={1000000}
-				>
-					<ScrollArea h={`calc(100vh - ${rem(80)})`} mx='-md'>
-						<Divider my='sm' />
-						{items}
-					</ScrollArea>
-				</Drawer>
-
 				<Group>
+					{/* Burger for mobile */}
 					<Burger opened={drawerOpened} onClick={toggleDrawer} hiddenFrom='sm' />
+
+					{/* Change to smaller image for mobile */}
 					{isMobile
 						? <img 
 							className={classnames.logoSmall} 
-							src='https://raw.githubusercontent.com/Top-Films/assets/main/png/top-films-logo-white-transparent-textless.png'
+							src={TOP_FILMS_LOGO_TEXTLESS}
 							alt='Top Films Logo' 
 						/>
 						: <img 
 							className={classnames.logoFull} 
-							src='https://raw.githubusercontent.com/Top-Films/assets/main/png/top-films-logo-white-transparent.png'
+							src={TOP_FILMS_LOGO_FULL}
 							alt='Top Films Logo' 
 						/>
 					}
-
 				</Group>
+
 				<Group>
+					{/* Nav paths are constant for anonymous and authenticated users */}
 					<Group ml={50} gap={5} visibleFrom='sm'>
 						{items}
 					</Group>
+					{/* Show profile skeleton while determining auth status */}
 					{isLoading
 						? <Skeleton height={40} circle />
 						: <>
+							{/* Show authenticated or anonymous part of header */}
 							{isAuthenticated
-								? <Menu
-									width={260}
-									position='bottom-end'
-									transitionProps={{ transition: 'pop-top-right' }}
-									withinPortal
-								>
-									<Menu.Target>
-										<UnstyledButton className={classnames.profile}>
-											<Group>
-												<Avatar size={40} color='blue'>MM</Avatar>
-											</Group>
-										</UnstyledButton>
-									</Menu.Target>
-									<Menu.Dropdown>
-										<Menu.Item 
-											color='white' 
-											leftSection={<FontAwesomeIcon icon={faUser} />}
-										>
-											Profile
-										</Menu.Item>
-										<Menu.Item 
-											color='white' 
-											leftSection={<FontAwesomeIcon icon={faGear} />}
-										>
-											Account Settings
-										</Menu.Item>
-										<Menu.Item 
-											color='white' 
-											leftSection={<FontAwesomeIcon icon={faRightFromBracket} />}
-											onClick={onSignOut}
-										>
-											Sign Out
-										</Menu.Item>
-										<Menu.Item 
-											color='red' 
-											leftSection={<FontAwesomeIcon icon={faTrash} />}
-										>
-											Delete Account
-										</Menu.Item>
-									</Menu.Dropdown>
-								</Menu>
-								: <>
-									<Button
-										size='xs'
-										variant='outline'
-										onClick={() => navigate('/auth/login')}
-									>
-										Sign In
-									</Button>
-									<Button 
-										size='xs'
-										onClick={() => navigate('/auth/register')}
-									>
-										Register
-									</Button>
-								</>
+								? <HeaderAuthenticated setIsLoading={setIsLoading} setIsAuthenticated={setIsAuthenticated} />
+								: <HeaderAnonymous />
 							}
 						</>
 					}
 				</Group>
+				<HeaderDrawer items={items} drawerOpened={drawerOpened} closeDrawer={closeDrawer} />
 			</div>
 		</div>
 	);

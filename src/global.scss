@@ -1,17 +1,4 @@
-// Variables
-$main_background_color: #0d1117;
-$light_background_color: #161b22;
-$lighter_background_color: #2b313a;
-$lightest_background_color: #3c424b;
-
-$main_font_color: #fff;
-
-$auth_element_spacing: 1em;
-
-$footer_height: 5em;
-$footer_height_breakpoint: 12em;
-
-$link_color: #0096FF;
+@import './shared/styles/variables.scss';
 
 // Set theme and remove default margin/padding
 body {
@@ -21,12 +8,12 @@ body {
 	color: $main_font_color;
 }
 
-// Change link color to make background better
+// Change link color to match background better
 a {
 	color: $link_color;
 }
 
-// Change all inputs autofill background color
+// Change all inputs autofill to background color
 input:-webkit-autofill,
 input:-webkit-autofill:hover, 
 input:-webkit-autofill:focus, 

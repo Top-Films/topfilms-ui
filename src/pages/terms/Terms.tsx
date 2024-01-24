@@ -1,5 +1,8 @@
 import InformationPageWrapper from '../../components/information-page-wrapper/InformationPageWrapper';
 
+/**
+ * Terms and conditions page
+ */
 export default function Terms() {
 	return (
 		<InformationPageWrapper>

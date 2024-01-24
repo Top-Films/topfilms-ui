@@ -6,7 +6,8 @@ export default function Auth() {
 	
 	return (
 		<div className={classnames.container}>
-			{pathname === '/auth' 
+			{/* Navigate to login on direct match to /auth(/) */}
+			{pathname === '/auth' || pathname === '/auth/'
 				? <Navigate to='/auth/login' replace />
 				: <div className={classnames.container}><Outlet /></div>
 			}

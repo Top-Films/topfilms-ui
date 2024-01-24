@@ -1,19 +1,19 @@
+import { Group } from '@mantine/core';
 import { isEmail, useForm } from '@mantine/form';
 import { FormEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import ThirdPartyEmailPassword from 'supertokens-web-js/recipe/thirdpartyemailpassword';
 import STGeneralError from 'supertokens-web-js/lib/build/error';
-import AuthFormWrapper from '../auth-form-wrapper/AuthFormWrapper';
-import { Button, Group, TextInput } from '@mantine/core';
-import { mainBackgroundColor, mainFontColor } from '../../shared/styles/style-constants';
-import classnames from './auth-reset-password.module.scss';
+import ThirdPartyEmailPassword from 'supertokens-web-js/recipe/thirdpartyemailpassword';
+import { AuthFormWrapper } from '../..';
+import { TFSubmitButton } from '../../../button';
+import { TFTextInput } from '../../../input';
+import classnames from '../auth-reset-password.module.scss';
 
 export default function ResetPasswordEmail() {
 	const [isLoading, setIsLoading] = useState(false);
 	const [errorMessage, setErrorMessage] = useState('');
 	const navigate = useNavigate();
 	
-	// Define form
 	const form = useForm({
 		initialValues: {
 			email: ''
@@ -32,7 +32,7 @@ export default function ResetPasswordEmail() {
 		e.preventDefault();
 		setIsLoading(true);
 		try {
-			// Attempt to sign in or up using email and password from form
+			// Attempt to submit email for password reset
 			const response = await ThirdPartyEmailPassword.sendPasswordResetEmail({
 				formFields: [{
 					id: 'email',
@@ -40,24 +40,27 @@ export default function ResetPasswordEmail() {
 				}]
 			});
 
+			// Email is invalid
 			if (response.status === 'FIELD_ERROR') {
 				response.formFields.forEach(formField => {
 					if (formField.id === 'email') {
 						setErrorMessage(formField.error);
 					}
 				});
+			// Special case with account linking error
 			} else if (response.status === 'PASSWORD_RESET_NOT_ALLOWED') {
 				setErrorMessage('Oops! Something went wrong.');
+			// Reset password email sent
 			} else {
-				// Reset password email sent
 				navigate('/auth/reset-password?sent=true');
 			}
 
 			setIsLoading(false);
-		// Exception handling
 		} catch (e: unknown) {
+			// Super Tokens error
 			if (e instanceof STGeneralError) {
 				setErrorMessage(e.message);
+			// Unknown error
 			} else {
 				setErrorMessage('Oops! Something went wrong.');
 			}
@@ -78,35 +81,10 @@ export default function ResetPasswordEmail() {
 			enableThirdParty={false}
 		>
 			<form className={classnames.form} onSubmit={e => onClickSubmit(e)}>
-				<TextInput
-					label='Email'
-					styles={{
-						input: { 
-							backgroundColor: mainBackgroundColor,
-							borderColor: mainBackgroundColor,
-							color: mainFontColor,
-							marginBottom: '10px'
-						},
-						label: {
-							marginBottom: '10px'
-						},
-						error: {
-							marginTop: '5px',
-							marginBottom: '15px'
-						}
-					}}
-					withAsterisk
-					{...form.getInputProps('email')}
-				/>
+				<TFTextInput label='Email' form={form} formInputProp='email' />
 
 				<Group justify='center' mt='md'>
-					<Button 
-						type='submit' 
-						disabled={!form.isValid()}
-						className={classnames.button}
-					>
-						Submit
-					</Button>
+					<TFSubmitButton disabled={!form.isValid()} />
 				</Group>
 			</form>
 		</AuthFormWrapper>

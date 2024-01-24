@@ -1,3 +1,6 @@
+/**
+ * Environment variable class that sets variables based on Node Environment
+ */
 export class Environment {
 	// Get auth api url depending on the env
 	static authUrl(): string {

@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ThirdPartyEmailPassword from 'supertokens-web-js/recipe/thirdpartyemailpassword';
-import { POST_AUTH_REDIRECT_PATH } from '../../../shared/constants/constants';
 import Loader from '../../../components/loader/Loader';
+import { POST_AUTH_REDIRECT_PATH } from '../../../shared/constants/constants';
 
 export default function ThirdPartyCallback() {
 	const navigate = useNavigate();

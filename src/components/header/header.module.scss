@@ -1,14 +1,16 @@
-@import '../../global.scss';
+@import '../../shared/styles/variables.scss';
+
+$height: rem(56px);
 
 .header {
-	height: rem(56px);
+	height: $height;
 	background-color: $light_background_color;
 	padding-left: var(--mantine-spacing-md);
 	padding-right: var(--mantine-spacing-md);
 }
 
 .inner {
-	height: rem(56px);
+	height: $height;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;

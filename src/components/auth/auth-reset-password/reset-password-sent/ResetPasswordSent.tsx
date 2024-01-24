@@ -1,6 +1,7 @@
-import AuthFormWrapper from '../auth-form-wrapper/AuthFormWrapper';
+import AuthFormWrapper from '../../auth-form-wrapper/AuthFormWrapper';
 
 export default function ResetPasswordSent() {
+	// Notify user that password reset email has been sent
 	return (
 		<AuthFormWrapper
 			formHeader='Email Sent'

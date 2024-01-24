@@ -1,16 +1,21 @@
 import { Group } from '@mantine/core';
-import { FOOTER_LINKS } from '../../shared/constants/constants';
-import classnames from './auth-footer.module.scss';
 import { useNavigate } from 'react-router-dom';
- 
+import { FOOTER_LINKS } from '../../../shared/constants/constants';
+import { AUTH_ELEMENT_SPACING } from '../../../shared/styles/variables';
+import classnames from './auth-footer.module.scss';
+
+/**
+ * Specialized footer for the /auth path
+ */
 export default function AuthFooter(props: {
-	errorMessage: string
-	loginOrRegisterText: string
-	loginOrRegisterPath: string
+	errorMessage: string // Message to display for auth error
+	loginOrRegisterText: string // Message to visit auth or register page
+	loginOrRegisterPath: string // Path to register or login -- should point to the one that is not currently displayed
 }) {
 	const navigate = useNavigate();
 
-	const items = FOOTER_LINKS.map(link => (
+	// Map footer links to jsx elements
+	const links = FOOTER_LINKS.map(link => (
 		<span 
 			key={link.label} 
 			className={classnames.link} 
@@ -38,7 +43,8 @@ export default function AuthFooter(props: {
 				</span>
 			</div>
 
-			<Group justify='center' mt={'1em'}>{items}</Group>
+			{/* Footer links */}
+			<Group justify='center' mt={AUTH_ELEMENT_SPACING}>{links}</Group>
 		</>
 	);
 }

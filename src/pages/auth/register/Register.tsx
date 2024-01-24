@@ -1,23 +1,18 @@
-import classnames from './register.module.scss';
-import {
-	Button, 
-	Group, 
-	PasswordInput, 
-	TextInput 
-} from '@mantine/core';
+import { Button, Group } from '@mantine/core';
 import { hasLength, isEmail, matchesField, useForm } from '@mantine/form';
-import { mainBackgroundColor, mainFontColor } from '../../../shared/styles/style-constants';
 import { FormEvent, useState } from 'react';
-import ThirdPartyEmailPassword from 'supertokens-web-js/recipe/thirdpartyemailpassword';
-import STGeneralError from 'supertokens-web-js/lib/build/error';
-import AuthFormWrapper from '../../../components/auth-form-wrapper/AuthFormWrapper';
 import { useNavigate } from 'react-router-dom';
+import STGeneralError from 'supertokens-web-js/lib/build/error';
+import ThirdPartyEmailPassword from 'supertokens-web-js/recipe/thirdpartyemailpassword';
+import AuthFormWrapper from '../../../components/auth/auth-form-wrapper/AuthFormWrapper';
+import { TFPasswordInput, TFTextInput } from '../../../components/input';
 import { POST_AUTH_REDIRECT_PATH } from '../../../shared/constants/constants';
+import classnames from './register.module.scss';
  
 export default function Register() {
+	const navigate = useNavigate();
 	const [isLoading, setIsLoading] = useState(false);
 	const [errorMessage, setErrorMessage] = useState('');
-	const navigate = useNavigate();
 
 	const form = useForm({
 		initialValues: {
@@ -99,60 +94,9 @@ export default function Register() {
 		>
 			{/* Form for email password auth */}
 			<form onSubmit={e => onClickSubmit(e)}>
-				<TextInput
-					label='Email'
-					styles={{
-						input: { 
-							backgroundColor: mainBackgroundColor,
-							borderColor: mainBackgroundColor,
-							color: mainFontColor,
-							marginBottom: '10px'
-						},
-						label: {
-							marginBottom: '10px'
-						},
-						error: {
-							marginTop: '5px',
-							marginBottom: '15px'
-						}
-					}}
-					withAsterisk
-					{...form.getInputProps('email')}
-				/>
-
-				<PasswordInput
-					label='Password'
-					styles={{
-						input: { 
-							backgroundColor: mainBackgroundColor,
-							borderColor: mainBackgroundColor,
-							color: mainFontColor,
-							marginBottom: '10px'
-						},
-						label: {
-							marginBottom: '10px'
-						}
-					}}
-					withAsterisk
-					{...form.getInputProps('password')}
-				/>
-
-				<PasswordInput
-					label='Confirm Password'
-					styles={{
-						input: { 
-							backgroundColor: mainBackgroundColor,
-							borderColor: mainBackgroundColor,
-							color: mainFontColor,
-							marginBottom: '10px'
-						},
-						label: {
-							marginBottom: '10px'
-						}
-					}}
-					withAsterisk
-					{...form.getInputProps('confirmPassword')}
-				/>
+				<TFTextInput label='Email' form={form} formInputProp='email'/>
+				<TFPasswordInput label='Password' form={form} formInputProp='password' />
+				<TFPasswordInput label='Confirm Password' form={form} formInputProp='confirmPassword' />
 
 				{/* Submit email password auth */}
 				<Group justify='center' mt='md'>

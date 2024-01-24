@@ -1,19 +1,19 @@
+import { Group } from '@mantine/core';
 import { hasLength, matchesField, useForm } from '@mantine/form';
 import { FormEvent, useState } from 'react';
-import AuthFormWrapper from '../auth-form-wrapper/AuthFormWrapper';
 import { useNavigate } from 'react-router-dom';
-import ThirdPartyEmailPassword from 'supertokens-web-js/recipe/thirdpartyemailpassword';
 import STGeneralError from 'supertokens-web-js/lib/build/error';
-import { Button, Group, PasswordInput } from '@mantine/core';
-import { mainBackgroundColor, mainFontColor } from '../../shared/styles/style-constants';
-import classnames from './auth-reset-password.module.scss';
+import ThirdPartyEmailPassword from 'supertokens-web-js/recipe/thirdpartyemailpassword';
+import { TFSubmitButton } from '../../../button';
+import { TFPasswordInput } from '../../../input';
+import AuthFormWrapper from '../../auth-form-wrapper/AuthFormWrapper';
+import classnames from '../auth-reset-password.module.scss';
 
 export default function ResetPasswordNewPassword() {
 	const [isLoading, setIsLoading] = useState(false);
 	const [errorMessage, setErrorMessage] = useState('');
 	const navigate = useNavigate();
 
-	// Define form
 	const form = useForm({
 		initialValues: {
 			password: '',
@@ -29,7 +29,7 @@ export default function ResetPasswordNewPassword() {
 	});
 
 	/**
-	 * Submits reset password email
+	 * Submits new password
 	 * 
 	 * @param e submit form event
 	 */
@@ -37,7 +37,7 @@ export default function ResetPasswordNewPassword() {
 		e.preventDefault();
 		setIsLoading(true);
 		try {
-			// Attempt to sign in or up using email and password from form
+			// Attempt to submit new password
 			const response = await ThirdPartyEmailPassword.submitNewPassword({
 				formFields: [{
 					id: 'password',
@@ -45,6 +45,7 @@ export default function ResetPasswordNewPassword() {
 				}]
 			});
 	
+			// Invalid password
 			if (response.status === 'FIELD_ERROR') {
 				response.formFields.forEach(formField => {
 					if (formField.id === 'password') {
@@ -52,18 +53,20 @@ export default function ResetPasswordNewPassword() {
 						setErrorMessage(formField.error);
 					}
 				});
+			// The password reset token in the URL is invalid, expired, or already consumed
 			} else if (response.status === 'RESET_PASSWORD_INVALID_TOKEN_ERROR') {
-				// The password reset token in the URL is invalid, expired, or already consumed
 				setErrorMessage('Password reset failed. Please try again');
+			// Successfully reset password
 			} else {
 				navigate('/auth/reset-password?success=true');
 			}
 	
 			setIsLoading(false);
-		// Exception handling
 		} catch (e: unknown) {
+			// Super Tokens error
 			if (e instanceof STGeneralError) {
 				setErrorMessage(e.message);
+			// Unkown error
 			} else {
 				setErrorMessage('Oops! Something went wrong.');
 			}
@@ -84,48 +87,11 @@ export default function ResetPasswordNewPassword() {
 			enableThirdParty={false}
 		>
 			<form className={classnames.form} onSubmit={e => onClickSubmit(e)}>
-				<PasswordInput
-					label='Password'
-					styles={{
-						input: { 
-							backgroundColor: mainBackgroundColor,
-							borderColor: mainBackgroundColor,
-							color: mainFontColor,
-							marginBottom: '10px'
-						},
-						label: {
-							marginBottom: '10px'
-						}
-					}}
-					withAsterisk
-					{...form.getInputProps('password')}
-				/>
-
-				<PasswordInput
-					label='Confirm Password'
-					styles={{
-						input: { 
-							backgroundColor: mainBackgroundColor,
-							borderColor: mainBackgroundColor,
-							color: mainFontColor,
-							marginBottom: '10px'
-						},
-						label: {
-							marginBottom: '10px'
-						}
-					}}
-					withAsterisk
-					{...form.getInputProps('confirmPassword')}
-				/>
+				<TFPasswordInput label='Password' form={form} formInputProp='password' />
+				<TFPasswordInput label='Confirm Password' form={form} formInputProp='confirmPassword' />
 
 				<Group justify='center' mt='md'>
-					<Button 
-						type='submit' 
-						disabled={!form.isValid()}
-						className={classnames.button}
-					>
-						Submit
-					</Button>
+					<TFSubmitButton disabled={!form.isValid()} />
 				</Group>
 			</form>
 		</AuthFormWrapper>
