@@ -8,8 +8,9 @@ import classnames from '../header.module.scss';
 
 // Show profile dropdown for authenticated users
 export default function HeaderAuthenticated(props: {
-	setIsLoading: Dispatch<SetStateAction<boolean>>
-	setIsAuthenticated: Dispatch<SetStateAction<boolean>>
+	setIsLoading: Dispatch<SetStateAction<boolean>>,
+	setIsAuthenticated: Dispatch<SetStateAction<boolean>>,
+	initials: string
 }) {
 	const navigate = useNavigate();
 
@@ -38,7 +39,7 @@ export default function HeaderAuthenticated(props: {
 			<Menu.Target>
 				<UnstyledButton className={classnames.profile}>
 					<Group>
-						<Avatar size={40} color='blue'>MM</Avatar>
+						<Avatar size={40} color='blue'>{props.initials}</Avatar>
 					</Group>
 				</UnstyledButton>
 			</Menu.Target>

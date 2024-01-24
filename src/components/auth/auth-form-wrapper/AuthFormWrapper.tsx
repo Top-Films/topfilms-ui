@@ -6,6 +6,7 @@ import { LIGHT_BACKGROUND_COLOR, MAIN_FONT_COLOR } from '../../../shared/styles/
 import Loader from '../../loader/Loader';
 import AuthThirdPartyGroup from '../auth-third-party-group/AuthThirdPartyGroup';
 import classnames from './auth-form-wrapper.module.scss';
+import { useNavigate } from 'react-router-dom';
  
 export default function AuthFormWrapper(props: {
 	children: ReactNode // Form as children element
@@ -18,6 +19,8 @@ export default function AuthFormWrapper(props: {
 	setErrorMessage?: Dispatch<SetStateAction<string>> // Set error message state if child makes API call
 	errorMessage: string // Current error message
 }) {
+	const navigate = useNavigate();
+
 	return (
 		<div className={classnames.container}>
 
@@ -27,6 +30,7 @@ export default function AuthFormWrapper(props: {
 					className={classnames.logo} 
 					src={TOP_FILMS_LOGO_FULL}
 					alt='Top Films Logo'
+					onClick={() => navigate('/home')}
 				/>
 			</div>
 			

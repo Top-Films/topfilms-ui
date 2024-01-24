@@ -1,8 +1,9 @@
 import { Burger, Group, Skeleton } from '@mantine/core';
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import { useEffect, useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import Session from 'supertokens-web-js/recipe/session';
+import { getUserMetadata } from '../../services/auth/auth-service';
 import { TOP_FILMS_LOGO_FULL, TOP_FILMS_LOGO_TEXTLESS } from '../../shared/constants/constants';
 import { SMALL_BREAKPOINT_EM } from '../../shared/styles/variables';
 import HeaderAnonymous from './header-anonymous/HeaderAnonymous';
@@ -17,10 +18,12 @@ const links = [
 ];
 
 export default function Header() {
+	const navigate = useNavigate();
+	const isMobile = useMediaQuery(`(max-width: ${SMALL_BREAKPOINT_EM})`);
+	const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);	
 	const [isAuthenticated, setIsAuthenticated] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
-	const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
-	const isMobile = useMediaQuery(`(max-width: ${SMALL_BREAKPOINT_EM})`);
+	const [initials, setInitials] = useState('');
 
 	// Nav paths based on links
 	const items = links.map(link => (
@@ -43,8 +46,17 @@ export default function Header() {
 		setIsLoading(true);
 		(async () => {
 			try {
-				const isAuthenticatedStatus = await Session.doesSessionExist();
-				setIsAuthenticated(isAuthenticatedStatus);
+				const isUserAuthenticated = await Session.doesSessionExist();
+				setIsAuthenticated(isUserAuthenticated);
+				if (isUserAuthenticated) {
+					const metadata = await getUserMetadata();
+					console.log(metadata);
+					if (!metadata.data.first_name || !metadata.data.last_name) {
+						navigate('/auth/user-information');
+					}
+
+					setInitials(`${getInitial(metadata.data.first_name)}${getInitial(metadata.data.last_name)}`);				
+				}
 			} catch (_) {
 				setIsAuthenticated(false);
 			} finally {
@@ -52,6 +64,8 @@ export default function Header() {
 			}
 		})();
 	}, []);
+
+	const getInitial = (name: string) => name.charAt(0).toUpperCase();
 
 	return (
 		<div className={classnames.header}>
@@ -66,11 +80,13 @@ export default function Header() {
 							className={classnames.logoSmall} 
 							src={TOP_FILMS_LOGO_TEXTLESS}
 							alt='Top Films Logo' 
+							onClick={() => navigate('/home')}
 						/>
 						: <img 
 							className={classnames.logoFull} 
 							src={TOP_FILMS_LOGO_FULL}
 							alt='Top Films Logo' 
+							onClick={() => navigate('/home')}
 						/>
 					}
 				</Group>
@@ -86,7 +102,7 @@ export default function Header() {
 						: <>
 							{/* Show authenticated or anonymous part of header */}
 							{isAuthenticated
-								? <HeaderAuthenticated setIsLoading={setIsLoading} setIsAuthenticated={setIsAuthenticated} />
+								? <HeaderAuthenticated setIsLoading={setIsLoading} setIsAuthenticated={setIsAuthenticated} initials={initials} />
 								: <HeaderAnonymous />
 							}
 						</>

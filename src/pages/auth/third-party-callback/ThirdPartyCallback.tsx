@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ThirdPartyEmailPassword from 'supertokens-web-js/recipe/thirdpartyemailpassword';
 import Loader from '../../../components/loader/Loader';
-import { POST_AUTH_REDIRECT_PATH } from '../../../shared/constants/constants';
+import { getUserMetadata } from '../../../services/auth/auth-service';
 
 export default function ThirdPartyCallback() {
 	const navigate = useNavigate();
@@ -13,8 +13,13 @@ export default function ThirdPartyCallback() {
 				if (response.status !== 'OK') {
 					navigate('/auth/login?error=thirdParty');
 				}
-		
-				navigate(POST_AUTH_REDIRECT_PATH);
+
+				const metadata = await getUserMetadata();
+				if (!metadata.data.first_name || !metadata.data.last_name) {
+					navigate('/auth/user-information');
+				}
+
+				navigate('/home');
 			} catch (_) {
 				navigate('/auth/login?error=thirdParty');
 			}

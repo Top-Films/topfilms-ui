@@ -8,6 +8,7 @@ import Login from './pages/auth/login/Login';
 import Register from './pages/auth/register/Register';
 import ResetPassword from './pages/auth/reset-password/ResetPassword';
 import ThirdPartyCallback from './pages/auth/third-party-callback/ThirdPartyCallback';
+import UserInformation from './pages/auth/user-information/UserInformation';
 import Contact from './pages/contact/Contact';
 import Discover from './pages/discover/Discover';
 import Home from './pages/home/Home';
@@ -28,6 +29,7 @@ const router = createBrowserRouter(
 				<Route path='login' element={<Login />}/>
 				<Route path='register' element={<Register />}/>
 				<Route path='reset-password' element={<ResetPassword />}/>
+				<Route path='user-information' element={<UserInformation />}/>
 				<Route path='callback/:providerId' element={<ThirdPartyCallback />} />
 			</Route>
 			<Route path='contact' element={<Contact />} />

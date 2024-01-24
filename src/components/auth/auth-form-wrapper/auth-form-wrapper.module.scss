@@ -13,6 +13,10 @@
 	margin-bottom: $auth_element_spacing;
 }
 
+.logo:hover {
+	cursor: pointer;
+}
+
 .formHeader {
 	display: block;
 	text-align: center;

@@ -36,12 +36,17 @@ $height: rem(56px);
 	background-color: $lighter_background_color;
 }
 
+img:hover {
+	cursor: pointer;
+}
+
 .logoFull {
 	width: 7em;
 }
 
 .logoSmall {
 	width: 2em;
+	opacity: 0.70;
 }
 
 .profile:hover {

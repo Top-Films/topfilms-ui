@@ -1,13 +1,12 @@
-import { Button, Group } from '@mantine/core';
+import { Group } from '@mantine/core';
 import { hasLength, isEmail, matchesField, useForm } from '@mantine/form';
 import { FormEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import STGeneralError from 'supertokens-web-js/lib/build/error';
 import ThirdPartyEmailPassword from 'supertokens-web-js/recipe/thirdpartyemailpassword';
 import AuthFormWrapper from '../../../components/auth/auth-form-wrapper/AuthFormWrapper';
+import { TFSubmitButton } from '../../../components/button';
 import { TFPasswordInput, TFTextInput } from '../../../components/input';
-import { POST_AUTH_REDIRECT_PATH } from '../../../shared/constants/constants';
-import classnames from './register.module.scss';
  
 export default function Register() {
 	const navigate = useNavigate();
@@ -62,7 +61,7 @@ export default function Register() {
 				setErrorMessage('Registration failed. Please try again later');
 			// Successful register
 			} else if (response.status === 'OK') {
-				navigate(POST_AUTH_REDIRECT_PATH);
+				navigate('/auth/user-information');
 			// Unexpected error
 			} else {
 				setErrorMessage('Unexpected error occurred. Please try again later');
@@ -100,13 +99,7 @@ export default function Register() {
 
 				{/* Submit email password auth */}
 				<Group justify='center' mt='md'>
-					<Button 
-						type='submit' 
-						disabled={!form.isValid()}
-						className={classnames.button}
-					>
-						Submit
-					</Button>
+					<TFSubmitButton disabled={!form.isValid()} />
 				</Group>
 			</form>	
 		</AuthFormWrapper>

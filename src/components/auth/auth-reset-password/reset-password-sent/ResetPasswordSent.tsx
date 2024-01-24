@@ -12,7 +12,6 @@ export default function ResetPasswordSent() {
 			enableThirdParty={false}
 		>
 			<p>Your password reset link has been sent if it exists in our system.</p>
-			<p><strong>Important:</strong> The password reset link is time-sensitive and will expire. If you encounter any issues, please contact our support team.</p>
 		</AuthFormWrapper>
 	);
 }
