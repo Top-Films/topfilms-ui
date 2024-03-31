@@ -20,7 +20,7 @@ jobs:
     - name: Build Application
       uses: actions/setup-node@v3
       with:
-        node-version: '20.10.0'
+        node-version: '20.12.0-linux-arm64'
     - run: npm install
     - run: npm run test
     - run: npm run build
