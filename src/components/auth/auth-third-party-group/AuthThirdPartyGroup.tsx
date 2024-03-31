@@ -4,7 +4,7 @@ import { Divider, Group } from '@mantine/core';
 import React from 'react';
 import STGeneralError from 'supertokens-web-js/lib/build/error';
 import ThirdPartyEmailPassword from 'supertokens-web-js/recipe/thirdpartyemailpassword';
-import { Environment } from '../../../shared/util/Environment';
+import { Environment } from '../../../util/Environment';
 import classnames from './auth-third-party-group.module.scss';
  
 export default function AuthThirdPartyGroup(props: {

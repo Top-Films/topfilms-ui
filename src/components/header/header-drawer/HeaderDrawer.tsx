@@ -5,7 +5,7 @@ import {
 	rem
 } from '@mantine/core';
 import { ReactNode } from 'react';
-import { APP_NAME } from '../../../shared/constants/constants';
+import { APP_NAME } from '../../../constants/constants';
 
 export default function HeaderDrawer(props: {
 	items: ReactNode,

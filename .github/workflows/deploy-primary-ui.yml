@@ -10,35 +10,7 @@ env:
   APP_VERSION: 1.0.0
 
 jobs:
-  whitelist_runner:
-    runs-on: ubuntu-latest
-    name: Add Whitelist for Runner
-    permissions:
-      contents: 'read'
-      id-token: 'write'
-
-    steps:
-    - id: auth
-      uses: google-github-actions/auth@v2
-      with:
-        credentials_json: ${{ secrets.GCP_CREDENTIALS }}
-
-    - name: Set up Cloud SDK
-      uses: google-github-actions/setup-gcloud@v2
-      with:
-        version: '>= 363.0.0'
-
-    - name: Add Firewall Rule Allowing IP
-      run: |
-        gcloud compute firewall-rules create allow-github-runner \
-        --allow=tcp:16443 \
-        --description="Allow ingress traffic for Runner" \
-        --direction=INGRESS \
-        --source-ranges=0.0.0.0/0 \
-        --priority=1
-  
   build_test:
-    needs: whitelist_runner
     runs-on: ubuntu-latest
     name: Build and Test Application
     steps:
@@ -59,7 +31,7 @@ jobs:
         path: dist
 
   deploy:
-    needs: [whitelist_runner, build_test]
+    needs: build_test
     runs-on: ubuntu-latest
     name: Upload Artifacts and Deploy Application
     steps:
@@ -89,26 +61,3 @@ jobs:
           helm push ./${{ env.APP_NAME }}-${{ env.APP_VERSION }}.tgz oci://registry-1.docker.io/${{ secrets.DOCKER_USERNAME }} && \
           helm upgrade ${{ env.APP_NAME }} ./${{ env.APP_NAME }}-${{ env.APP_VERSION }}.tgz --install --atomic --debug --history-max=3
         kubeconfig: ${{ secrets.KUBE_CONFIG }}
-        
-  remove_firewall_whitelist:
-    if: always()
-    needs: [whitelist_runner, build_test, deploy]
-    runs-on: ubuntu-latest
-    name: Remove Whitelist for Runner
-    permissions:
-      contents: 'read'
-      id-token: 'write'
-
-    steps:
-    - id: auth
-      uses: google-github-actions/auth@v2
-      with:
-        credentials_json: ${{ secrets.GCP_CREDENTIALS }}
-
-    - name: Set up Cloud SDK
-      uses: google-github-actions/setup-gcloud@v2
-      with:
-        version: '>= 363.0.0'
-
-    - name: Delete Firewall Rule
-      run: gcloud compute firewall-rules delete allow-github-runner

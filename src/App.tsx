@@ -15,7 +15,8 @@ import Home from './pages/home/Home';
 import Privacy from './pages/privacy/Privacy';
 import Root from './pages/root/Root';
 import Terms from './pages/terms/Terms';
-import { authConfig } from './shared/config/auth-config';
+import { authConfig } from './config/auth-config';
+import { SessionAuth } from 'supertokens-auth-react/recipe/session';
 
 SuperTokens.init(authConfig);
 
@@ -29,7 +30,8 @@ const router = createBrowserRouter(
 				<Route path='login' element={<Login />}/>
 				<Route path='register' element={<Register />}/>
 				<Route path='reset-password' element={<ResetPassword />}/>
-				<Route path='user-information' element={<UserInformation />}/>
+				{/* Protected route so users that are signed in enter account information */}
+				<Route path='user-information' element={<SessionAuth><UserInformation /></SessionAuth>}/>
 				<Route path='callback/:providerId' element={<ThirdPartyCallback />} />
 			</Route>
 			<Route path='contact' element={<Contact />} />

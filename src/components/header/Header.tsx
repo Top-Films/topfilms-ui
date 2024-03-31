@@ -3,9 +3,9 @@ import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import { useEffect, useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import Session from 'supertokens-web-js/recipe/session';
-import { getUserMetadata } from '../../services/auth/auth-service';
-import { TOP_FILMS_LOGO_FULL, TOP_FILMS_LOGO_TEXTLESS } from '../../shared/constants/constants';
-import { SMALL_BREAKPOINT_EM } from '../../shared/styles/variables';
+import { checkPresentUserMetadataSignOut, getUserMetadata } from '../../services/auth/auth-service';
+import { TOP_FILMS_LOGO_FULL, TOP_FILMS_LOGO_TEXTLESS } from '../../constants/constants';
+import { SMALL_BREAKPOINT_EM } from '../../styles/variables';
 import HeaderAnonymous from './header-anonymous/HeaderAnonymous';
 import HeaderAuthenticated from './header-authenticated/HeaderAuthenticated';
 import HeaderDrawer from './header-drawer/HeaderDrawer';
@@ -50,11 +50,8 @@ export default function Header() {
 				setIsAuthenticated(isUserAuthenticated);
 				if (isUserAuthenticated) {
 					const metadata = await getUserMetadata();
-					console.log(metadata);
-					if (!metadata.data.first_name || !metadata.data.last_name) {
-						navigate('/auth/user-information');
-					}
-
+					setIsAuthenticated(checkPresentUserMetadataSignOut(metadata.data));
+					
 					setInitials(`${getInitial(metadata.data.first_name)}${getInitial(metadata.data.last_name)}`);				
 				}
 			} catch (_) {

@@ -15,10 +15,12 @@ export default function UserInformation() {
 
 	const form = useForm({
 		initialValues: {
+			username: '',
 			firstName: '',
 			lastName: ''
 		},
 		validate: {
+			username: hasLength({ min: 1 }),
 			firstName: hasLength({ min: 1 }),
 			lastName: hasLength({ min: 1 })
 		}
@@ -29,12 +31,13 @@ export default function UserInformation() {
 		setIsLoading(true);
 		try {
 			await postUserMetadata(
+				form.getInputProps('username').value, 
 				form.getInputProps('firstName').value, 
 				form.getInputProps('lastName').value
 			);
 			navigate('/home');
-		} catch (_) {
-			setErrorMessage('Oops! Something went wrong.');
+		} catch (e) {
+			setErrorMessage(e.errorMessage);
 		} finally {
 			setIsLoading(false);
 		}
@@ -52,6 +55,7 @@ export default function UserInformation() {
 			enableThirdParty={false}
 		>
 			<form className={classnames.form} onSubmit={e => onClickSubmit(e)}>
+				<TFTextInput label='Username' form={form} formInputProp='username' />
 				<TFTextInput label='First Name' form={form} formInputProp='firstName' />
 				<TFTextInput label='Last Name' form={form} formInputProp='lastName' />
 

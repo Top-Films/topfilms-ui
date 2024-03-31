@@ -11,15 +11,13 @@ service:
 ingress:
   enabled: true
   className: nginx
-  annotations:
-    cert-manager.io/cluster-issuer: "letsencrypt"
   hosts:
     - host: topfilms.co
       paths:
         - path: /
           pathType: Prefix
   tls: 
-   - secretName: primary-ui-cert
+   - secretName: topfilms.co-cert
      hosts:
        - topfilms.co
 

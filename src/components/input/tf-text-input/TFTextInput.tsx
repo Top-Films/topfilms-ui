@@ -1,6 +1,6 @@
 import { TextInput } from '@mantine/core';
 import { UseFormReturnType } from '@mantine/form';
-import { MAIN_BACKGROUND_COLOR, MAIN_FONT_COLOR } from '../../../shared/styles/variables';
+import { MAIN_BACKGROUND_COLOR, MAIN_FONT_COLOR } from '../../../styles/variables';
 
 // Input with label for plain text
 export default function TFTextInput(props: {

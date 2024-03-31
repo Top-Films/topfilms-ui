@@ -1,6 +1,6 @@
 import { Group } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
-import { FOOTER_LINKS, TOP_FILMS_LOGO_FULL } from '../../shared/constants/constants';
+import { FOOTER_LINKS, TOP_FILMS_LOGO_FULL } from '../../constants/constants';
 import classnames from './footer.module.scss';
 
 export default function Footer() {

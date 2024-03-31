@@ -8,6 +8,7 @@ import AuthFormWrapper from '../../../components/auth/auth-form-wrapper/AuthForm
 import { TFSubmitButton } from '../../../components/button';
 import { TFPasswordInput, TFTextInput } from '../../../components/input';
 import classnames from './login.module.scss';
+import { checkPresentUserMetadataRedirect, getUserMetadata } from '../../../services/auth/auth-service';
 
 export default function Login() {
 	const navigate = useNavigate();
@@ -66,6 +67,12 @@ export default function Login() {
 			} else if (response.status === 'WRONG_CREDENTIALS_ERROR') { 
 				setErrorMessage('The provided credentials are invalid');
 			} else if (response.status === 'OK') {
+				// If the metadata is not present then redirect to form
+				const metadata = await getUserMetadata();
+				checkPresentUserMetadataRedirect(metadata.data);
+
+				// Else navigate home
+				// TODO: Redirect to page that routed them to auth screen
 				navigate('/home');
 			// Unexpected error
 			} else {
