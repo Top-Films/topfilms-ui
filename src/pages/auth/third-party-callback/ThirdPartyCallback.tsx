@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ThirdPartyEmailPassword from 'supertokens-web-js/recipe/thirdpartyemailpassword';
 import Loader from '../../../components/loader/Loader';
-import { checkPresentUserNetadata, getUserMetadata } from '../../../services/auth/auth-service';
+import { checkPresentUserMetadataRedirect, getUserMetadata } from '../../../services/auth/auth-service';
 
 export default function ThirdPartyCallback() {
 	const navigate = useNavigate();
@@ -15,7 +15,7 @@ export default function ThirdPartyCallback() {
 				}
 
 				const metadata = await getUserMetadata();
-				checkPresentUserNetadata(metadata.data);
+				checkPresentUserMetadataRedirect(metadata.data);
 
 				navigate('/home');
 			} catch (_) {
