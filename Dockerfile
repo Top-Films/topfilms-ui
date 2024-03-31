@@ -1,5 +1,5 @@
 # Build app
-FROM node:20.10.0-alpine as build
+FROM arm64v8/node:20.10.0-alpine as build
 
 USER root
 
