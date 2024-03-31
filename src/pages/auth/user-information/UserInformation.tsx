@@ -7,6 +7,7 @@ import { TFSubmitButton } from '../../../components/button';
 import { TFTextInput } from '../../../components/input';
 import { postUserMetadata } from '../../../services/auth/auth-service';
 import classnames from '../auth.module.scss';
+import STGeneralError from 'supertokens-web-js/lib/build/error';
 
 export default function UserInformation() {
 	const [isLoading, setIsLoading] = useState(false);
@@ -36,8 +37,12 @@ export default function UserInformation() {
 				form.getInputProps('lastName').value
 			);
 			navigate('/home');
-		} catch (e) {
-			setErrorMessage(e.errorMessage);
+		} catch (e: unknown) {
+			if (e instanceof STGeneralError) {
+				setErrorMessage(e.message);
+			} else {
+				setErrorMessage('Oops! Something went wrong.');
+			}
 		} finally {
 			setIsLoading(false);
 		}
