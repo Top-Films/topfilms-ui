@@ -15,7 +15,7 @@ jobs:
         description: Version of the application
         type: string
     docker:
-      image: cimg/node:20.12.0
+      - image: cimg/node:20.12.0
     steps:
       - checkout
       - node/install-packages:
