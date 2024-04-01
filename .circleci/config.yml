@@ -7,7 +7,7 @@ executors:
         auth:
           username: $DOCKER_USERNAME
           password: $DOCKER_PASSWORD
-    working_directory: ~/
+    working_directory: ~/app
     environment:
       ORG_NAME: topfilms
       APP_NAME: primary-ui
@@ -47,7 +47,7 @@ jobs:
 
     steps:
       - attach_workspace:
-          at: ~/dist
+          at: ~/app/dist
 
       - run:
           name: Build and tag Docker image
