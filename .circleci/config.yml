@@ -82,11 +82,14 @@ jobs:
     steps:
       - run:
           name: Add kube config
-          command: mkdir ~/.kube && echo $KUBE_CONFIG > ~/.kube/config
+          command: |
+            mkdir ~/.kube 
+            echo $KUBE_CONFIG > ~/.kube/config
+            chmod go-r ~/.kube/config
       
       - run:
           name: Helm authenticate registry
-          command: helm registry login 'registry-1.docker.io' --username '$.DOCKER_USERNAME ' --password 'DOCKER_PASSWORD'
+          command: helm registry login 'registry-1.docker.io' --username '$DOCKER_USERNAME ' --password '$DOCKER_PASSWORD'
 
       - run:
           name: Helm package
