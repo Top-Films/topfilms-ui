@@ -80,6 +80,9 @@ jobs:
     executor: helm    
     
     steps:
+      - attach_workspace:
+          at: ~/app
+
       - run:
           name: Add kube config
           command: |
