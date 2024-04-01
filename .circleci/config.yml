@@ -91,7 +91,14 @@ jobs:
             mkdir /home/circleci/.kube
             echo $KUBE_CONFIG | sed 's/\\n/\n/g' > /home/circleci/.kube/config
             chmod go-r /home/circleci/.kube/config
-            kubectl version
+
+      - run:
+          name: Print Config
+          command: cat /home/circleci/.kube/config
+      
+      - run:
+          name: Test cluster connection
+          command: kubectl version
 
       - run:
           name: Helm authenticate registry
