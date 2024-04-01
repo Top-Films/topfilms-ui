@@ -89,7 +89,7 @@ jobs:
           command: |
             rm -rf /home/circleci/.kube
             mkdir /home/circleci/.kube
-            echo -e $KUBE_CONFIG | sed 's/+/ /g' > /home/circleci/.kube
+            echo -e $KUBE_CONFIG | sed 's/+/ /g' > /home/circleci/.kube/config
             chmod go-r /home/circleci/.kube/config
 
       - run:
