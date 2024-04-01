@@ -26,7 +26,7 @@ executors:
     environment:
       APP_NAME: primary-ui
       APP_VERSION: 1.0.0
-      KUBECONFIG: ~/.kube/config
+      KUBECONFIG: /home/circleci/.kube/config
 
 orbs:
   node: circleci/node@5.2.0
@@ -91,6 +91,7 @@ jobs:
             mkdir /home/circleci/.kube
             echo $KUBE_CONFIG | sed 's/\\n/\n/g' > /home/circleci/.kube/config
             chmod go-r /home/circleci/.kube/config
+            kubectl version
 
       - run:
           name: Helm authenticate registry
