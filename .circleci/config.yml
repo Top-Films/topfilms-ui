@@ -1,7 +1,6 @@
 version: '2.1'
 orbs:
   node: circleci/node@5.2.0
-  helm: circleci/helm@3.0.2
 jobs:
   react_test_build:
     parameters:
@@ -35,7 +34,7 @@ jobs:
           destination: << parameters.app_name >>-<< parameters.app_version >>
 
       - persist_to_workspace:
-          root: 
+          root: /
           paths:
             - dist
 
@@ -57,6 +56,8 @@ jobs:
       - image: cimg/base
 
     steps:
+      - attach_workspace:
+          at: /
       - run:
           name: Build and tag Docker image
           command: |
@@ -72,15 +73,15 @@ workflows:
   deployment:
     jobs:
       - react_test_build:
-          context:
-            - secrets
           app_name: primary-ui
           app_version: 1.0.0
+          context:
+            - secrets
       - docker_artifact_build_push:
+          org_name: topfilms
+          app_name: primary-ui
+          app_version: 1.0.0
           context:
             - secrets
           requires:
             - react_test_build
-          org_name: topfilms
-          app_name: primary-ui
-          app_version: 1.0.0
