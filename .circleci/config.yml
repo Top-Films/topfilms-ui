@@ -27,7 +27,6 @@ executors:
       - image: cimg/deploy:2024.03.1
     working_directory: ~/app
     environment:
-      ORG_NAME: topfilms
       APP_NAME: primary-ui
       APP_VERSION: 1.0.0
 
@@ -70,13 +69,13 @@ jobs:
 
       - setup_remote_docker
       
-      - docker/build:
-          image: $DOCKER_USERNAME/$ORG_NAME-$APP_NAME
-          tag: $APP_VERSION
+      - run:
+          name: Docker build
+          command: docker buildx build --platform linux/arm64/v8 . -t $DOCKER_USERNAME/$ORG_NAME-$APP_NAME:$APP_VERSION
 
-      - docker/push:
-          image: $DOCKER_USERNAME/$ORG_NAME-$APP_NAME
-          tag: $APP_VERSION
+      - run:
+          name: Docker push
+          command: docker push . -t $DOCKER_USERNAME/$ORG_NAME-$APP_NAME:$APP_VERSION
 
   helm_artifact_build_push_deploy: 
     executor: helm    
