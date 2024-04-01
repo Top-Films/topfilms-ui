@@ -5,34 +5,82 @@ orbs:
 jobs:
   react_test_build:
     parameters:
-      org_name:
-        description: Name of the organization
-        type: string
       app_name:
         description: Name of the application
         type: string
+
       app_version:
         description: Version of the application
         type: string
+
     docker:
       - image: cimg/node:20.12.0
+
     steps:
       - checkout
+
       - node/install-packages:
           pkg-manager: "npm"
+
       - run:
           name: Run tests
           command: npm run test
+
       - run:
           name: Build
           command: npm run build
+
       - store_artifacts:
           path: dist
           destination: << parameters.app_name >>-<< parameters.app_version >>
+
+      - persist_to_workspace:
+          root: 
+          paths:
+            - dist
+
+  docker_artifact_build_push:
+    parameters:
+      org_name:
+        description: Name of the organization
+        type: string
+
+      app_name:
+        description: Name of the application
+        type: string
+
+      app_version:
+        description: Version of the application
+        type: string
+
+    docker:
+      - image: cimg/base
+
+    steps:
+      - run:
+          name: Build and tag Docker image
+          command: |
+            docker buildx build --platform linux/arm64/v8 . -t $DOCKER_USERNAME/<< parameters.org_name >>-<< parameters.app_name >>:<< parameters.app_version >>
+      
+      - run:
+          name: Push Docker image
+          command: |
+            echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+            $DOCKER_USERNAME/<< parameters.org_name >>-<< parameters.app_name >>:<< parameters.app_version >>
+
 workflows:
   deployment:
     jobs:
       - react_test_build:
+          context:
+            - secrets
+          app_name: primary-ui
+          app_version: 1.0.0
+      - docker_artifact_build_push:
+          context:
+            - secrets
+          requires:
+            - react_test_build
           org_name: topfilms
           app_name: primary-ui
           app_version: 1.0.0
