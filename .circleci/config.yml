@@ -34,7 +34,8 @@ jobs:
           destination: << parameters.app_name >>-<< parameters.app_version >>
 
       - persist_to_workspace:
-          root: dist
+          root: ~/
+          paths: project/frontend/build
 
   docker_artifact_build_push:
     parameters:
