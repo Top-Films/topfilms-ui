@@ -87,10 +87,10 @@ jobs:
       - run:
           name: Add kube config
           command: |
-            rm -rf ~/.kube
-            mkdir ~/.kube
-            echo $KUBE_CONFIG | sed 's/\\n/\n/g' > ~/.kube/config
-            chmod go-r ~/.kube/config
+            rm -rf /home/circleci/.kube
+            mkdir /home/circleci/.kube
+            echo $KUBE_CONFIG | sed 's/\\n/\n/g' > /home/circleci/.kube/config
+            chmod go-r /home/circleci/.kube/config
 
       - run:
           name: Helm authenticate registry
