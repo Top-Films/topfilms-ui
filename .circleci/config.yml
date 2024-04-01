@@ -19,7 +19,7 @@ jobs:
       - checkout
 
       - node/install-packages:
-          pkg-manager: "npm"
+          pkg-manager: 'npm'
 
       - run:
           name: Run tests
@@ -34,9 +34,9 @@ jobs:
           destination: << parameters.app_name >>-<< parameters.app_version >>
 
       - persist_to_workspace:
-          root: /
+          root: workspace
           paths:
-            - dist
+            - /dist
 
   docker_artifact_build_push:
     parameters:
@@ -57,12 +57,12 @@ jobs:
 
     steps:
       - attach_workspace:
-          at: /
+          at: /dist
       - run:
           name: Build and tag Docker image
           command: |
             docker buildx build --platform linux/arm64/v8 . -t $DOCKER_USERNAME/<< parameters.org_name >>-<< parameters.app_name >>:<< parameters.app_version >>
-      
+
       - run:
           name: Push Docker image
           command: |
