@@ -9,7 +9,6 @@ executors:
           password: $DOCKER_PASSWORD
     working_directory: ~/app
     environment:
-      ORG_NAME: topfilms
       APP_NAME: primary-ui
       APP_VERSION: 1.0.0
 
@@ -27,6 +26,7 @@ executors:
 
 orbs:
   node: circleci/node@5.2.0
+  docker: circleci/docker@2.6.0
 
 jobs:
   react_test_build:
@@ -60,16 +60,13 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/app/dist
+      
+      - docker/build:
+          image: $DOCKER_USERNAME/$ORG_NAME-$APP_NAME:$APP_VERSION
+          extra_build_args: --platform linux/arm64/v8
 
-      - run:
-          name: Build and tag Docker image
-          command: |
-            docker buildx build --platform linux/arm64/v8 . -t $DOCKER_USERNAME/$ORG_NAME-$APP_NAME:$APP_VERSION
-
-      - run:
-          name: Push Docker image
-          command: |
-            docker push $DOCKER_USERNAME/$ORG_NAME-$APP_NAME:$APP_VERSION
+      - docker/push:
+          image: $DOCKER_USERNAME/$ORG_NAME-$APP_NAME:$APP_VERSION
 
 workflows:
   deployment:
