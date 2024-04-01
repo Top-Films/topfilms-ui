@@ -86,8 +86,9 @@ jobs:
       - run:
           name: Add kube config
           command: |
-            mkdir ~/.kube 
-            echo "$KUBE_CONFIG@E" > ~/.kube/config
+            rm -rf /home/circleci/.kube
+            mkdir /home/circleci/.kube
+            echo "$KUBE_CONFIG@E" > /home/circleci/.kube/config
             chmod go-r ~/.kube/config
       
       - run:
