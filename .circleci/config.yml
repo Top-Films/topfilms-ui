@@ -91,8 +91,11 @@ jobs:
             mkdir ~/.kube
             echo "$KUBE_CONFIG@E" > ~/.kube/config
             chmod go-r ~/.kube/config
-            sudo kubectl version
-      
+
+      - run:
+          name: test
+          command: cat ~/.kube/config
+          
       - run:
           name: Helm authenticate registry
           command: echo "$DOCKER_PASSWORD" | helm registry login registry-1.docker.io --username $DOCKER_USERNAME --password-stdin
