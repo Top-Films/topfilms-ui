@@ -89,7 +89,7 @@ jobs:
           command: |
             rm -rf /home/circleci/.kube
             mkdir /home/circleci/.kube
-            echo $KUBE_CONFIG | sed 's/\\n/\n/g' > /home/circleci/.kube/config
+            echo -e $KUBE_CONFIG | sed 's/+/ /g' > /home/circleci/.kube
             chmod go-r /home/circleci/.kube/config
 
       - run:
@@ -114,7 +114,7 @@ jobs:
 
       - run:
           name: Helm deploy
-          command: helm upgrade $APP_NAME ./$APP_NAME-$APP_VERSION.tgz --install --atomic --debug --history-max=3
+          command: helm upgrade $APP_NAME ./$APP_NAME-$APP_VERSION.tgz --install --atomic --debug --history-max=3 -n topfilms
       
 
 workflows:
