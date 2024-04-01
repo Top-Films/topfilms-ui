@@ -61,7 +61,8 @@ jobs:
       - setup_remote_docker
       
       - docker/build:
-          image: $DOCKER_USERNAME/$ORG_NAME-$APP_NAME:$APP_VERSION
+          image: $DOCKER_USERNAME/$ORG_NAME-$APP_NAME
+          tag: $APP_VERSION
           extra_build_args: --platform linux/arm64/v8
 
       - docker/push:
