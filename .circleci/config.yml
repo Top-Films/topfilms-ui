@@ -16,7 +16,7 @@ jobs:
         type: string
     docker:
       image: cimg/node:20.12.0
-     steps:
+    steps:
       - checkout
       - node/install-packages:
           pkg-manager: "npm"
