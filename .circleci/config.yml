@@ -22,6 +22,16 @@ executors:
       APP_NAME: primary-ui
       APP_VERSION: 1.0.0
 
+  helm:
+    docker:
+      - image: cimg/deploy:2024.03.1
+    working_directory: ~/app
+    resource_class: arm.medium
+    environment:
+      ORG_NAME: topfilms
+      APP_NAME: primary-ui
+      APP_VERSION: 1.0.0
+
 orbs:
   node: circleci/node@5.2.0
   docker: circleci/docker@2.6.0
@@ -53,7 +63,7 @@ jobs:
           destination: $APP_NAME-$APP_VERSION
 
   docker_artifact_build_push:
-    executor: base
+    executor: base    
 
     steps:
       - attach_workspace:
@@ -64,10 +74,35 @@ jobs:
       - docker/build:
           image: $DOCKER_USERNAME/$ORG_NAME-$APP_NAME
           tag: $APP_VERSION
-          extra_build_args: --platform linux/arm64/v8
 
       - docker/push:
-          image: $DOCKER_USERNAME/$ORG_NAME-$APP_NAME:$APP_VERSION
+          image: $DOCKER_USERNAME/$ORG_NAME-$APP_NAME
+          tag: $APP_VERSION
+
+  helm_artifact_build_push_deploy: 
+    executor: helm    
+    
+    steps:
+      - run:
+          name: Add kube config
+          command: mkdir ~/.kube && echo $KUBE_CONFIG > ~/.kube/config
+      
+      - run:
+          name: Helm authenticate registry
+          command: helm registry login 'registry-1.docker.io' --username '$.DOCKER_USERNAME ' --password 'DOCKER_PASSWORD'
+
+      - run:
+          name: Helm package
+          command: helm package helm/$APP_NAME
+
+      - run:
+          name: Helm artifact push
+          command: helm push ./$APP_NAME-$APP_VERSION.tgz oci://registry-1.docker.io/$DOCKER_USERNAME
+
+      - run:
+          name: Helm deploy
+          command: helm upgrade $APP_NAME ./$APP_NAME-$APP_VERSION.tgz --install --atomic --debug --history-max=3
+      
 
 workflows:
   deployment:
@@ -80,3 +115,8 @@ workflows:
             - secrets
           requires:
             - react_test_build
+      - helm_artifact_build_push_deploy:
+          context:
+            - secrets
+          requires:
+            - docker_artifact_build_push
