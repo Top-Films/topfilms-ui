@@ -1,5 +1,5 @@
 # Build app
-FROM arm64v8/node:20.10.0-alpine as build
+FROM --platform=linux/arm64 node:20.12.0-alpine as build
 
 USER root
 
@@ -16,7 +16,7 @@ RUN chown -R node:node /app
 USER node
 
 # Use Nginx as the production server
-FROM nginx:alpine
+FROM --platform=linux/arm64 nginx:alpine
 
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=build /app/dist /usr/share/nginx/html
