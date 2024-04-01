@@ -1,8 +1,25 @@
 version: '2.1'
+
+executors:
+  node:
+    docker:
+      - image: cimg/node:20.12.0
+        auth:
+          username: $DOCKER_USERNAME
+          password: $DOCKER_PASSWORD
+    working_directory: /app
+    environment:
+      ORG_NAME: topfilms
+      APP_NAME: primary-ui
+      APP_VERSION: 1.0.0
+
 orbs:
   node: circleci/node@5.2.0
+
 jobs:
   react_test_build:
+    executor: node
+
     parameters:
       app_name:
         description: Name of the application
@@ -11,9 +28,6 @@ jobs:
       app_version:
         description: Version of the application
         type: string
-
-    docker:
-      - image: cimg/node:20.12.0
 
     steps:
       - checkout
@@ -35,54 +49,32 @@ jobs:
 
       - store_artifacts:
           path: dist
-          destination: << parameters.app_name >>-<< parameters.app_version >>
+          destination: $APP_NAME-$APP_VERSION
 
   docker_artifact_build_push:
-    parameters:
-      org_name:
-        description: Name of the organization
-        type: string
-
-      app_name:
-        description: Name of the application
-        type: string
-
-      app_version:
-        description: Version of the application
-        type: string
-
-    docker:
-      - image: cimg/base:2024.02
-        auth:
-          username: $DOCKER_USERNAME
-          password: $DOCKER_PASSWORD
+    executor: node
 
     steps:
       - attach_workspace:
-          at: /dist
+          at: /app/dist
 
       - run:
           name: Build and tag Docker image
           command: |
-            docker buildx build --platform linux/arm64/v8 . -t $DOCKER_USERNAME/<< parameters.org_name >>-<< parameters.app_name >>:<< parameters.app_version >>
+            docker buildx build --platform linux/arm64/v8 . -t $DOCKER_USERNAME/$ORG_NAME-$APP_NAME:$APP_VERSION
 
       - run:
           name: Push Docker image
           command: |
-            $DOCKER_USERNAME/<< parameters.org_name >>-<< parameters.app_name >>:<< parameters.app_version >>
+            docker push $DOCKER_USERNAME/$ORG_NAME-$APP_NAME:$APP_VERSION
 
 workflows:
   deployment:
     jobs:
       - react_test_build:
-          app_name: primary-ui
-          app_version: 1.0.0
           context:
             - secrets
       - docker_artifact_build_push:
-          org_name: topfilms
-          app_name: primary-ui
-          app_version: 1.0.0
           context:
             - secrets
           requires:
