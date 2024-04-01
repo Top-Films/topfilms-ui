@@ -16,6 +16,7 @@ executors:
           username: $DOCKER_USERNAME
           password: $DOCKER_PASSWORD
     working_directory: ~/app
+    resource_class: arm.medium
     environment:
       ORG_NAME: topfilms
       APP_NAME: primary-ui
