@@ -39,7 +39,7 @@ jobs:
 
       - persist_to_workspace:
           root: .
-          paths: /dev/*
+          paths: dev/*
 
   docker_artifact_build_push:
     parameters:
