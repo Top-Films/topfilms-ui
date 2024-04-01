@@ -53,11 +53,14 @@ jobs:
 
     docker:
       - image: cimg/base
+        auth:
+          username: $DOCKER_USERNAME
+          password: $DOCKER_PASSWORD
 
     steps:
       - attach_workspace:
           at: /dist
-          
+
       - run:
           name: Build and tag Docker image
           command: |
@@ -66,7 +69,6 @@ jobs:
       - run:
           name: Push Docker image
           command: |
-            echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
             $DOCKER_USERNAME/<< parameters.org_name >>-<< parameters.app_name >>:<< parameters.app_version >>
 
 workflows:
