@@ -74,7 +74,7 @@ jobs:
           name: Docker push
           command: |
             echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-            docker push . -t $DOCKER_USERNAME/$ORG_NAME-$APP_NAME:$APP_VERSION
+            docker push $DOCKER_USERNAME/$ORG_NAME-$APP_NAME:$APP_VERSION
 
   helm_artifact_build_push_deploy: 
     executor: helm    
