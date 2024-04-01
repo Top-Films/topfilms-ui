@@ -89,12 +89,8 @@ jobs:
           command: |
             rm -rf ~/.kube
             mkdir ~/.kube
-            echo $KUBE_CONFIG | sed 's/\\n/\n/g'
+            echo $KUBE_CONFIG | sed 's/\\n/\n/g' > config
             chmod go-r ~/.kube/config
-
-      - run:
-          name: test
-          command: cat ~/.kube/config
 
       - run:
           name: Helm authenticate registry
