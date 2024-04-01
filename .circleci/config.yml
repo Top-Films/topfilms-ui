@@ -20,15 +20,6 @@ jobs:
   react_test_build:
     executor: node
 
-    parameters:
-      app_name:
-        description: Name of the application
-        type: string
-
-      app_version:
-        description: Version of the application
-        type: string
-
     steps:
       - checkout
 
