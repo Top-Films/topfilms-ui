@@ -44,7 +44,7 @@ jobs:
           command: npm run build
 
       - persist_to_workspace:
-          root: dist
+          root: '.'
           paths: '*'
 
       - store_artifacts:
@@ -56,10 +56,10 @@ jobs:
 
     steps:
       - attach_workspace:
-          at: ~/app/dist
+          at: ~/app
 
       - checkout
-      
+
       - docker/build:
           image: $DOCKER_USERNAME/$ORG_NAME-$APP_NAME:$APP_VERSION
           extra_build_args: --platform linux/arm64/v8
