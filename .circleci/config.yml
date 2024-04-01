@@ -89,7 +89,7 @@ jobs:
       
       - run:
           name: Helm authenticate registry
-          command: echo "$DOCKER_PASSWORD" | helm registry login 'registry-1.docker.io' --username '$DOCKER_USERNAME' --password-stdin
+          command: echo "$DOCKER_PASSWORD" | helm registry login registry-1.docker.io --username $DOCKER_USERNAME --password-stdin
 
       - run:
           name: Helm package
