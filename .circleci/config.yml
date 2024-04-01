@@ -26,6 +26,7 @@ executors:
     environment:
       APP_NAME: primary-ui
       APP_VERSION: 1.0.0
+      KUBECONFIG: ~/.kube/config
 
 orbs:
   node: circleci/node@5.2.0
@@ -86,10 +87,11 @@ jobs:
       - run:
           name: Add kube config
           command: |
-            rm -rf /home/circleci/.kube
-            mkdir /home/circleci/.kube
-            echo "$KUBE_CONFIG@E" > /home/circleci/.kube/config
+            rm -rf ~/.kube
+=           mkdir ~/.kube
+            echo "$KUBE_CONFIG@E" > ~/.kube/config
             chmod go-r ~/.kube/config
+            sudo kubectl version
       
       - run:
           name: Helm authenticate registry
