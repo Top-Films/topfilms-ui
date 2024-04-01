@@ -33,13 +33,13 @@ jobs:
           name: test
           command: pwd && ls -lah
 
+      - persist_to_workspace:
+          root: dev
+          paths: *
+
       - store_artifacts:
           path: dist
           destination: << parameters.app_name >>-<< parameters.app_version >>
-
-      - persist_to_workspace:
-          root: /dev
-          paths: /*
 
   docker_artifact_build_push:
     parameters:
