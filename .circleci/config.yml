@@ -89,13 +89,13 @@ jobs:
           command: |
             rm -rf ~/.kube
             mkdir ~/.kube
-            echo "$KUBE_CONFIG@E" > ~/.kube/config
+            echo $KUBE_CONFIG | sed 's/\\n/\n/g'
             chmod go-r ~/.kube/config
 
       - run:
           name: test
           command: cat ~/.kube/config
-          
+
       - run:
           name: Helm authenticate registry
           command: echo "$DOCKER_PASSWORD" | helm registry login registry-1.docker.io --username $DOCKER_USERNAME --password-stdin
