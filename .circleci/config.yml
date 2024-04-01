@@ -26,7 +26,6 @@ executors:
     docker:
       - image: cimg/deploy:2024.03.1
     working_directory: ~/app
-    resource_class: arm.medium
     environment:
       ORG_NAME: topfilms
       APP_NAME: primary-ui
