@@ -87,7 +87,7 @@ jobs:
           name: Add kube config
           command: |
             mkdir ~/.kube 
-            echo $KUBE_CONFIG > ~/.kube/config
+            echo "$KUBE_CONFIG@E" > ~/.kube/config
             chmod go-r ~/.kube/config
       
       - run:
