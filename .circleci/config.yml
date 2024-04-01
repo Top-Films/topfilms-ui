@@ -89,7 +89,7 @@ jobs:
           command: |
             rm -rf ~/.kube
             mkdir ~/.kube
-            echo $KUBE_CONFIG | sed 's/\\n/\n/g' > config
+            echo $KUBE_CONFIG | sed 's/\\n/\n/g' > ~/.kube/config
             chmod go-r ~/.kube/config
 
       - run:
