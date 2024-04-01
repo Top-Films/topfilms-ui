@@ -52,7 +52,7 @@ jobs:
         type: string
 
     docker:
-      - image: cimg/base
+      - image: cimg/base:2024.02
         auth:
           username: $DOCKER_USERNAME
           password: $DOCKER_PASSWORD
