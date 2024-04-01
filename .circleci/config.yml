@@ -12,9 +12,6 @@ executors:
   base:
     docker:
       - image: cimg/base:2024.02
-        auth:
-          username: $DOCKER_USERNAME
-          password: $DOCKER_PASSWORD
     working_directory: ~/app
     resource_class: arm.medium
     environment:
@@ -75,7 +72,9 @@ jobs:
 
       - run:
           name: Docker push
-          command: docker push . -t $DOCKER_USERNAME/$ORG_NAME-$APP_NAME:$APP_VERSION
+          command: |
+            echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+            docker push . -t $DOCKER_USERNAME/$ORG_NAME-$APP_NAME:$APP_VERSION
 
   helm_artifact_build_push_deploy: 
     executor: helm    
