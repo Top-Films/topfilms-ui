@@ -12,14 +12,14 @@ ingress:
   enabled: true
   className: nginx
   hosts:
-    - host: topfilms.co
+    - host: topfilms.io
       paths:
         - path: /
           pathType: Prefix
-  tls: 
-   - secretName: topfilms.co-cert
-     hosts:
-       - topfilms.co
+  tls:
+    - secretName: topfilms.io-cert
+      hosts:
+        - topfilms.io
 
 resources:
   limits:

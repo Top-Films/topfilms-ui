@@ -93,14 +93,6 @@ jobs:
             chmod go-r /home/circleci/.kube/config
 
       - run:
-          name: Print Config
-          command: cat /home/circleci/.kube/config
-      
-      - run:
-          name: Test cluster connection
-          command: kubectl version
-
-      - run:
           name: Helm authenticate registry
           command: echo "$DOCKER_PASSWORD" | helm registry login registry-1.docker.io --username $DOCKER_USERNAME --password-stdin
 
@@ -121,14 +113,23 @@ workflows:
   deployment:
     jobs:
       - react_test_build:
+          filters:
+            branches:
+              only: main
           context:
             - secrets
       - docker_artifact_build_push:
+          filters:
+            branches:
+              only: main
           context:
             - secrets
           requires:
             - react_test_build
       - helm_artifact_build_push_deploy:
+          filters:
+            branches:
+              only: main
           context:
             - secrets
           requires:
