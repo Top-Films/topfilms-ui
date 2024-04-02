@@ -7,10 +7,10 @@ export default function Terms() {
 	return (
 		<InformationPageWrapper>
 			<h1><strong>Top Films&apos; Terms and Conditions</strong></h1>
-			<h4>Last updated: January 18, 2024</h4>
+			<h4>Last updated: April 1, 2024</h4>
 			<hr />
 
-			<p>These terms and conditions outline the rules and regulations for the use of Top Films&apos; Website, located at <a target='_blank' href='https://topfilms.co' rel='noreferrer'>https://topfilms.co</a></p>
+			<p>These terms and conditions outline the rules and regulations for the use of Top Films&apos; Website, located at <a target='_blank' href='https://topfilms.io' rel='noreferrer'>https://topfilms.io</a></p>
 			<p>By accessing this website we assume you accept these terms and conditions. Do not continue to use Top Films if you do not agree to take all of the terms and conditions stated on this page.</p>
 			<p>The following terminology applies to these Terms and Conditions, Privacy Statement and Disclaimer Notice and all Agreements: &quot;Client&quot;, &quot;You&quot; and &quot;Your&quot; refers to you, the person log on this website and compliant to the Company&apos;s terms and conditions. &quot;The Company&quot;, &quot;Ourselves&quot;, &quot;We&quot;, &quot;Our&quot; and &quot;Us&quot;, refers to our Company. &quot;Party&quot;, &quot;Parties&quot;, or &quot;Us&quot;, refers to both the Client and ourselves. All terms refer to the offer, acceptance and consideration of payment necessary to undertake the process of our assistance to the Client in the most appropriate manner for the express purpose of meeting the Client&apos;s needs in respect of provision of the Company&apos;s stated services, in accordance with and subject to, prevailing law of us. Any use of the above terminology or other words in the singular, plural, capitalization and/or he/she or they, are taken as interchangeable and therefore as referring to same.</p>
 			<br />
