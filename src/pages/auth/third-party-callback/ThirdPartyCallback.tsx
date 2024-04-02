@@ -11,14 +11,19 @@ export default function ThirdPartyCallback() {
 			try {
 				const response = await ThirdPartyEmailPassword.thirdPartySignInAndUp();
 				if (response.status !== 'OK') {
+					console.log(response.status);
 					navigate('/auth/login?error=thirdParty');
 				}
 
+				console.log('Before getting metadata');
 				const metadata = await getUserMetadata();
+				console.log('Before check present');
 				checkPresentUserMetadataRedirect(metadata.data);
 
+				console.log('Before navigate');
 				navigate('/home');
 			} catch (_) {
+				console.log('In catch');
 				navigate('/auth/login?error=thirdParty');
 			}
 		})();
