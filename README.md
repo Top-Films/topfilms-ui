@@ -6,7 +6,7 @@
 ![TypeScript](https://img.shields.io/badge/-TypeScript-black?style=for-the-badge&logoColor=white&logo=typescript&color=2F73BF)
 ![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
 
-![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/Top-Films/primary-ui/deploy-primary-ui.yml)
+![CircleCI](https://img.shields.io/circleci/build/gh/Top-Films/primary-ui)
 ![Static Badge](https://img.shields.io/badge/license-Apache%202.0%20with%20Commons%20Clause-green)
 
 ## Overview
