@@ -33,7 +33,7 @@ orbs:
   docker: circleci/docker@2.6.0
 
 jobs:
-  react_test_build:
+  node_test_build:
     executor: node
 
     steps:
@@ -112,7 +112,7 @@ jobs:
 workflows:
   deployment:
     jobs:
-      - react_test_build:
+      - node_test_build:
           filters:
             branches:
               only: main
@@ -125,7 +125,7 @@ workflows:
           context:
             - secrets
           requires:
-            - react_test_build
+            - node_test_build
       - helm_artifact_build_push_deploy:
           filters:
             branches:

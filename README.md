@@ -6,6 +6,7 @@
 ![TypeScript](https://img.shields.io/badge/-TypeScript-black?style=for-the-badge&logoColor=white&logo=typescript&color=2F73BF)
 ![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
 
+[![CircleCI](https://dl.circleci.com/status-badge/img/circleci/2ZAeGbe6WDTLfg9j64XbkD/QeWiiyQZ4eYNE4e8njTT2v/tree/main.svg?style=shield)](https://dl.circleci.com/status-badge/redirect/circleci/2ZAeGbe6WDTLfg9j64XbkD/QeWiiyQZ4eYNE4e8njTT2v/tree/main)
 ![Static Badge](https://img.shields.io/badge/license-Apache%202.0%20with%20Commons%20Clause-green)
 
 ## Overview
