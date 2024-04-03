@@ -44,11 +44,11 @@ jobs:
 
       - run: 
           name: Set version
-          command: 
+          command: npm version $APP_VERSION
 
       - run:
           name: Run tests
-          command: npm version $APP_VERSION
+          command: npm run test
 
       - run:
           name: Build
