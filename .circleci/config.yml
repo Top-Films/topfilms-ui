@@ -44,7 +44,10 @@ jobs:
 
       - run: 
           name: Set version
-          command: npm version $APP_VERSION
+          command: |
+            npm config set commit-hooks false
+            npm config set sign-git-tag false
+            npm version $APP_VERSION
 
       - run:
           name: Run tests
