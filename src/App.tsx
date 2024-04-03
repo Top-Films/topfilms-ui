@@ -1,7 +1,10 @@
+import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 import { MantineProvider } from '@mantine/core';
 import '@mantine/core/styles.css';
 import { Route, RouterProvider, createBrowserRouter, createRoutesFromElements } from 'react-router-dom';
 import SuperTokens, { SuperTokensWrapper } from 'supertokens-auth-react';
+import { SessionAuth } from 'supertokens-auth-react/recipe/session';
+import { authConfig } from './config/auth-config';
 import About from './pages/about/About';
 import Auth from './pages/auth/Auth';
 import Login from './pages/auth/login/Login';
@@ -15,10 +18,14 @@ import Home from './pages/home/Home';
 import Privacy from './pages/privacy/Privacy';
 import Root from './pages/root/Root';
 import Terms from './pages/terms/Terms';
-import { authConfig } from './config/auth-config';
-import { SessionAuth } from 'supertokens-auth-react/recipe/session';
+import { Environment } from './util/Environment';
 
 SuperTokens.init(authConfig);
+
+const client = new ApolloClient({
+	uri: `${Environment.apiUrl()}/graphql`,
+	cache: new InMemoryCache()
+});
 
 const router = createBrowserRouter(
 	createRoutesFromElements(
@@ -44,9 +51,11 @@ const router = createBrowserRouter(
 export default function App() {
 	return (
 		<SuperTokensWrapper>
-			<MantineProvider defaultColorScheme='dark'>
-				<RouterProvider router={router} />
-			</MantineProvider>
+			<ApolloProvider client={client}>
+				<MantineProvider defaultColorScheme='dark'>
+					<RouterProvider router={router} />
+				</MantineProvider>
+			</ApolloProvider>
 		</SuperTokensWrapper>
 	);
 }

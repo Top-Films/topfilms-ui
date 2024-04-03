@@ -7,7 +7,7 @@ executors:
     working_directory: ~/app
     environment:
       APP_NAME: primary-ui
-      APP_VERSION: 1.0.0
+      APP_VERSION: 0.0.<< pipeline.number >>
 
   base:
     docker:
@@ -17,7 +17,7 @@ executors:
     environment:
       ORG_NAME: topfilms
       APP_NAME: primary-ui
-      APP_VERSION: 1.0.0
+      APP_VERSION: 0.0.<< pipeline.number >>
 
   helm:
     docker:
@@ -25,7 +25,7 @@ executors:
     working_directory: ~/app
     environment:
       APP_NAME: primary-ui
-      APP_VERSION: 1.0.0
+      APP_VERSION: 0.0.<< pipeline.number >>
       KUBECONFIG: /home/circleci/.kube/config
 
 orbs:
@@ -42,9 +42,13 @@ jobs:
       - node/install-packages:
           pkg-manager: 'npm'
 
+      - run: 
+          name: Set version
+          command: 
+
       - run:
           name: Run tests
-          command: npm run test
+          command: npm version $APP_VERSION
 
       - run:
           name: Build
@@ -98,7 +102,7 @@ jobs:
 
       - run:
           name: Helm package
-          command: helm package helm/$APP_NAME
+          command: helm package helm/$APP_NAME --app-version=$APP_VERSION --version=$APP_VERSION
 
       - run:
           name: Helm artifact push
@@ -106,7 +110,7 @@ jobs:
 
       - run:
           name: Helm deploy
-          command: helm upgrade $APP_NAME ./$APP_NAME-$APP_VERSION.tgz --install --atomic --debug --history-max=3 -n topfilms
+          command: helm upgrade $APP_NAME ./$APP_NAME-$APP_VERSION.tgz --install --atomic --debug --history-max=3 -n topfilms --set image.tag=$APP_VERSION
       
 
 workflows:
