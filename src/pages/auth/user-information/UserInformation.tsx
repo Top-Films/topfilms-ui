@@ -10,8 +10,6 @@ import { TFTextInput } from '../../../components/input';
 import { CREATE_USER } from '../../../gql/auth';
 import { UserInput } from '../../../types/auth/User';
 import classnames from '../auth.module.scss';
-import { Environment } from '../../../util/Environment';
-import axios from 'axios';
 
 export default function UserInformation() {
 	const [isLoading, setIsLoading] = useState(false);
@@ -34,28 +32,25 @@ export default function UserInformation() {
 
 	const onClickSubmit = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		// setIsLoading(true);
-		console.log(await Session.doesSessionExist());
-		console.log('Fetch');
-		fetch(Environment.apiUrl());
-		// try {
-		// 	const userId = await Session.getUserId();
-		// 	const userInput: UserInput = {
-		// 		id: userId,
-		// 		username: form.getInputProps('username').value, 
-		// 		firstName: form.getInputProps('firstName').value,
-		// 		lastName: form.getInputProps('lastName').value 
-		// 	};
-		// 	await createUser({
-		// 		variables: { input: userInput } 
-		// 	});
+		setIsLoading(true);
+		try {
+			const userId = await Session.getUserId();
+			const userInput: UserInput = {
+				id: userId,
+				username: form.getInputProps('username').value, 
+				firstName: form.getInputProps('firstName').value,
+				lastName: form.getInputProps('lastName').value 
+			};
+			await createUser({
+				variables: { input: userInput } 
+			});
 
-		// 	navigate('/home');
-		// } catch (_: unknown) {
-		// 	setErrorMessage('Oops! Something went wrong.');
-		// } finally {
-		// 	setIsLoading(false);
-		// }
+			navigate('/home');
+		} catch (_: unknown) {
+			setErrorMessage('Oops! Something went wrong.');
+		} finally {
+			setIsLoading(false);
+		}
 	};
 
 	return (

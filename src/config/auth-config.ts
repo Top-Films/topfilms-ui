@@ -5,11 +5,13 @@ import { Environment } from '../util/Environment';
 
 // Add any other urls here to be intercepted
 const resourceServerUrls = [
-	Environment.apiUrl()
+	Environment.apiUrl(),
+	Environment.authUrl()
 ];
 
 // Auth configuration for Super Tokens
 export const authConfig = {
+	debug: true,
 	appInfo: {
 		appName: APP_NAME,
 		apiDomain: Environment.authUrl(),
@@ -26,24 +28,26 @@ export const authConfig = {
 			}
 		}),
 		Session.init({
+			tokenTransferMethod: 'header',
 			override: {
 				// Add interceptor for resource server(s)
 				functions(oI) {
 					return {
 						...oI,
-						shouldDoInterceptionBasedOnUrl(url, apiDomain, sessionTokenBackendDomain) {
+						// eslint-disable-next-line @typescript-eslint/no-unused-vars
+						shouldDoInterceptionBasedOnUrl(url, _, __) {
+							let doIntercept = false;
 							try {
 								resourceServerUrls.forEach(resourceServerUrl => {
 									if (url.startsWith(resourceServerUrl)) {
-										console.log('HERE');
-										return true;
+										doIntercept = true;
 									}
 								});
 							} catch (e: unknown) {
 								console.log(e);
 							}
 
-							return oI.shouldDoInterceptionBasedOnUrl(url, apiDomain, sessionTokenBackendDomain);
+							return doIntercept;
 						}
 					};
 				}
