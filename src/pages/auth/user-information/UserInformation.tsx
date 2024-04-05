@@ -1,18 +1,21 @@
+import { useMutation } from '@apollo/client';
 import { Group } from '@mantine/core';
 import { hasLength, useForm } from '@mantine/form';
 import { FormEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Session from 'supertokens-web-js/recipe/session';
 import { AuthFormWrapper } from '../../../components/auth';
 import { TFSubmitButton } from '../../../components/button';
 import { TFTextInput } from '../../../components/input';
-import { postUserMetadata } from '../../../services/auth/auth-service';
+import { CREATE_USER } from '../../../gql/auth';
+import { UserInput } from '../../../types/auth/User';
 import classnames from '../auth.module.scss';
-import STGeneralError from 'supertokens-web-js/lib/build/error';
 
 export default function UserInformation() {
 	const [isLoading, setIsLoading] = useState(false);
 	const [errorMessage, setErrorMessage] = useState('');
 	const navigate = useNavigate();
+	const [createUser] = useMutation<UserInput>(CREATE_USER);
 
 	const form = useForm({
 		initialValues: {
@@ -21,9 +24,9 @@ export default function UserInformation() {
 			lastName: ''
 		},
 		validate: {
-			username: hasLength({ min: 1 }),
-			firstName: hasLength({ min: 1 }),
-			lastName: hasLength({ min: 1 })
+			username: hasLength({ min: 1, max: 64 }),
+			firstName: hasLength({ min: 1, max: 64 }),
+			lastName: hasLength({ min: 1, max: 64 })
 		}
 	});
 
@@ -31,18 +34,20 @@ export default function UserInformation() {
 		e.preventDefault();
 		setIsLoading(true);
 		try {
-			await postUserMetadata(
-				form.getInputProps('username').value, 
-				form.getInputProps('firstName').value, 
-				form.getInputProps('lastName').value
-			);
+			const userId = await Session.getUserId();
+			const userInput: UserInput = {
+				id: userId,
+				username: form.getInputProps('username').value, 
+				firstName: form.getInputProps('firstName').value,
+				lastName: form.getInputProps('lastName').value 
+			};
+			await createUser({
+				variables: { input: userInput } 
+			});
+
 			navigate('/home');
-		} catch (e: unknown) {
-			if (e instanceof STGeneralError) {
-				setErrorMessage(e.message);
-			} else {
-				setErrorMessage('Oops! Something went wrong.');
-			}
+		} catch (_: unknown) {
+			setErrorMessage('Oops! Something went wrong.');
 		} finally {
 			setIsLoading(false);
 		}

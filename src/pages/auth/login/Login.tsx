@@ -1,3 +1,4 @@
+import { useLazyQuery } from '@apollo/client';
 import { Group } from '@mantine/core';
 import { hasLength, isEmail, useForm } from '@mantine/form';
 import { FormEvent, useEffect, useState } from 'react';
@@ -7,13 +8,15 @@ import ThirdPartyEmailPassword from 'supertokens-web-js/recipe/thirdpartyemailpa
 import AuthFormWrapper from '../../../components/auth/auth-form-wrapper/AuthFormWrapper';
 import { TFSubmitButton } from '../../../components/button';
 import { TFPasswordInput, TFTextInput } from '../../../components/input';
+import { GET_USER_METADATA } from '../../../gql/auth';
+import { UserById } from '../../../types/auth/User';
 import classnames from './login.module.scss';
-import { checkPresentUserMetadataRedirect, getUserMetadata } from '../../../services/auth/auth-service';
 
 export default function Login() {
 	const navigate = useNavigate();
 	const [isLoading, setIsLoading] = useState(false);
 	const [errorMessage, setErrorMessage] = useState('');
+	const [getUserMetadata] = useLazyQuery<UserById>(GET_USER_METADATA);
 		
 	const form = useForm({
 		initialValues: {
@@ -35,7 +38,7 @@ export default function Login() {
 	}, []);
 
 	const onClickSubmit = async (e: FormEvent<HTMLFormElement>) => {
-		e.preventDefault(); // Days of pain because of you
+		e.preventDefault();
 		setIsLoading(true);
 		try {
 			// Attempt to sign in or up using email and password from form
@@ -68,11 +71,13 @@ export default function Login() {
 				setErrorMessage('The provided credentials are invalid');
 			} else if (response.status === 'OK') {
 				// If the metadata is not present then redirect to form
-				const metadata = await getUserMetadata();
-				checkPresentUserMetadataRedirect(metadata.data);
-
+				getUserMetadata({ variables: { id: response.user.id } })
+					.then(res => {
+						if (!res.data?.userById?.username || !res.data?.userById?.firstName || !res.data?.userById?.lastName) {
+							navigate('/auth/user-information');
+						}
+					});
 				// Else navigate home
-				// TODO: Redirect to page that routed them to auth screen
 				navigate('/home');
 			// Unexpected error
 			} else {

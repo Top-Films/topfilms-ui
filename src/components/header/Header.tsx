@@ -1,15 +1,17 @@
+import { useLazyQuery } from '@apollo/client';
 import { Burger, Group, Skeleton } from '@mantine/core';
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import { useEffect, useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import Session from 'supertokens-web-js/recipe/session';
-import { checkPresentUserMetadataSignOut, getUserMetadata } from '../../services/auth/auth-service';
 import { TOP_FILMS_LOGO_FULL, TOP_FILMS_LOGO_TEXTLESS } from '../../constants/constants';
+import { GET_USER_METADATA } from '../../gql/auth';
 import { SMALL_BREAKPOINT_EM } from '../../styles/variables';
 import HeaderAnonymous from './header-anonymous/HeaderAnonymous';
 import HeaderAuthenticated from './header-authenticated/HeaderAuthenticated';
 import HeaderDrawer from './header-drawer/HeaderDrawer';
 import classnames from './header.module.scss';
+import { UserById } from '../../types/auth/User';
 
 const links = [
 	{ link: 'home', label: 'Home' },
@@ -24,6 +26,7 @@ export default function Header() {
 	const [isAuthenticated, setIsAuthenticated] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
 	const [initials, setInitials] = useState('');
+	const [getUserMetadata] = useLazyQuery<UserById>(GET_USER_METADATA);
 
 	// Nav paths based on links
 	const items = links.map(link => (
@@ -49,10 +52,17 @@ export default function Header() {
 				const isUserAuthenticated = await Session.doesSessionExist();
 				setIsAuthenticated(isUserAuthenticated);
 				if (isUserAuthenticated) {
-					const metadata = await getUserMetadata();
-					setIsAuthenticated(checkPresentUserMetadataSignOut(metadata.data));
-					
-					setInitials(`${getInitial(metadata.data.first_name)}${getInitial(metadata.data.last_name)}`);				
+					const userId = await Session.getUserId();
+					await getUserMetadata({ variables: { id: userId } })
+						.then(res => {
+							if (!res.data?.userById?.username || !res.data?.userById?.firstName || !res.data?.userById?.lastName) {
+								Session.signOut();
+								setIsAuthenticated(false);
+							} else {
+								setIsAuthenticated(true);
+								setInitials(`${getInitial(res.data.userById.firstName)}${getInitial(res.data.userById.lastName)}`);
+							}
+						});
 				}
 			} catch (_) {
 				setIsAuthenticated(false);

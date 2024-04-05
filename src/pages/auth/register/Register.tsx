@@ -31,7 +31,7 @@ export default function Register() {
 	});
 
 	const onClickSubmit = async (e: FormEvent<HTMLFormElement>) => {
-		e.preventDefault(); // Days of pain because of you
+		e.preventDefault();
 		setIsLoading(true);
 		try {
 			// Attempt to sign in or up using email and password from form

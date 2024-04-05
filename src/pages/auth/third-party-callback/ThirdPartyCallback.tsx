@@ -1,29 +1,35 @@
+import { useLazyQuery } from '@apollo/client';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ThirdPartyEmailPassword from 'supertokens-web-js/recipe/thirdpartyemailpassword';
 import Loader from '../../../components/loader/Loader';
-import { checkPresentUserMetadataRedirect, getUserMetadata } from '../../../services/auth/auth-service';
+import { GET_USER_METADATA } from '../../../gql/auth';
+import { UserById } from '../../../types/auth/User';
 
 export default function ThirdPartyCallback() {
 	const navigate = useNavigate();
+	const [getUserMetadata] = useLazyQuery<UserById>(GET_USER_METADATA);
+	
 	useEffect(() => {
 		(async () => {
 			try {
 				const response = await ThirdPartyEmailPassword.thirdPartySignInAndUp();
-				if (response.status !== 'OK') {
-					console.log(response.status);
-					navigate('/auth/login?error=thirdParty');
+				if (response.status === 'OK') {
+					console.log(response.user.id);
+					getUserMetadata({ variables: { id: response.user.id } })
+						.then(res => {
+							console.log(res);
+							if (!res.data?.userById?.username || !res.data?.userById?.username || !res.data?.userById?.username) {
+								navigate('/auth/user-information');
+							} else {
+								navigate('/home');
+							}
+						})
+						.catch(() => {
+							navigate('/auth/login?error=thirdParty');
+						});
 				}
-
-				console.log('Before getting metadata');
-				const metadata = await getUserMetadata();
-				console.log('Before check present');
-				checkPresentUserMetadataRedirect(metadata.data);
-
-				console.log('Before navigate');
-				navigate('/home');
 			} catch (_) {
-				console.log('In catch');
 				navigate('/auth/login?error=thirdParty');
 			}
 		})();
