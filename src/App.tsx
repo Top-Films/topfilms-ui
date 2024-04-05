@@ -24,7 +24,8 @@ SuperTokens.init(authConfig);
 
 const client = new ApolloClient({
 	uri: `${Environment.apiUrl()}/graphql`,
-	cache: new InMemoryCache()
+	cache: new InMemoryCache(),
+	credentials: 'include'
 });
 
 const router = createBrowserRouter(
@@ -51,11 +52,11 @@ const router = createBrowserRouter(
 export default function App() {
 	return (
 		<SuperTokensWrapper>
-			<ApolloProvider client={client}>
-				<MantineProvider defaultColorScheme='dark'>
+			<MantineProvider defaultColorScheme='dark'>
+				<ApolloProvider client={client}>
 					<RouterProvider router={router} />
-				</MantineProvider>
-			</ApolloProvider>
+				</ApolloProvider>
+			</MantineProvider>
 		</SuperTokensWrapper>
 	);
 }
