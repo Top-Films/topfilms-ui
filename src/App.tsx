@@ -46,11 +46,11 @@ const router = createBrowserRouter(
 export default function App() {
 	return (
 		<SuperTokensWrapper>
-			<MantineProvider defaultColorScheme='dark'>
-				<ApolloProvider client={client}>
+			<ApolloProvider client={client}>
+				<MantineProvider defaultColorScheme='dark'>
 					<RouterProvider router={router} />
-				</ApolloProvider>
-			</MantineProvider>
+				</MantineProvider>
+			</ApolloProvider>
 		</SuperTokensWrapper>
 	);
 }

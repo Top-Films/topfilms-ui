@@ -11,7 +11,6 @@ const resourceServerUrls = [
 
 // Auth configuration for Super Tokens
 export const authConfig = {
-	debug: true,
 	appInfo: {
 		appName: APP_NAME,
 		apiDomain: Environment.authUrl(),
