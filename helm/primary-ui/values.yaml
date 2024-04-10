@@ -17,7 +17,7 @@ ingress:
         - path: /
           pathType: Prefix
   tls:
-    - secretName: topfilms.io-cert
+    - secretName: topfilms.io-tls
       hosts:
         - topfilms.io
 
