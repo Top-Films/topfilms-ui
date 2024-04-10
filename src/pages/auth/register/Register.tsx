@@ -21,7 +21,7 @@ export default function Register() {
 		},
 		validate: {
 			email: isEmail('Invalid email'),
-			password: hasLength({ min: 1 }),
+			password: hasLength({ min: 1, max: 64 }),
 			confirmPassword: matchesField(
 				'password',
 				'Passwords are not the same'
@@ -68,9 +68,8 @@ export default function Register() {
 			}
 
 			setIsLoading(false);
-		// Exception handling
 		} catch (e: unknown) {
-			if (e instanceof STGeneralError) {
+			if (e instanceof Error && STGeneralError.isThisError(e)) {
 				setErrorMessage(e.message);
 			} else {
 				setErrorMessage('Oops! Something went wrong.');

@@ -36,7 +36,7 @@ export const authConfig = {
 						// eslint-disable-next-line @typescript-eslint/no-unused-vars
 						shouldDoInterceptionBasedOnUrl(url, _, __) {
 							let doIntercept = false;
-							try {
+							try {  
 								resourceServerUrls.forEach(resourceServerUrl => {
 									if (url.startsWith(resourceServerUrl)) {
 										doIntercept = true;

@@ -8,6 +8,7 @@ import ThirdPartyEmailPassword from 'supertokens-web-js/recipe/thirdpartyemailpa
 import AuthFormWrapper from '../../../components/auth/auth-form-wrapper/AuthFormWrapper';
 import { TFSubmitButton } from '../../../components/button';
 import { TFPasswordInput, TFTextInput } from '../../../components/input';
+import { DUPLICATE_EMAIL_ERROR } from '../../../constants/constants';
 import { GET_USER_METADATA } from '../../../gql/auth';
 import { UserById } from '../../../types/auth/User';
 import classnames from './login.module.scss';
@@ -25,7 +26,7 @@ export default function Login() {
 		},
 		validate: {
 			email: isEmail('Invalid email'),
-			password: hasLength({ min: 1 })
+			password: hasLength({ min: 1, max: 64 })
 		}
 	});
 
@@ -34,6 +35,10 @@ export default function Login() {
 	useEffect(() => {
 		if (searchParams.get('error') === 'thirdParty') {
 			setErrorMessage('Unable to authenticate with third party');
+		} else if (searchParams.get('error') === 'duplicateEmail') {
+			setErrorMessage(DUPLICATE_EMAIL_ERROR);
+		} else if (searchParams.get('error') === 'metadata') {
+			setErrorMessage('Unable to get user metadata. Please try again later');
 		}
 	}, []);
 
@@ -73,6 +78,11 @@ export default function Login() {
 				// If the metadata is not present then redirect to form
 				getUserMetadata({ variables: { id: response.user.id } })
 					.then(res => {
+						if (res.error) {
+							navigate('/auth/login?error=metadata');
+							return;
+						}
+
 						if (!res.data?.userById?.username || !res.data?.userById?.firstName || !res.data?.userById?.lastName) {
 							navigate('/auth/user-information');
 						}
@@ -85,9 +95,8 @@ export default function Login() {
 			}
 
 			setIsLoading(false);
-		// Exception handling
 		} catch (e: unknown) {
-			if (e instanceof STGeneralError) {
+			if (e instanceof Error && STGeneralError.isThisError(e)) {
 				setErrorMessage(e.message);
 			} else {
 				setErrorMessage('Oops! Something went wrong.');

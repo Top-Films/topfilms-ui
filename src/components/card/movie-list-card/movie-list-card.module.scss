@@ -1,0 +1,19 @@
+@import '../../../styles/variables.scss';
+
+.card {
+	background-color: $light_background_color;
+}
+
+.card:hover {
+	opacity: 0.95;
+	cursor: pointer;
+}
+
+.card:active {
+	opacity: 0.9;
+	cursor: default;
+}
+
+.user:hover {
+	text-decoration: underline;
+}

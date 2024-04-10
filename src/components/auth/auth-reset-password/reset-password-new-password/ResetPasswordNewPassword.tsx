@@ -2,12 +2,12 @@ import { Group } from '@mantine/core';
 import { hasLength, matchesField, useForm } from '@mantine/form';
 import { FormEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import STGeneralError from 'supertokens-web-js/lib/build/error';
 import ThirdPartyEmailPassword from 'supertokens-web-js/recipe/thirdpartyemailpassword';
 import { TFSubmitButton } from '../../../button';
 import { TFPasswordInput } from '../../../input';
 import AuthFormWrapper from '../../auth-form-wrapper/AuthFormWrapper';
 import classnames from '../auth-reset-password.module.scss';
+import STGeneralError from 'supertokens-web-js/lib/build/error';
 
 export default function ResetPasswordNewPassword() {
 	const [isLoading, setIsLoading] = useState(false);
@@ -63,14 +63,12 @@ export default function ResetPasswordNewPassword() {
 	
 			setIsLoading(false);
 		} catch (e: unknown) {
-			// Super Tokens error
-			if (e instanceof STGeneralError) {
-				setErrorMessage(e.message);
-			// Unkown error
+			if (e instanceof Error && STGeneralError.isThisError(e)) {
+				setErrorMessage(e.message); 
 			} else {
 				setErrorMessage('Oops! Something went wrong.');
 			}
-	
+
 			setIsLoading(false);
 		}
 	};

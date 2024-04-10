@@ -57,10 +57,8 @@ export default function ResetPasswordEmail() {
 
 			setIsLoading(false);
 		} catch (e: unknown) {
-			// Super Tokens error
-			if (e instanceof STGeneralError) {
-				setErrorMessage(e.message);
-			// Unknown error
+			if (e instanceof Error && STGeneralError.isThisError(e)) {
+				setErrorMessage(e.message); 
 			} else {
 				setErrorMessage('Oops! Something went wrong.');
 			}

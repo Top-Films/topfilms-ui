@@ -13,3 +13,5 @@ export const FOOTER_LINKS = [
 
 export const TOP_FILMS_LOGO_FULL = 'https://raw.githubusercontent.com/Top-Films/assets/main/png/top-films-logo-gray-transparent.png';
 export const TOP_FILMS_LOGO_TEXTLESS = 'https://raw.githubusercontent.com/Top-Films/assets/main/png/top-films-logo-white-transparent-textless.png';
+
+export const DUPLICATE_EMAIL_ERROR = 'Seems like you already have an account with another method. Please use that instead.';

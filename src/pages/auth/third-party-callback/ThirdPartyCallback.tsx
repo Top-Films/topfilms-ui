@@ -1,8 +1,10 @@
 import { useLazyQuery } from '@apollo/client';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import STGeneralError from 'supertokens-web-js/lib/build/error';
 import ThirdPartyEmailPassword from 'supertokens-web-js/recipe/thirdpartyemailpassword';
 import Loader from '../../../components/loader/Loader';
+import { DUPLICATE_EMAIL_ERROR } from '../../../constants/constants';
 import { GET_USER_METADATA } from '../../../gql/auth';
 import { UserById } from '../../../types/auth/User';
 
@@ -14,23 +16,30 @@ export default function ThirdPartyCallback() {
 		(async () => {
 			try {
 				const response = await ThirdPartyEmailPassword.thirdPartySignInAndUp();
-				if (response.status === 'OK') {
-					console.log(response.user.id);
-					getUserMetadata({ variables: { id: response.user.id } })
-						.then(res => {
-							console.log(res);
-							if (!res.data?.userById?.username || !res.data?.userById?.username || !res.data?.userById?.username) {
-								navigate('/auth/user-information');
-							} else {
-								navigate('/home');
-							}
-						})
-						.catch(() => {
-							navigate('/auth/login?error=thirdParty');
-						});
+				if (response.status !== 'OK') {
+					navigate('/auth/login?error=thirdParty');
+					return;
 				}
-			} catch (_) {
-				navigate('/auth/login?error=thirdParty');
+
+				getUserMetadata({ variables: { id: response.user.id } })
+					.then(res => {
+						if (res.error) {
+							navigate('/auth/login?error=metadata');
+							return;
+						}
+
+						if (!res.data?.userById?.username || !res.data?.userById?.username || !res.data?.userById?.username) {
+							navigate('/auth/user-information');
+						} else {
+							navigate('/home');
+						}
+					});
+			} catch (e: unknown) {
+				if (e instanceof Error && STGeneralError.isThisError(e) && e.message.startsWith(DUPLICATE_EMAIL_ERROR)) {
+					navigate('/auth/login?error=duplicateEmail');
+				} else {
+					navigate('/auth/login?error=thirdParty');
+				}
 			}
 		})();
 	}, []);

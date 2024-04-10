@@ -10,6 +10,7 @@ import classnames from '../header.module.scss';
 export default function HeaderAuthenticated(props: {
 	setIsLoading: Dispatch<SetStateAction<boolean>>,
 	setIsAuthenticated: Dispatch<SetStateAction<boolean>>,
+	setOpen: Dispatch<SetStateAction<boolean>>,
 	initials: string
 }) {
 	const navigate = useNavigate();
@@ -66,6 +67,7 @@ export default function HeaderAuthenticated(props: {
 				<Menu.Item 
 					color='red' 
 					leftSection={<FontAwesomeIcon icon={faTrash} />}
+					onClick={() => props.setOpen(true)}
 				>
 					Delete Account
 				</Menu.Item>
