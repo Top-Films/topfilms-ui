@@ -42,12 +42,12 @@ hpa:
   enabled: true
   minReplicas: 1
   maxReplicas: 3
-  targetCPU: 50
+  targetCPU: 80
   
 resources:
   limits:
-    cpu: 200m
+    cpu: 500m
     memory: 256Mi
   requests:
-    cpu: 100m
+    cpu: 250m
     memory: 128Mi
