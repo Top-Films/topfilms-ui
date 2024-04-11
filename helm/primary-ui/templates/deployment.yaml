@@ -1,25 +1,51 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "primary-ui.fullname" . }}
+  name: {{ include "app.fullname" . }}
   labels:
-    {{- include "primary-ui.labels" . | nindent 4 }}
+    {{- include "app.labels" . | nindent 4 }}
 spec:
   selector:
     matchLabels:
-      {{- include "primary-ui.selectorLabels" . | nindent 6 }}
+      {{- include "app.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
-        {{- include "primary-ui.labels" . | nindent 8 }}
+        {{- include "app.labels" . | nindent 8 }}
     spec:
+      replicas: {{ .Values.image.replicas }}
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          {{- with .Values.image.env }}
+          env:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
           ports:
             - name: http
               containerPort: {{ .Values.service.targetPort }}
               protocol: TCP
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+          readinessProbe:
+            httpGet:
+              port: {{ .Values.service.targetPort }}
+              path: {{ .Values.image.readinessProbe.path }}
+              scheme: HTTP
+            initialDelaySeconds: {{ .Values.image.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.image.readinessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.image.readinessProbe.timeoutSeconds }}
+            failureThreshold: {{ .Values.image.readinessProbe.failureThreshold }}
+            successThreshold: {{ .Values.image.readinessProbe.successThreshold }}
+          livenessProbe:
+            httpGet:
+              port: {{ .Values.service.targetPort }}
+              path: {{ .Values.image.livenessProbe.path }}
+              scheme: HTTP
+            initialDelaySeconds: {{ .Values.image.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.image.livenessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.image.livenessProbe.timeoutSeconds }}
+            failureThreshold: {{ .Values.image.livenessProbe.failureThreshold }}
+            successThreshold: {{ .Values.image.livenessProbe.successThreshold }}
+          
