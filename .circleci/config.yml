@@ -112,7 +112,6 @@ jobs:
           name: Helm deploy
           command: helm upgrade $APP_NAME ./$APP_NAME-$APP_VERSION.tgz --install --atomic --debug --history-max=3 -n topfilms --set image.tag=$APP_VERSION
       
-
 workflows:
   deployment:
     jobs:
