@@ -5,6 +5,8 @@ metadata:
   labels:
     {{- include "app.labels" . | nindent 4 }}
 spec:
+  replicas: {{ .Values.image.replicas }}
+  revisionHistoryLimit: {{ .Values.image.revisionHistoryLimit }}
   selector:
     matchLabels:
       {{- include "app.selectorLabels" . | nindent 6 }}
@@ -13,8 +15,6 @@ spec:
       labels:
         {{- include "app.labels" . | nindent 8 }}
     spec:
-      replicas: {{ .Values.image.replicas }}
-      revisionHistoryLimit: {{ .Values.image.revisionHistoryLimit }}
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"

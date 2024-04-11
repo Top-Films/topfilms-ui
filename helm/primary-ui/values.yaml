@@ -7,14 +7,14 @@ image:
   env: {}
   readinessProbe:
     path: /auth/login
-    initialDelaySeconds: 60
+    initialDelaySeconds: 30
     periodSeconds: 30
     timeoutSeconds: 30
     failureThreshold: 5
     successThreshold: 1
   livenessProbe:
     path: /auth/login
-    initialDelaySeconds: 60
+    initialDelaySeconds: 30
     periodSeconds: 30
     timeoutSeconds: 30
     failureThreshold: 5
@@ -38,6 +38,12 @@ ingress:
       hosts:
         - topfilms.io
 
+hpa:
+  enabled: true
+  minReplicas: 1
+  maxReplicas: 3
+  targetCPU: 50
+  
 resources:
   limits:
     cpu: 200m
