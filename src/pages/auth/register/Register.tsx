@@ -7,6 +7,7 @@ import ThirdPartyEmailPassword from 'supertokens-web-js/recipe/thirdpartyemailpa
 import AuthFormWrapper from '../../../components/auth/auth-form-wrapper/AuthFormWrapper';
 import { TFSubmitButton } from '../../../components/button';
 import { TFPasswordInput, TFTextInput } from '../../../components/input';
+import { UNKNOWN_ERROR_MESSAGE } from '../../../constants/constants';
  
 export default function Register() {
 	const navigate = useNavigate();
@@ -72,7 +73,7 @@ export default function Register() {
 			if (e instanceof Error && STGeneralError.isThisError(e)) {
 				setErrorMessage(e.message);
 			} else {
-				setErrorMessage('Oops! Something went wrong.');
+				setErrorMessage(UNKNOWN_ERROR_MESSAGE);
 			}
 
 			setIsLoading(false);

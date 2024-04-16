@@ -7,6 +7,7 @@ import Session from 'supertokens-web-js/recipe/session';
 import { AuthFormWrapper } from '../../../components/auth';
 import { TFSubmitButton } from '../../../components/button';
 import { TFTextInput } from '../../../components/input';
+import { UNKNOWN_ERROR_MESSAGE } from '../../../constants/constants';
 import { CREATE_USER } from '../../../gql/auth';
 import { UserInput } from '../../../types/auth/User';
 import classnames from '../auth.module.scss';
@@ -47,7 +48,7 @@ export default function UserInformation() {
 
 			navigate('/home');
 		} catch (_: unknown) {
-			setErrorMessage('Oops! Something went wrong.');
+			setErrorMessage(UNKNOWN_ERROR_MESSAGE);
 		} finally {
 			setIsLoading(false);
 		}

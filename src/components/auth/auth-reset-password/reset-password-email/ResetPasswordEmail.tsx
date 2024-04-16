@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import STGeneralError from 'supertokens-web-js/lib/build/error';
 import ThirdPartyEmailPassword from 'supertokens-web-js/recipe/thirdpartyemailpassword';
 import { AuthFormWrapper } from '../..';
+import { UNKNOWN_ERROR_MESSAGE } from '../../../../constants/constants';
 import { TFSubmitButton } from '../../../button';
 import { TFTextInput } from '../../../input';
 import classnames from '../auth-reset-password.module.scss';
@@ -49,7 +50,7 @@ export default function ResetPasswordEmail() {
 				});
 			// Special case with account linking error
 			} else if (response.status === 'PASSWORD_RESET_NOT_ALLOWED') {
-				setErrorMessage('Oops! Something went wrong.');
+				setErrorMessage(UNKNOWN_ERROR_MESSAGE);
 			// Reset password email sent
 			} else {
 				navigate('/auth/reset-password?sent=true');
@@ -60,7 +61,7 @@ export default function ResetPasswordEmail() {
 			if (e instanceof Error && STGeneralError.isThisError(e)) {
 				setErrorMessage(e.message); 
 			} else {
-				setErrorMessage('Oops! Something went wrong.');
+				setErrorMessage(UNKNOWN_ERROR_MESSAGE);
 			}
 
 			setIsLoading(false);

@@ -2,12 +2,13 @@ import { Group } from '@mantine/core';
 import { hasLength, matchesField, useForm } from '@mantine/form';
 import { FormEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import STGeneralError from 'supertokens-web-js/lib/build/error';
 import ThirdPartyEmailPassword from 'supertokens-web-js/recipe/thirdpartyemailpassword';
+import { UNKNOWN_ERROR_MESSAGE } from '../../../../constants/constants';
 import { TFSubmitButton } from '../../../button';
 import { TFPasswordInput } from '../../../input';
 import AuthFormWrapper from '../../auth-form-wrapper/AuthFormWrapper';
 import classnames from '../auth-reset-password.module.scss';
-import STGeneralError from 'supertokens-web-js/lib/build/error';
 
 export default function ResetPasswordNewPassword() {
 	const [isLoading, setIsLoading] = useState(false);
@@ -55,7 +56,7 @@ export default function ResetPasswordNewPassword() {
 				});
 			// The password reset token in the URL is invalid, expired, or already consumed
 			} else if (response.status === 'RESET_PASSWORD_INVALID_TOKEN_ERROR') {
-				setErrorMessage('Password reset failed. Please try again');
+				setErrorMessage(UNKNOWN_ERROR_MESSAGE);
 			// Successfully reset password
 			} else {
 				navigate('/auth/reset-password?success=true');
@@ -66,7 +67,7 @@ export default function ResetPasswordNewPassword() {
 			if (e instanceof Error && STGeneralError.isThisError(e)) {
 				setErrorMessage(e.message); 
 			} else {
-				setErrorMessage('Oops! Something went wrong.');
+				setErrorMessage(UNKNOWN_ERROR_MESSAGE);
 			}
 
 			setIsLoading(false);

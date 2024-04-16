@@ -4,6 +4,7 @@ import { Divider, Group } from '@mantine/core';
 import React from 'react';
 import STGeneralError from 'supertokens-web-js/lib/build/error';
 import ThirdPartyEmailPassword from 'supertokens-web-js/recipe/thirdpartyemailpassword';
+import { UNKNOWN_ERROR_MESSAGE } from '../../../constants/constants';
 import { Environment } from '../../../util/Environment';
 import classnames from './auth-third-party-group.module.scss';
  
@@ -53,7 +54,7 @@ export default function AuthThirdPartyGroup(props: {
 				props.setErrorMessage(e.message);
 			// Unkown error
 			} else {
-				props.setErrorMessage('Oops! Something went wrong.');
+				props.setErrorMessage(UNKNOWN_ERROR_MESSAGE);
 			}
 
 			props.setIsLoading(false);

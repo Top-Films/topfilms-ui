@@ -15,3 +15,4 @@ export const TOP_FILMS_LOGO_FULL = 'https://raw.githubusercontent.com/Top-Films/
 export const TOP_FILMS_LOGO_TEXTLESS = 'https://raw.githubusercontent.com/Top-Films/assets/main/png/top-films-logo-white-transparent-textless.png';
 
 export const DUPLICATE_EMAIL_ERROR = 'Email already exists with different login method';
+export const UNKNOWN_ERROR_MESSAGE = 'Oops! Something went wrong. Please try again later';

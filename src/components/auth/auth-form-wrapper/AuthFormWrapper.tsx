@@ -1,12 +1,12 @@
 import { Box } from '@mantine/core';
 import { Dispatch, ReactNode, SetStateAction } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { AuthFooter } from '..';
 import { TOP_FILMS_LOGO_FULL } from '../../../constants/constants';
 import { LIGHT_BACKGROUND_COLOR, MAIN_FONT_COLOR } from '../../../styles/variables';
 import Loader from '../../loader/Loader';
 import AuthThirdPartyGroup from '../auth-third-party-group/AuthThirdPartyGroup';
 import classnames from './auth-form-wrapper.module.scss';
-import { useNavigate } from 'react-router-dom';
  
 export default function AuthFormWrapper(props: {
 	children: ReactNode // Form as children element

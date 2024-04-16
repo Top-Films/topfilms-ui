@@ -8,7 +8,7 @@ import ThirdPartyEmailPassword from 'supertokens-web-js/recipe/thirdpartyemailpa
 import AuthFormWrapper from '../../../components/auth/auth-form-wrapper/AuthFormWrapper';
 import { TFSubmitButton } from '../../../components/button';
 import { TFPasswordInput, TFTextInput } from '../../../components/input';
-import { DUPLICATE_EMAIL_ERROR } from '../../../constants/constants';
+import { DUPLICATE_EMAIL_ERROR, UNKNOWN_ERROR_MESSAGE } from '../../../constants/constants';
 import { GET_USER_METADATA } from '../../../gql/auth';
 import { UserById } from '../../../types/auth/User';
 import classnames from './login.module.scss';
@@ -38,7 +38,7 @@ export default function Login() {
 		} else if (searchParams.get('error') === 'duplicateEmail') {
 			setErrorMessage(DUPLICATE_EMAIL_ERROR);
 		} else if (searchParams.get('error') === 'metadata') {
-			setErrorMessage('Unable to get user metadata. Please try again later');
+			setErrorMessage('Unable to get user metadata. Please try again');
 		}
 	}, []);
 
@@ -99,7 +99,7 @@ export default function Login() {
 			if (e instanceof Error && STGeneralError.isThisError(e)) {
 				setErrorMessage(e.message);
 			} else {
-				setErrorMessage('Oops! Something went wrong.');
+				setErrorMessage(UNKNOWN_ERROR_MESSAGE);
 			}
 
 			setIsLoading(false);
