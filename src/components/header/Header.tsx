@@ -26,7 +26,9 @@ export default function Header() {
 	const [isAuthenticated, setIsAuthenticated] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
 	const [initials, setInitials] = useState('');
-	const [getUserMetadata] = useLazyQuery<UserById>(GET_USER_METADATA);
+	const [getUserMetadata] = useLazyQuery<UserById>(GET_USER_METADATA, {
+		fetchPolicy: 'no-cache' 
+	});
 
 	// Nav paths based on links
 	const items = links.map(link => (
