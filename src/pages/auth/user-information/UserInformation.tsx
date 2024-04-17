@@ -1,4 +1,4 @@
-import { useMutation } from '@apollo/client';
+import { ApolloError, useMutation } from '@apollo/client';
 import { Group } from '@mantine/core';
 import { hasLength, useForm } from '@mantine/form';
 import { FormEvent, useState } from 'react';
@@ -42,13 +42,15 @@ export default function UserInformation() {
 				firstName: form.getInputProps('firstName').value,
 				lastName: form.getInputProps('lastName').value 
 			};
-			await createUser({
-				variables: { input: userInput } 
-			});
+			await createUser({ variables: { input: userInput } });
 
 			navigate('/home');
-		} catch (_: unknown) {
-			setErrorMessage(UNKNOWN_ERROR_MESSAGE);
+		} catch (e: unknown) {
+			if (e instanceof ApolloError) {
+				setErrorMessage(e.message);
+			} else {
+				setErrorMessage(UNKNOWN_ERROR_MESSAGE);
+			}
 		} finally {
 			setIsLoading(false);
 		}
