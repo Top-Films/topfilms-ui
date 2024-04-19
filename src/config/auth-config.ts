@@ -1,5 +1,5 @@
 import Session from 'supertokens-auth-react/recipe/session';
-import ThirdPartyEmailPassword, { Discord, Google, Twitter } from 'supertokens-auth-react/recipe/thirdpartyemailpassword';
+import ThirdPartyEmailPassword, { Discord, Github, Google } from 'supertokens-auth-react/recipe/thirdpartyemailpassword';
 import { APP_NAME } from '../constants/constants';
 import { Environment } from '../util/Environment';
 
@@ -21,7 +21,7 @@ export const authConfig = {
 			signInAndUpFeature: {
 				providers: [
 					Google.init(),
-					Twitter.init(),
+					Github.init(),
 					Discord.init()
 				]
 			}

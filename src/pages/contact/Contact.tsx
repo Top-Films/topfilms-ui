@@ -41,7 +41,7 @@ export default function Contact() {
 			<h2>Contact Information</h2>
 			<ul>
 				<li>
-					<p>Email: <a href='mailto:maxmorhardt13@gmail.com'>maxmorhardt13@gmail.com</a></p>
+					<p>Email: <a href='mailto:support@topfilms.io'>support@topfilms.io</a></p>
 				</li>
 				<li>
 					<p>Feel free to contribute or raise an issue on our <a target='_blank' href='https://github.com/Top-Films' rel='noreferrer'>GitHub Repository</a></p>

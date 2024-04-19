@@ -1,4 +1,4 @@
-import { faDiscord, faGoogle, faTwitter } from '@fortawesome/free-brands-svg-icons';
+import { faDiscord, faGithub, faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Divider, Group } from '@mantine/core';
 import React from 'react';
@@ -22,8 +22,8 @@ export default function AuthThirdPartyGroup(props: {
 	/**
 	 * Sign in or up with twitter
 	 */
-	const onTwitterClick = async () => {
-		onClickThirdParty('twitter');
+	const onGithubClick = async () => {
+		onClickThirdParty('github');
 	};
 
 	/**
@@ -69,7 +69,7 @@ export default function AuthThirdPartyGroup(props: {
 			{/* Icons for third party OAuth sign in */}
 			<Group justify='center' mt='md' gap='xl'>
 				<FontAwesomeIcon className={classnames.faIcon} icon={faGoogle} size='xl' onClick={onGoogleClick} />
-				<FontAwesomeIcon className={classnames.faIcon} icon={faTwitter} size='xl' onClick={onTwitterClick} />
+				<FontAwesomeIcon className={classnames.faIcon} icon={faGithub} size='xl' onClick={onGithubClick} />
 				<FontAwesomeIcon className={classnames.faIcon} icon={faDiscord} size='xl' onClick={onDiscordClick} />
 			</Group>
 		</>
