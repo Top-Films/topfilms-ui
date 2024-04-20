@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import STGeneralError from 'supertokens-web-js/lib/build/error';
 import ThirdPartyEmailPassword from 'supertokens-web-js/recipe/thirdpartyemailpassword';
 import { AuthFormWrapper } from '../..';
-import { UNKNOWN_ERROR_MESSAGE } from '../../../../constants/constants';
+import { RESET_PASSWORD_LOGIN_REDIRECT_TEXT, UNKNOWN_ERROR_MESSAGE } from '../../../../constants/constants';
 import { TFSubmitButton } from '../../../button';
 import { TFTextInput } from '../../../input';
 import classnames from '../auth-reset-password.module.scss';
@@ -75,7 +75,7 @@ export default function ResetPasswordEmail() {
 			isLoading={isLoading}
 			setErrorMessage={setErrorMessage}
 			errorMessage={errorMessage}
-			loginOrRegisterText='Remember your password?'
+			loginOrRegisterText={RESET_PASSWORD_LOGIN_REDIRECT_TEXT}
 			loginOrRegisterPath='/auth/login'
 			enableThirdParty={false}
 		>

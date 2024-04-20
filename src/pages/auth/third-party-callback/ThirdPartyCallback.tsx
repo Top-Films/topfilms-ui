@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import STGeneralError from 'supertokens-web-js/lib/build/error';
 import ThirdPartyEmailPassword from 'supertokens-web-js/recipe/thirdpartyemailpassword';
 import Loader from '../../../components/loader/Loader';
-import { DUPLICATE_EMAIL_ERROR } from '../../../constants/constants';
+import { DUPLICATE_EMAIL_ERROR_MESSAGE } from '../../../constants/constants';
 import { GET_USER_METADATA } from '../../../gql/auth';
 import { UserById } from '../../../types/auth/User';
 
@@ -35,7 +35,7 @@ export default function ThirdPartyCallback() {
 						}
 					});
 			} catch (e: unknown) {
-				if (e instanceof Error && STGeneralError.isThisError(e) && e.message.startsWith(DUPLICATE_EMAIL_ERROR)) {
+				if (e instanceof Error && STGeneralError.isThisError(e) && e.message.startsWith(DUPLICATE_EMAIL_ERROR_MESSAGE)) {
 					navigate('/auth/login?error=duplicateEmail');
 				} else {
 					navigate('/auth/login?error=thirdParty');

@@ -4,7 +4,7 @@ import { FormEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import STGeneralError from 'supertokens-web-js/lib/build/error';
 import ThirdPartyEmailPassword from 'supertokens-web-js/recipe/thirdpartyemailpassword';
-import { UNKNOWN_ERROR_MESSAGE } from '../../../../constants/constants';
+import { RESET_PASSWORD_LOGIN_REDIRECT_TEXT, RESET_PASSWORD_TOKEN_EXPIRED_ERROR_MESSAGE, UNKNOWN_ERROR_MESSAGE } from '../../../../constants/constants';
 import { TFSubmitButton } from '../../../button';
 import { TFPasswordInput } from '../../../input';
 import AuthFormWrapper from '../../auth-form-wrapper/AuthFormWrapper';
@@ -56,7 +56,7 @@ export default function ResetPasswordNewPassword() {
 				});
 			// The password reset token in the URL is invalid, expired, or already consumed
 			} else if (response.status === 'RESET_PASSWORD_INVALID_TOKEN_ERROR') {
-				setErrorMessage(UNKNOWN_ERROR_MESSAGE);
+				setErrorMessage(RESET_PASSWORD_TOKEN_EXPIRED_ERROR_MESSAGE);
 			// Successfully reset password
 			} else {
 				navigate('/auth/reset-password?success=true');
@@ -81,7 +81,7 @@ export default function ResetPasswordNewPassword() {
 			isLoading={isLoading}
 			setErrorMessage={setErrorMessage}
 			errorMessage={errorMessage}
-			loginOrRegisterText='Remember your password?'
+			loginOrRegisterText={RESET_PASSWORD_LOGIN_REDIRECT_TEXT}
 			loginOrRegisterPath='/auth/login'
 			enableThirdParty={false}
 		>

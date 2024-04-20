@@ -49,10 +49,8 @@ export default function AuthThirdPartyGroup(props: {
 			window.location.assign(authUrl);
 			props.setIsLoading(false);
 		} catch (e: unknown) {
-			// Super Tokens error
-			if (e instanceof STGeneralError) {
-				props.setErrorMessage(e.message);
-			// Unkown error
+			if (e instanceof Error && STGeneralError.isThisError(e)) {
+				props.setErrorMessage(e.message); 
 			} else {
 				props.setErrorMessage(UNKNOWN_ERROR_MESSAGE);
 			}

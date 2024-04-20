@@ -8,7 +8,7 @@ import ThirdPartyEmailPassword from 'supertokens-web-js/recipe/thirdpartyemailpa
 import AuthFormWrapper from '../../../components/auth/auth-form-wrapper/AuthFormWrapper';
 import { TFSubmitButton } from '../../../components/button';
 import { TFPasswordInput, TFTextInput } from '../../../components/input';
-import { DUPLICATE_EMAIL_ERROR, UNKNOWN_ERROR_MESSAGE } from '../../../constants/constants';
+import { DUPLICATE_EMAIL_ERROR_MESSAGE, UNKNOWN_ERROR_MESSAGE } from '../../../constants/constants';
 import { GET_USER_METADATA } from '../../../gql/auth';
 import { UserById } from '../../../types/auth/User';
 import classnames from './login.module.scss';
@@ -36,7 +36,7 @@ export default function Login() {
 		if (searchParams.get('error') === 'thirdParty') {
 			setErrorMessage('Unable to authenticate with third party');
 		} else if (searchParams.get('error') === 'duplicateEmail') {
-			setErrorMessage(DUPLICATE_EMAIL_ERROR);
+			setErrorMessage(DUPLICATE_EMAIL_ERROR_MESSAGE);
 		} else if (searchParams.get('error') === 'metadata') {
 			setErrorMessage('Unable to get user metadata. Please try again');
 		}

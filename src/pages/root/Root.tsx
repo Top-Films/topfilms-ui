@@ -14,7 +14,8 @@ export default function Root() {
 			{/* Home/Landing page at /home -- no root path */}
 			{pathname === '/' 
 				? <Navigate to='/home' replace />
-				: <div className={classnames.contentWrapper}>
+				// Content wrapper on auth page not needed due to no header/footer
+				: <div className={pathname.startsWith('/auth') ? '' : classnames.contentWrapper}>
 					{/* No header and footer for auth page -- it has its own */}
 					{/* Mobile auth ui needs to fit all in one screen */}
 					{pathname.startsWith('/auth')
