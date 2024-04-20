@@ -1,3 +1,4 @@
+import { useMutation } from '@apollo/client';
 import { faGear, faRightFromBracket, faTrash, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Avatar, Group, Menu, UnstyledButton } from '@mantine/core';
@@ -5,6 +6,8 @@ import { useDisclosure } from '@mantine/hooks';
 import { Dispatch, SetStateAction } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Session from 'supertokens-web-js/recipe/session';
+import { DELETE_USER } from '../../../gql/auth';
+import { Environment } from '../../../util/Environment';
 import DeleteModal from '../../delete-modal/DeleteModal';
 import classnames from '../header.module.scss';
 
@@ -16,6 +19,9 @@ export default function HeaderAuthenticated(props: {
 }) {
 	const navigate = useNavigate();
 	const [opened, { open, close }] = useDisclosure(false);
+	const [deleteUser] = useMutation<string>(DELETE_USER, {
+		fetchPolicy: 'no-cache' 
+	});
 
 	// Remove session and navigate to home when user clicks sign out
 	const onSignOut = async () => {
@@ -33,8 +39,31 @@ export default function HeaderAuthenticated(props: {
 	};
 
 	// Deletes account data
-	const onSubmitDeleteAccount = () => {
-		// Do shit here
+	const onSubmitDeleteAccount = async () => {
+		try {
+			// Sign out
+			onSignOut();
+
+			// Delete supertokens data
+			const userId = await Session.getUserId();
+			fetch(`${Environment.authUrl()}/user/${userId}`, {
+				method: 'DELETE'
+			})
+				.catch((e: unknown) => {
+					console.log(e);
+				});
+
+			// Delete gql api data
+			deleteUser({ variables: { id: userId } })
+				.then(res => {
+					if (res.errors) {
+						console.log(res.errors);
+					}
+				});
+		} catch (e: unknown) {
+			console.log(e);
+		}
+		
 		close();
 	};
 		
@@ -83,7 +112,12 @@ export default function HeaderAuthenticated(props: {
 				</Menu.Dropdown>
 			</Menu>
 
-			<DeleteModal opened={opened} close={close} title='Are you sure you want to delete your account?' onSubmit={onSubmitDeleteAccount} />
+			<DeleteModal 
+				opened={opened} 
+				close={close}
+				title='Are you sure you want to delete your account?' 
+				onSubmit={onSubmitDeleteAccount} 
+			/>
 		</>
 	);
 }

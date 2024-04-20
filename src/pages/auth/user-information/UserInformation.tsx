@@ -16,7 +16,9 @@ export default function UserInformation() {
 	const [isLoading, setIsLoading] = useState(false);
 	const [errorMessage, setErrorMessage] = useState('');
 	const navigate = useNavigate();
-	const [createUser] = useMutation<UserInput>(CREATE_USER);
+	const [createUser] = useMutation<UserInput>(CREATE_USER, {
+		fetchPolicy: 'no-cache' 
+	});
 
 	const form = useForm({
 		initialValues: {

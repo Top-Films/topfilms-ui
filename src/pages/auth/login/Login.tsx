@@ -17,7 +17,9 @@ export default function Login() {
 	const navigate = useNavigate();
 	const [isLoading, setIsLoading] = useState(false);
 	const [errorMessage, setErrorMessage] = useState('');
-	const [getUserMetadata] = useLazyQuery<UserById>(GET_USER_METADATA);
+	const [getUserMetadata] = useLazyQuery<UserById>(GET_USER_METADATA, {
+		fetchPolicy: 'no-cache' 
+	});
 		
 	const form = useForm({
 		initialValues: {

@@ -10,7 +10,9 @@ import { UserById } from '../../../types/auth/User';
 
 export default function ThirdPartyCallback() {
 	const navigate = useNavigate();
-	const [getUserMetadata] = useLazyQuery<UserById>(GET_USER_METADATA);
+	const [getUserMetadata] = useLazyQuery<UserById>(GET_USER_METADATA, {
+		fetchPolicy: 'no-cache' 
+	});
 	
 	useEffect(() => {
 		(async () => {

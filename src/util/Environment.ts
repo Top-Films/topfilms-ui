@@ -28,4 +28,9 @@ export class Environment {
 	static strictMode(): boolean {
 		return false;
 	}
+
+	// True if dev environment
+	static isDev(): boolean {
+		return import.meta.env.DEV;
+	}
 }

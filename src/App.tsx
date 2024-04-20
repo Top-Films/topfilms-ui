@@ -1,4 +1,5 @@
 import { ApolloProvider } from '@apollo/client';
+import { loadDevMessages, loadErrorMessages } from '@apollo/client/dev';
 import { MantineProvider } from '@mantine/core';
 import '@mantine/core/styles.css';
 import { Route, RouterProvider, createBrowserRouter, createRoutesFromElements } from 'react-router-dom';
@@ -13,14 +14,23 @@ import Register from './pages/auth/register/Register';
 import ResetPassword from './pages/auth/reset-password/ResetPassword';
 import ThirdPartyCallback from './pages/auth/third-party-callback/ThirdPartyCallback';
 import UserInformation from './pages/auth/user-information/UserInformation';
+import VerifyEmail from './pages/auth/verify-email/VerifyEmail';
 import Contact from './pages/contact/Contact';
 import Discover from './pages/discover/Discover';
 import Home from './pages/home/Home';
 import Privacy from './pages/privacy/Privacy';
 import Root from './pages/root/Root';
 import Terms from './pages/terms/Terms';
+import { Environment } from './util/Environment';
 
+// Init supertokens
 SuperTokens.init(authConfig);
+
+// Load apollo error messages
+if (Environment.isDev()) {
+	loadDevMessages();
+	loadErrorMessages();
+}
 
 const router = createBrowserRouter(
 	createRoutesFromElements(
@@ -34,6 +44,7 @@ const router = createBrowserRouter(
 				<Route path='reset-password' element={<ResetPassword />}/>
 				{/* Protected route so users that are signed in enter account information */}
 				<Route path='user-information' element={<SessionAuth><UserInformation /></SessionAuth>}/>
+				<Route path='verify-email' element={<VerifyEmail />} />
 				<Route path='callback/:providerId' element={<ThirdPartyCallback />} />
 			</Route>
 			<Route path='contact' element={<Contact />} />
