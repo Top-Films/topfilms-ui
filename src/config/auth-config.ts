@@ -1,4 +1,3 @@
-import EmailVerification from 'supertokens-auth-react/recipe/emailverification';
 import Session from 'supertokens-auth-react/recipe/session';
 import ThirdPartyEmailPassword, { Discord, Github, Google } from 'supertokens-auth-react/recipe/thirdpartyemailpassword';
 import { APP_NAME } from '../constants/constants';
@@ -18,7 +17,6 @@ export const authConfig = {
 		websiteDomain: Environment.frontendUrl()
 	},
 	recipeList: [
-		EmailVerification.init({}),
 		ThirdPartyEmailPassword.init({
 			signInAndUpFeature: {
 				providers: [
