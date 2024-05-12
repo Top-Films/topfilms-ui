@@ -2,7 +2,7 @@ import { Button, Group, Modal } from '@mantine/core';
 import { matches, useForm } from '@mantine/form';
 import { FormEvent, useState } from 'react';
 import { UNKNOWN_ERROR_MESSAGE } from '../../constants/constants';
-import { TFSubmitButton } from '../button';
+import { TFPrimaryButton } from '../button';
 import { TFTextInput } from '../input';
 import classnames from './delete-modal.module.scss';
 
@@ -65,7 +65,7 @@ export default function DeleteModal(props: {
 					<Button variant='default' onClick={onClose}>
 						Cancel
 					</Button>
-					<TFSubmitButton disabled={!form.isValid()} />
+					<TFPrimaryButton text='Submit' disabled={!form.isValid()} type='submit' />
 				</Group>
 			</form>
 

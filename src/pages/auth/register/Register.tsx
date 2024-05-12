@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import STGeneralError from 'supertokens-web-js/lib/build/error';
 import ThirdPartyEmailPassword from 'supertokens-web-js/recipe/thirdpartyemailpassword';
 import AuthFormWrapper from '../../../components/auth/auth-form-wrapper/AuthFormWrapper';
-import { TFSubmitButton } from '../../../components/button';
+import { TFPrimaryButton } from '../../../components/button';
 import { TFPasswordInput, TFTextInput } from '../../../components/input';
 import { UNKNOWN_ERROR_MESSAGE } from '../../../constants/constants';
  
@@ -99,7 +99,7 @@ export default function Register() {
 
 				{/* Submit email password auth */}
 				<Group justify='center' mt='md'>
-					<TFSubmitButton disabled={!form.isValid()} />
+					<TFPrimaryButton text='Submit' disabled={!form.isValid()} type='submit' />
 				</Group>
 			</form>	
 		</AuthFormWrapper>

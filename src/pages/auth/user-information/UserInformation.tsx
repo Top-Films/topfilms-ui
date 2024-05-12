@@ -5,7 +5,7 @@ import { FormEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Session from 'supertokens-web-js/recipe/session';
 import { AuthFormWrapper } from '../../../components/auth';
-import { TFSubmitButton } from '../../../components/button';
+import { TFPrimaryButton } from '../../../components/button';
 import { TFTextInput } from '../../../components/input';
 import { UNKNOWN_ERROR_MESSAGE } from '../../../constants/constants';
 import { CREATE_USER } from '../../../gql/auth';
@@ -75,7 +75,7 @@ export default function UserInformation() {
 				<TFTextInput label='Last Name' form={form} formInputProp='lastName' />
 
 				<Group justify='center' mt='md'>
-					<TFSubmitButton disabled={!form.isValid()} />
+					<TFPrimaryButton text='Submit' disabled={!form.isValid()} type='submit' />
 				</Group>
 			</form>
 		</AuthFormWrapper>

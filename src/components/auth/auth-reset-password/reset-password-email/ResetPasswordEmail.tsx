@@ -6,7 +6,7 @@ import STGeneralError from 'supertokens-web-js/lib/build/error';
 import ThirdPartyEmailPassword from 'supertokens-web-js/recipe/thirdpartyemailpassword';
 import { AuthFormWrapper } from '../..';
 import { RESET_PASSWORD_LOGIN_REDIRECT_TEXT, UNKNOWN_ERROR_MESSAGE } from '../../../../constants/constants';
-import { TFSubmitButton } from '../../../button';
+import { TFPrimaryButton } from '../../../button';
 import { TFTextInput } from '../../../input';
 import classnames from '../auth-reset-password.module.scss';
 
@@ -83,7 +83,7 @@ export default function ResetPasswordEmail() {
 				<TFTextInput label='Email' form={form} formInputProp='email' />
 
 				<Group justify='center' mt='md'>
-					<TFSubmitButton disabled={!form.isValid()} />
+					<TFPrimaryButton text='Submit' disabled={!form.isValid()} type='submit' />
 				</Group>
 			</form>
 		</AuthFormWrapper>

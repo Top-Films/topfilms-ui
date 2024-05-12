@@ -1,3 +1,3 @@
-import TFSubmitButton from './tf-submit-button/TFSubmitButton';
+import TFPrimaryButton from './tf-primary-button/TFPrimaryButton';
 
-export { TFSubmitButton };
+export { TFPrimaryButton };

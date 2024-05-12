@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import STGeneralError from 'supertokens-web-js/lib/build/error';
 import ThirdPartyEmailPassword from 'supertokens-web-js/recipe/thirdpartyemailpassword';
 import { RESET_PASSWORD_LOGIN_REDIRECT_TEXT, RESET_PASSWORD_TOKEN_EXPIRED_ERROR_MESSAGE, UNKNOWN_ERROR_MESSAGE } from '../../../../constants/constants';
-import { TFSubmitButton } from '../../../button';
+import { TFPrimaryButton } from '../../../button';
 import { TFPasswordInput } from '../../../input';
 import AuthFormWrapper from '../../auth-form-wrapper/AuthFormWrapper';
 import classnames from '../auth-reset-password.module.scss';
@@ -90,7 +90,7 @@ export default function ResetPasswordNewPassword() {
 				<TFPasswordInput label='Confirm Password' form={form} formInputProp='confirmPassword' />
 
 				<Group justify='center' mt='md'>
-					<TFSubmitButton disabled={!form.isValid()} />
+					<TFPrimaryButton text='Submit' disabled={!form.isValid()} type='submit' />
 				</Group>
 			</form>
 		</AuthFormWrapper>
