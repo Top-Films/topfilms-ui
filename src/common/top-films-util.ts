@@ -22,8 +22,11 @@ export class TopFilmsUtil {
 
 	static navigatePostSignInUp(res: QueryResult<UserById, OperationVariables>): string {
 		// Check if email is verified
+		console.log(`Is Email Verified isVerified(): ${EmailVerificationClaim.validators.isVerified()}`);
+		console.log(`Is Email Verified isTrue(): ${EmailVerificationClaim.validators.isTrue()}`);
+		console.log(`Is Email Verified isFalse(): ${EmailVerificationClaim.validators.isFalse()}`);
+
 		if (!EmailVerificationClaim.validators.isVerified()) {
-			console.log('NAVIGATING TO EMAIL VERIFIED');
 			return '/auth/verify-email';
 		}
 
@@ -34,11 +37,9 @@ export class TopFilmsUtil {
 
 		// Check if user metadata is present
 		if (!res.data?.userById?.username || !res.data?.userById?.firstName || !res.data?.userById?.lastName) {
-			console.log('NAVIGATING TO USER INFORMATION');
 			return '/auth/user-information';
 		}
 
-		console.log('NAVIGATING TO HOME');
 		return '/home';
 	}
 }
