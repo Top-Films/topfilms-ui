@@ -1,7 +1,8 @@
+import EmailVerification from 'supertokens-auth-react/recipe/emailverification';
 import Session from 'supertokens-auth-react/recipe/session';
 import ThirdPartyEmailPassword, { Discord, Github, Google } from 'supertokens-auth-react/recipe/thirdpartyemailpassword';
-import { APP_NAME } from '../constants/constants';
-import { Environment } from '../util/Environment';
+import { APP_NAME } from '../common/constants';
+import { Environment } from '../common/environment';
 
 // Add any other urls here to be intercepted
 const resourceServerUrls = [
@@ -17,6 +18,9 @@ export const authConfig = {
 		websiteDomain: Environment.frontendUrl()
 	},
 	recipeList: [
+		EmailVerification.init({
+			mode: 'OPTIONAL' // Technically it is required, just doing that logic manually
+		}),
 		ThirdPartyEmailPassword.init({
 			signInAndUpFeature: {
 				providers: [

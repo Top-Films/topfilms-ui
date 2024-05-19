@@ -1,7 +1,7 @@
 import { Button, Group, Modal } from '@mantine/core';
 import { matches, useForm } from '@mantine/form';
 import { FormEvent, useState } from 'react';
-import { UNKNOWN_ERROR_MESSAGE } from '../../constants/constants';
+import { TopFilmsUtil } from '../../common/top-films-util';
 import { TFPrimaryButton } from '../button';
 import { TFTextInput } from '../input';
 import classnames from './delete-modal.module.scss';
@@ -15,6 +15,7 @@ export default function DeleteModal(props: {
 	const [errorMessage, setErrorMessage] = useState('');
 	const DELETE_TEXT = 'DELETE';
 
+	// Create form
 	const form = useForm({
 		initialValues: {
 			delete: ''
@@ -24,29 +25,28 @@ export default function DeleteModal(props: {
 		}
 	});
 
-	const onClose = () => {
+	// Close modal
+	function onClose() {
 		refreshValues();
 		props.close();
-	};
+	}
 
-	const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+	// Submit form
+	function onSubmit(e: FormEvent<HTMLFormElement>) {
 		e.preventDefault();
 		try {
 			props.onSubmit();
 			refreshValues();
-		} catch (err: unknown) {
-			if (err instanceof Error) {
-				setErrorMessage(err.message);
-			} else {
-				setErrorMessage(UNKNOWN_ERROR_MESSAGE);
-			}
+		} catch (e: unknown) {
+			setErrorMessage(TopFilmsUtil.getAuthErrorMessage(e));
 		}	
-	};
+	}
 
-	const refreshValues = () => {
+	// Unset values
+	function refreshValues() {
 		form.setFieldValue('delete', '');
 		setErrorMessage('');
-	};
+	}
 
 	return (
 		<Modal 

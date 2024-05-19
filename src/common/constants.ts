@@ -1,8 +1,3 @@
-/**
- * File for constants within the frontend
- * Duplicate constants within files should be pulled into here to maintain DRY
- */
-
 export const APP_NAME = 'Top Films';
 
 export const FOOTER_LINKS = [

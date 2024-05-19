@@ -1,10 +1,13 @@
 import { useLazyQuery } from '@apollo/client';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import ThirdPartyEmailPassword from 'supertokens-auth-react/recipe/thirdpartyemailpassword';
 import STGeneralError from 'supertokens-web-js/lib/build/error';
-import ThirdPartyEmailPassword from 'supertokens-web-js/recipe/thirdpartyemailpassword';
+import { User } from 'supertokens-web-js/types';
+import { DUPLICATE_EMAIL_ERROR_MESSAGE } from '../../../common/constants';
+import { TopFilmsError } from '../../../common/top-films-error';
+import { TopFilmsUtil } from '../../../common/top-films-util';
 import Loader from '../../../components/loader/Loader';
-import { DUPLICATE_EMAIL_ERROR_MESSAGE } from '../../../constants/constants';
 import { GET_USER_METADATA } from '../../../gql/auth';
 import { UserById } from '../../../types/auth/User';
 
@@ -17,34 +20,34 @@ export default function ThirdPartyCallback() {
 	useEffect(() => {
 		(async () => {
 			try {
-				const response = await ThirdPartyEmailPassword.thirdPartySignInAndUp();
-				if (response.status !== 'OK') {
-					navigate('/auth/login?error=thirdParty');
-					return;
-				}
-
-				getUserMetadata({ variables: { id: response.user.id } })
+				const user = await thirdPartyCallback();
+				getUserMetadata({ variables: { id: user.id } })
 					.then(res => {
-						if (res.error) {
-							navigate('/auth/login?error=metadata');
-							return;
-						}
-
-						if (!res.data?.userById?.username || !res.data?.userById?.username || !res.data?.userById?.username) {
-							navigate('/auth/user-information');
-						} else {
-							navigate('/home');
-						}
+						navigate(TopFilmsUtil.navigatePostSignInUp(res));
 					});
 			} catch (e: unknown) {
-				if (e instanceof Error && STGeneralError.isThisError(e) && e.message.startsWith(DUPLICATE_EMAIL_ERROR_MESSAGE)) {
-					navigate('/auth/login?error=duplicateEmail');
-				} else {
-					navigate('/auth/login?error=thirdParty');
-				}
+				handleNavigateError(e);
 			}
 		})();
 	}, []);
+
+	async function thirdPartyCallback(): Promise<User> {
+		const response = await ThirdPartyEmailPassword.thirdPartySignInAndUp();
+
+		if (response.status === 'OK') {
+			return response.user;
+		}
+
+		throw new TopFilmsError();
+	}
+
+	function handleNavigateError(e: unknown) {
+		if (e instanceof Error && STGeneralError.isThisError(e) && e.message.startsWith(DUPLICATE_EMAIL_ERROR_MESSAGE)) {
+			navigate('/auth/login?error=duplicateEmail');
+		} else {
+			navigate('/auth/login?error=thirdParty');
+		}
+	}
 
 	return (
 		<Loader isLoading={true} />

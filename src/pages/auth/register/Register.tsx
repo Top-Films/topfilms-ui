@@ -2,12 +2,12 @@ import { Group } from '@mantine/core';
 import { hasLength, isEmail, matchesField, useForm } from '@mantine/form';
 import { FormEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import STGeneralError from 'supertokens-web-js/lib/build/error';
-import ThirdPartyEmailPassword from 'supertokens-web-js/recipe/thirdpartyemailpassword';
+import ThirdPartyEmailPassword from 'supertokens-auth-react/recipe/thirdpartyemailpassword';
+import { TopFilmsError } from '../../../common/top-films-error';
+import { TopFilmsUtil } from '../../../common/top-films-util';
 import AuthFormWrapper from '../../../components/auth/auth-form-wrapper/AuthFormWrapper';
 import { TFPrimaryButton } from '../../../components/button';
 import { TFPasswordInput, TFTextInput } from '../../../components/input';
-import { UNKNOWN_ERROR_MESSAGE } from '../../../constants/constants';
  
 export default function Register() {
 	const navigate = useNavigate();
@@ -31,54 +31,52 @@ export default function Register() {
 		validateInputOnChange: true
 	});
 
-	const onClickSubmit = async (e: FormEvent<HTMLFormElement>) => {
+	/**
+	 * Registers user when form is submitted
+	 * 
+	 * @param e form submit event
+	 */
+	async function onSubmit(e: FormEvent<HTMLFormElement>) {
 		e.preventDefault();
 		setIsLoading(true);
 		try {
-			// Attempt to sign in or up using email and password from form
-			const response = await ThirdPartyEmailPassword.emailPasswordSignUp({
-				formFields: [{
-					id: 'email',
-					value: form.getInputProps('email').value
-				}, {
-					id: 'password',
-					value: form.getInputProps('password').value
-				}]
-			});
-
-			// Fields are invalid
-			if (response.status === 'FIELD_ERROR') {
-				response.formFields.forEach(formField => {
-					// Email is invalid 
-					if (formField.id === 'email') {
-						setErrorMessage(formField.error);
-					// Password is invalid
-					} else if (formField.id === 'password') {
-						setErrorMessage(formField.error);
-					}
-				});
-			// Unkown error registering
-			} else if (response.status === 'SIGN_UP_NOT_ALLOWED') { 
-				setErrorMessage('Registration failed. Please try again later');
-			// Successful register
-			} else if (response.status === 'OK') {
-				navigate('/auth/user-information');
-			// Unexpected error
-			} else {
-				setErrorMessage('Unexpected error occurred. Please try again later');
-			}
-
-			setIsLoading(false);
+			await register();
 		} catch (e: unknown) {
-			if (e instanceof Error && STGeneralError.isThisError(e)) {
-				setErrorMessage(e.message);
-			} else {
-				setErrorMessage(UNKNOWN_ERROR_MESSAGE);
-			}
-
+			setErrorMessage(TopFilmsUtil.getAuthErrorMessage(e));
+		} finally {
 			setIsLoading(false);
 		}
-	};
+	}
+
+	/**
+	 * Registers a user and navigates to verify email page on success
+	 */
+	async function register() {
+		const response = await ThirdPartyEmailPassword.emailPasswordSignUp({
+			formFields: [{
+				id: 'email',
+				value: form.getInputProps('email').value
+			}, {
+				id: 'password',
+				value: form.getInputProps('password').value
+			}]
+		});
+
+		if (response.status === 'OK') {
+			navigate('/auth/verify-email');
+			return;
+		}
+		
+		// Fields are invalid
+		if (response.status === 'FIELD_ERROR') {
+			response.formFields.forEach(formField => {
+				throw new TopFilmsError(formField.error);
+			});
+		}
+
+		// Unkown error
+		throw new TopFilmsError('Regristration failed. Please try again later');
+	}
 
 	return (
 		<AuthFormWrapper
@@ -92,7 +90,7 @@ export default function Register() {
 			enableThirdParty={true}
 		>
 			{/* Form for email password auth */}
-			<form onSubmit={e => onClickSubmit(e)}>
+			<form onSubmit={e => onSubmit(e)}>
 				<TFTextInput label='Email' form={form} formInputProp='email'/>
 				<TFPasswordInput label='Password' form={form} formInputProp='password' />
 				<TFPasswordInput label='Confirm Password' form={form} formInputProp='confirmPassword' />

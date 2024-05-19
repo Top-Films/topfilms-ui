@@ -2,9 +2,10 @@ import { Group } from '@mantine/core';
 import { hasLength, matchesField, useForm } from '@mantine/form';
 import { FormEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import STGeneralError from 'supertokens-web-js/lib/build/error';
-import ThirdPartyEmailPassword from 'supertokens-web-js/recipe/thirdpartyemailpassword';
-import { RESET_PASSWORD_LOGIN_REDIRECT_TEXT, RESET_PASSWORD_TOKEN_EXPIRED_ERROR_MESSAGE, UNKNOWN_ERROR_MESSAGE } from '../../../../constants/constants';
+import ThirdPartyEmailPassword from 'supertokens-auth-react/recipe/thirdpartyemailpassword';
+import { RESET_PASSWORD_LOGIN_REDIRECT_TEXT, RESET_PASSWORD_TOKEN_EXPIRED_ERROR_MESSAGE } from '../../../../common/constants';
+import { TopFilmsError } from '../../../../common/top-films-error';
+import { TopFilmsUtil } from '../../../../common/top-films-util';
 import { TFPrimaryButton } from '../../../button';
 import { TFPasswordInput } from '../../../input';
 import AuthFormWrapper from '../../auth-form-wrapper/AuthFormWrapper';
@@ -34,45 +35,45 @@ export default function ResetPasswordNewPassword() {
 	 * 
 	 * @param e submit form event
 	 */
-	const onClickSubmit = async (e: FormEvent<HTMLFormElement>) => {
+	async function onSubmit(e: FormEvent<HTMLFormElement>) {
 		e.preventDefault();
 		setIsLoading(true);
 		try {
-			// Attempt to submit new password
-			const response = await ThirdPartyEmailPassword.submitNewPassword({
-				formFields: [{
-					id: 'password',
-					value: form.getInputProps('password').value
-				}]
-			});
-	
-			// Invalid password
-			if (response.status === 'FIELD_ERROR') {
-				response.formFields.forEach(formField => {
-					if (formField.id === 'password') {
-						// New password did not meet password criteria on the backend.
-						setErrorMessage(formField.error);
-					}
-				});
-			// The password reset token in the URL is invalid, expired, or already consumed
-			} else if (response.status === 'RESET_PASSWORD_INVALID_TOKEN_ERROR') {
-				setErrorMessage(RESET_PASSWORD_TOKEN_EXPIRED_ERROR_MESSAGE);
-			// Successfully reset password
-			} else {
-				navigate('/auth/reset-password?success=true');
-			}
-	
-			setIsLoading(false);
+			await submitNewPassword();
 		} catch (e: unknown) {
-			if (e instanceof Error && STGeneralError.isThisError(e)) {
-				setErrorMessage(e.message); 
-			} else {
-				setErrorMessage(UNKNOWN_ERROR_MESSAGE);
-			}
-
+			setErrorMessage(TopFilmsUtil.getAuthErrorMessage(e));
+		} finally {
 			setIsLoading(false);
 		}
-	};
+	}
+
+	/**
+	 * Submits request for new password
+	 */
+	async function submitNewPassword() {
+		// Attempt to submit new password
+		const response = await ThirdPartyEmailPassword.submitNewPassword({
+			formFields: [{
+				id: 'password',
+				value: form.getInputProps('password').value
+			}]
+		});
+
+		// Invalid password
+		if (response.status === 'FIELD_ERROR') {
+			response.formFields.forEach(formField => {
+				if (formField.id === 'password') {
+					throw new TopFilmsError(formField.error);
+				}
+			});
+		// The password reset token in the URL is invalid, expired, or already consumed
+		} else if (response.status === 'RESET_PASSWORD_INVALID_TOKEN_ERROR') {
+			throw new TopFilmsError(RESET_PASSWORD_TOKEN_EXPIRED_ERROR_MESSAGE);
+		}
+
+		// Successfully reset password
+		navigate('/auth/reset-password?success=true');
+	}
 
 	return (
 		<AuthFormWrapper
@@ -85,7 +86,7 @@ export default function ResetPasswordNewPassword() {
 			loginOrRegisterPath='/auth/login'
 			enableThirdParty={false}
 		>
-			<form className={classnames.form} onSubmit={e => onClickSubmit(e)}>
+			<form className={classnames.form} onSubmit={e => onSubmit(e)}>
 				<TFPasswordInput label='Password' form={form} formInputProp='password' />
 				<TFPasswordInput label='Confirm Password' form={form} formInputProp='confirmPassword' />
 

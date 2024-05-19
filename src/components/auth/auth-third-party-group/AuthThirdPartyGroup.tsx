@@ -2,10 +2,9 @@ import { faDiscord, faGithub, faGoogle } from '@fortawesome/free-brands-svg-icon
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Divider, Group } from '@mantine/core';
 import React from 'react';
-import STGeneralError from 'supertokens-web-js/lib/build/error';
-import ThirdPartyEmailPassword from 'supertokens-web-js/recipe/thirdpartyemailpassword';
-import { UNKNOWN_ERROR_MESSAGE } from '../../../constants/constants';
-import { Environment } from '../../../util/Environment';
+import ThirdPartyEmailPassword from 'supertokens-auth-react/recipe/thirdpartyemailpassword';
+import { Environment } from '../../../common/environment';
+import { TopFilmsUtil } from '../../../common/top-films-util';
 import classnames from './auth-third-party-group.module.scss';
  
 export default function AuthThirdPartyGroup(props: {
@@ -15,30 +14,30 @@ export default function AuthThirdPartyGroup(props: {
 	/**
 	 * Sign in or up with google
 	 */
-	const onGoogleClick = async () => {
+	async function onGoogleClick() {
 		onClickThirdParty('google');
-	};
+	}
 
 	/**
 	 * Sign in or up with twitter
 	 */
-	const onGithubClick = async () => {
+	async function onGithubClick() {
 		onClickThirdParty('github');
-	};
+	}
 
 	/**
 	 * Sign in or up with discord
 	 */
-	const onDiscordClick = async () => {
+	async function onDiscordClick() {
 		onClickThirdParty('discord');
-	};
+	}
 
 	/**
 	 * Handles third party auth
 	 * 
 	 * @param thirdPartyId Id relating to the third party provider
 	 */
-	const onClickThirdParty = async (thirdPartyId: string) => {
+	async function onClickThirdParty(thirdPartyId: string) {
 		props.setIsLoading(true);
 		try {
 			// Go to third party 
@@ -47,17 +46,12 @@ export default function AuthThirdPartyGroup(props: {
 				frontendRedirectURI: `${Environment.frontendUrl()}/auth/callback/${thirdPartyId}`
 			});
 			window.location.assign(authUrl);
-			props.setIsLoading(false);
 		} catch (e: unknown) {
-			if (e instanceof Error && STGeneralError.isThisError(e)) {
-				props.setErrorMessage(e.message); 
-			} else {
-				props.setErrorMessage(UNKNOWN_ERROR_MESSAGE);
-			}
-
+			props.setErrorMessage(TopFilmsUtil.getAuthErrorMessage(e));
+		} finally {
 			props.setIsLoading(false);
 		}
-	};
+	}
 
 	return (
 		<>

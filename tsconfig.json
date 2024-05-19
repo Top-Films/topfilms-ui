@@ -20,6 +20,6 @@
 		"noUnusedParameters": true,
 		"noFallthroughCasesInSwitch": true
 	},
-	"include": ["src", "src/components/button/tf-primary-button/TFPrimaryButton.tsx"],
+	"include": ["src"],
 	"references": [{ "path": "./tsconfig.node.json" }]
 }

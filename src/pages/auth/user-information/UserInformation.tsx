@@ -1,13 +1,14 @@
-import { ApolloError, useMutation } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import { Group } from '@mantine/core';
 import { hasLength, useForm } from '@mantine/form';
 import { FormEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Session from 'supertokens-web-js/recipe/session';
+import Session from 'supertokens-auth-react/recipe/session';
+import { TopFilmsError } from '../../../common/top-films-error';
+import { TopFilmsUtil } from '../../../common/top-films-util';
 import { AuthFormWrapper } from '../../../components/auth';
 import { TFPrimaryButton } from '../../../components/button';
 import { TFTextInput } from '../../../components/input';
-import { UNKNOWN_ERROR_MESSAGE } from '../../../constants/constants';
 import { CREATE_USER } from '../../../gql/auth';
 import { UserInput } from '../../../types/auth/User';
 import classnames from '../auth.module.scss';
@@ -33,30 +34,36 @@ export default function UserInformation() {
 		}
 	});
 
-	const onClickSubmit = async (e: FormEvent<HTMLFormElement>) => {
+	async function onSubmit(e: FormEvent<HTMLFormElement>) {
 		e.preventDefault();
 		setIsLoading(true);
 		try {
-			const userId = await Session.getUserId();
-			const userInput: UserInput = {
-				id: userId,
-				username: form.getInputProps('username').value, 
-				firstName: form.getInputProps('firstName').value,
-				lastName: form.getInputProps('lastName').value 
-			};
-			await createUser({ variables: { input: userInput } });
-
-			navigate('/home');
+			await submitUserData();
 		} catch (e: unknown) {
-			if (e instanceof ApolloError) {
-				setErrorMessage(e.message);
-			} else {
-				setErrorMessage(UNKNOWN_ERROR_MESSAGE);
-			}
+			setErrorMessage(TopFilmsUtil.getAuthErrorMessage(e));
 		} finally {
 			setIsLoading(false);
 		}
-	};
+	}
+
+	async function submitUserData() {
+		const userId = await Session.getUserId();
+		const userInput: UserInput = {
+			id: userId,
+			username: form.getInputProps('username').value, 
+			firstName: form.getInputProps('firstName').value,
+			lastName: form.getInputProps('lastName').value 
+		};
+		await createUser({ variables: { input: userInput } })
+			.then(res => {
+				if (res.errors) {
+					console.log(res.errors);
+					throw new TopFilmsError(res.errors[0].toString());
+				}
+			});
+
+		navigate('/home');
+	}
 
 	return (
 		<AuthFormWrapper
@@ -69,7 +76,7 @@ export default function UserInformation() {
 			loginOrRegisterPath='/auth/login'
 			enableThirdParty={false}
 		>
-			<form className={classnames.form} onSubmit={e => onClickSubmit(e)}>
+			<form className={classnames.form} onSubmit={e => onSubmit(e)}>
 				<TFTextInput label='Username' form={form} formInputProp='username' />
 				<TFTextInput label='First Name' form={form} formInputProp='firstName' />
 				<TFTextInput label='Last Name' form={form} formInputProp='lastName' />

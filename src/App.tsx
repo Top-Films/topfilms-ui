@@ -6,6 +6,7 @@ import { Notifications } from '@mantine/notifications';
 import { Route, RouterProvider, createBrowserRouter, createRoutesFromElements } from 'react-router-dom';
 import SuperTokens, { SuperTokensWrapper } from 'supertokens-auth-react';
 import { SessionAuth } from 'supertokens-auth-react/recipe/session';
+import { Environment } from './common/environment';
 import { client } from './config/apollo-config';
 import { authConfig } from './config/auth-config';
 import About from './pages/about/About';
@@ -22,7 +23,6 @@ import Home from './pages/home/Home';
 import Privacy from './pages/privacy/Privacy';
 import Root from './pages/root/Root';
 import Terms from './pages/terms/Terms';
-import { Environment } from './util/Environment';
 
 // Init supertokens
 SuperTokens.init(authConfig);

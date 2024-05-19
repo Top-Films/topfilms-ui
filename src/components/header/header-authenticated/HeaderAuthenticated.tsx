@@ -5,9 +5,9 @@ import { Avatar, Group, Menu, UnstyledButton } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { Dispatch, SetStateAction } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Session from 'supertokens-web-js/recipe/session';
+import Session from 'supertokens-auth-react/recipe/session';
+import { Environment } from '../../../common/environment';
 import { DELETE_USER } from '../../../gql/auth';
-import { Environment } from '../../../util/Environment';
 import DeleteModal from '../../delete-modal/DeleteModal';
 import classnames from '../header.module.scss';
 

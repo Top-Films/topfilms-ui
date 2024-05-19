@@ -3,8 +3,8 @@ import { Burger, Group, Skeleton } from '@mantine/core';
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import { useEffect, useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import Session from 'supertokens-web-js/recipe/session';
-import { TOP_FILMS_LOGO_FULL, TOP_FILMS_LOGO_TEXTLESS } from '../../constants/constants';
+import Session from 'supertokens-auth-react/recipe/session';
+import { TOP_FILMS_LOGO_FULL, TOP_FILMS_LOGO_TEXTLESS } from '../../common/constants';
 import { GET_USER_METADATA } from '../../gql/auth';
 import { SMALL_BREAKPOINT_EM } from '../../styles/variables';
 import { UserById } from '../../types/auth/User';
@@ -57,6 +57,7 @@ export default function Header() {
 					const userId = await Session.getUserId();
 					await getUserMetadata({ variables: { id: userId } })
 						.then(res => {
+							console.log(res);
 							if (!res.data?.userById?.username || !res.data?.userById?.firstName || !res.data?.userById?.lastName) {
 								Session.signOut();
 								setIsAuthenticated(false);
@@ -64,6 +65,10 @@ export default function Header() {
 								setIsAuthenticated(true);
 								setInitials(`${getInitial(res.data.userById.firstName)}${getInitial(res.data.userById.lastName)}`);
 							}
+						})
+						.catch(e => {
+							setIsAuthenticated(false);
+							console.log(e);
 						});
 				}
 			} catch (_) {
@@ -75,7 +80,9 @@ export default function Header() {
 	}, []);
 
 	// Gets first char from name and uppercases
-	const getInitial = (name: string) => name.charAt(0).toUpperCase();
+	function getInitial(name: string) {
+		return name.charAt(0).toUpperCase();
+	} 
 
 	return (
 		<div className={classnames.header}>

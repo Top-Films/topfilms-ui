@@ -3,12 +3,14 @@ import { Group } from '@mantine/core';
 import { hasLength, isEmail, useForm } from '@mantine/form';
 import { FormEvent, useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import STGeneralError from 'supertokens-web-js/lib/build/error';
-import ThirdPartyEmailPassword from 'supertokens-web-js/recipe/thirdpartyemailpassword';
+import ThirdPartyEmailPassword from 'supertokens-auth-react/recipe/thirdpartyemailpassword';
+import { User } from 'supertokens-web-js/types';
+import { DUPLICATE_EMAIL_ERROR_MESSAGE } from '../../../common/constants';
+import { TopFilmsError } from '../../../common/top-films-error';
+import { TopFilmsUtil } from '../../../common/top-films-util';
 import AuthFormWrapper from '../../../components/auth/auth-form-wrapper/AuthFormWrapper';
 import { TFPrimaryButton } from '../../../components/button';
 import { TFPasswordInput, TFTextInput } from '../../../components/input';
-import { DUPLICATE_EMAIL_ERROR_MESSAGE, UNKNOWN_ERROR_MESSAGE } from '../../../constants/constants';
 import { GET_USER_METADATA } from '../../../gql/auth';
 import { UserById } from '../../../types/auth/User';
 import classnames from './login.module.scss';
@@ -35,78 +37,79 @@ export default function Login() {
 	// Get error query param from third party callback to display message to user
 	const [searchParams] = useSearchParams();
 	useEffect(() => {
+		setErrorMessageQueryParam();
+	}, []);
+
+	/**
+	 * Sets an error message based on the query parameter
+	 */
+	function setErrorMessageQueryParam() {
 		if (searchParams.get('error') === 'thirdParty') {
 			setErrorMessage('Unable to authenticate with third party');
 		} else if (searchParams.get('error') === 'duplicateEmail') {
 			setErrorMessage(DUPLICATE_EMAIL_ERROR_MESSAGE);
 		} else if (searchParams.get('error') === 'metadata') {
 			setErrorMessage('Unable to get user metadata. Please try again');
+		} else if (searchParams.get('error') === 'verifyEmail') {
+			setErrorMessage('Unable to verify email. Please try again later');
 		}
-	}, []);
+	}
 
-	const onClickSubmit = async (e: FormEvent<HTMLFormElement>) => {
+	/**
+	 * Signs a user in and also validates email verification gql user metadata
+	 * 
+	 * @param e form submit event
+	 */
+	async function onSubmit(e: FormEvent<HTMLFormElement>) {
 		e.preventDefault();
 		setIsLoading(true);
 		try {
-			// Attempt to sign in or up using email and password from form
-			const response = await ThirdPartyEmailPassword.emailPasswordSignIn({
-				formFields: [{
-					id: 'email',
-					value: form.getInputProps('email').value
-				}, {
-					id: 'password',
-					value: form.getInputProps('password').value
-				}]
-			});
-
-			// Fields are invalid
-			if (response.status === 'FIELD_ERROR') {
-				response.formFields.forEach(formField => {
-					// Email is invalid 
-					if (formField.id === 'email') {
-						setErrorMessage(formField.error);
-					// Password is invalid
-					} else if (formField.id === 'password') {
-						setErrorMessage(formField.error);
-					}
+			const user = await signIn();
+			getUserMetadata({ variables: { id: user.id } })
+				.then(res => {
+					navigate(TopFilmsUtil.navigatePostSignInUp(res));
 				});
-			// Unkown failure signing in
-			} else if (response.status === 'SIGN_IN_NOT_ALLOWED') { 
-				setErrorMessage('Sign in failed. Please try again later');
-			// Invalid credentials
-			} else if (response.status === 'WRONG_CREDENTIALS_ERROR') { 
-				setErrorMessage('The provided credentials are invalid');
-			} else if (response.status === 'OK') {
-				// If the metadata is not present then redirect to form
-				getUserMetadata({ variables: { id: response.user.id } })
-					.then(res => {
-						if (res.error) {
-							navigate('/auth/login?error=metadata');
-							return;
-						}
-
-						if (!res.data?.userById?.username || !res.data?.userById?.firstName || !res.data?.userById?.lastName) {
-							navigate('/auth/user-information');
-						}
-					});
-				// Else navigate home
-				navigate('/home');
-			// Unexpected error
-			} else {
-				setErrorMessage('Unexpected error occurred. Please try again later');
-			}
-
-			setIsLoading(false);
 		} catch (e: unknown) {
-			if (e instanceof Error && STGeneralError.isThisError(e)) {
-				setErrorMessage(e.message);
-			} else {
-				setErrorMessage(UNKNOWN_ERROR_MESSAGE);
-			}
-
+			setErrorMessage(TopFilmsUtil.getAuthErrorMessage(e));
+		} finally {
 			setIsLoading(false);
 		}
-	};
+	}
+
+	/**
+	 * Signs in a user
+	 * 
+	 * @returns User object
+	 */
+	async function signIn(): Promise<User> {
+		// Attempt to sign in or up using email and password from form
+		const response = await ThirdPartyEmailPassword.emailPasswordSignIn({
+			formFields: [{
+				id: 'email',
+				value: form.getInputProps('email').value
+			}, {
+				id: 'password',
+				value: form.getInputProps('password').value
+			}]
+		});
+
+		if (response.status === 'OK') {
+			return response.user;
+		}
+
+		// Fields are invalid
+		if (response.status === 'FIELD_ERROR') {
+			response.formFields.forEach(formField => {
+				throw new TopFilmsError(formField.error);
+			});
+		// Invalid credentials
+		} else if (response.status === 'WRONG_CREDENTIALS_ERROR') { 
+			throw new TopFilmsError('The provided credentials are invalid');
+		}
+
+		// Unknown error
+		throw new TopFilmsError('Sign in failed. Please try again later');
+	}
 
 	return (
 		<AuthFormWrapper
@@ -120,7 +123,7 @@ export default function Login() {
 			enableThirdParty={true}
 		>
 			{/* Form for email password auth */}
-			<form onSubmit={e => onClickSubmit(e)}>
+			<form onSubmit={e => onSubmit(e)}>
 				<TFTextInput label='Email' form={form} formInputProp='email'/>
 				<TFPasswordInput label='Password' form={form} formInputProp='password' />
 

@@ -1,6 +1,6 @@
 import { Group } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
-import { FOOTER_LINKS } from '../../../constants/constants';
+import { FOOTER_LINKS } from '../../../common/constants';
 import { AUTH_ELEMENT_SPACING } from '../../../styles/variables';
 import classnames from './auth-footer.module.scss';
 

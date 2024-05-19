@@ -1,13 +1,13 @@
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { AuthFormWrapper } from '../..';
 import { RESET_PASSWORD_LOGIN_REDIRECT_TEXT } from '../../../../common/constants';
-import AuthFormWrapper from '../../auth-form-wrapper/AuthFormWrapper';
-import classnames from '../auth-reset-password.module.scss';
+import classnames from '../verify-email.module.scss';
 
-export default function ResetPasswordSuccess() {	
+export default function VerifyEmailSuccess() {
 	return (
 		<AuthFormWrapper
-			formHeader='Reset Password Success!'
+			formHeader='Email Verification Success!'
 			isLoading={false}
 			errorMessage={''}
 			loginOrRegisterText={RESET_PASSWORD_LOGIN_REDIRECT_TEXT}
@@ -18,7 +18,7 @@ export default function ResetPasswordSuccess() {
 				<FontAwesomeIcon icon={faCheck} size={'3x'}></FontAwesomeIcon>
 			</div>
 
-			<p className={classnames.textCenter}>Your new password has been set.</p>
+			<p className={classnames.textCenter}>Your email has been verified</p>
 		</AuthFormWrapper>
 	);
 }
