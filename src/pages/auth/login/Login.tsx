@@ -67,6 +67,11 @@ export default function Login() {
 			const user = await signIn();
 			getUserMetadata({ variables: { id: user.id } })
 				.then(res => {
+					if (res.error) {
+						setErrorMessage(res.error.message);
+						return;
+					}
+
 					navigate(TopFilmsUtil.navigatePostSignInUp(res));
 				});
 		} catch (e: unknown) {
