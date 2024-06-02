@@ -66,13 +66,13 @@ export default function Login() {
 		try {
 			const user = await signIn();
 			getUserMetadata({ variables: { id: user.id } })
-				.then(res => {
+				.then(async res => {
 					if (res.error) {
 						setErrorMessage(res.error.message);
 						return;
 					}
 
-					navigate(TopFilmsUtil.navigatePostSignInUp(res));
+					navigate(await TopFilmsUtil.navigatePostSignInUp(res));
 				});
 		} catch (e: unknown) {
 			setErrorMessage(TopFilmsUtil.getAuthErrorMessage(e));

@@ -21,7 +21,7 @@ export class TopFilmsUtil {
 		return UNKNOWN_ERROR_MESSAGE;
 	}
 
-	static navigatePostSignInUp(res: QueryResult<UserById, OperationVariables>): string {
+	static async navigatePostSignInUp(res: QueryResult<UserById, OperationVariables>): Promise<string> {
 		console.log('Is Email Verified isVerified()');
 		console.log(EmailVerificationClaim.validators.isVerified());
 		console.log('Is Email Verified isTrue()');
@@ -29,9 +29,9 @@ export class TopFilmsUtil {
 		console.log('Is Email Verified isFalse()');
 		console.log(EmailVerificationClaim.validators.isFalse());
 		console.log('isEmailVerified()');
-		console.log(isEmailVerified());
+		console.log(await isEmailVerified());
 		
-		if (!EmailVerificationClaim.validators.isVerified()) {
+		if (!await isEmailVerified()) {
 			return '/auth/verify-email';
 		}
 
