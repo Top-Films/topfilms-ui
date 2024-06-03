@@ -57,7 +57,6 @@ export default function UserInformation() {
 		await createUser({ variables: { input: userInput } })
 			.then(res => {
 				if (res.errors) {
-					console.log(res.errors);
 					throw new TopFilmsError(res.errors[0].toString());
 				}
 			});

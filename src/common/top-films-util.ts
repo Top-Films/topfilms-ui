@@ -1,4 +1,4 @@
-import { OperationVariables, QueryResult } from '@apollo/client';
+import { ApolloError, OperationVariables, QueryResult } from '@apollo/client';
 import { isEmailVerified } from 'supertokens-auth-react/recipe/emailverification';
 import STGeneralError from 'supertokens-web-js/lib/build/error';
 import { UserById } from '../types/auth/User';
@@ -14,6 +14,11 @@ export class TopFilmsUtil {
 
 		// Check top films error
 		if (e instanceof TopFilmsError) {
+			return e.message;
+		}
+
+		// Check apollo error
+		if (e instanceof ApolloError) {
 			return e.message;
 		}
 
