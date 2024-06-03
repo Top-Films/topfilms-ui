@@ -65,14 +65,15 @@ export default function Login() {
 		setIsLoading(true);
 		try {
 			const user = await signIn();
-			getUserMetadata({ variables: { id: user.id } })
+			await getUserMetadata({ variables: { id: user.id } })
 				.then(async res => {
 					if (res.error) {
 						setErrorMessage(res.error.message);
 						return;
 					}
 
-					navigate(await TopFilmsUtil.navigatePostSignInUp(res));
+					const path = await TopFilmsUtil.navigatePostSignInUp(res);
+					navigate(path);
 				});
 		} catch (e: unknown) {
 			setErrorMessage(TopFilmsUtil.getAuthErrorMessage(e));

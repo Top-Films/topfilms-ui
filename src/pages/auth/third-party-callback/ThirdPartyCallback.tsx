@@ -21,9 +21,10 @@ export default function ThirdPartyCallback() {
 		(async () => {
 			try {
 				const user = await thirdPartyCallback();
-				getUserMetadata({ variables: { id: user.id } })
+				await getUserMetadata({ variables: { id: user.id } })
 					.then(async res => {
-						navigate(await TopFilmsUtil.navigatePostSignInUp(res));
+						const path = await TopFilmsUtil.navigatePostSignInUp(res);
+						navigate(path);
 					});
 			} catch (e: unknown) {
 				handleNavigateError(e);
