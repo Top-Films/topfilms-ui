@@ -1,7 +1,6 @@
 import { OperationVariables, QueryResult } from '@apollo/client';
-import { EmailVerificationClaim } from 'supertokens-auth-react/recipe/emailverification';
+import { isEmailVerified } from 'supertokens-auth-react/recipe/emailverification';
 import STGeneralError from 'supertokens-web-js/lib/build/error';
-import { isEmailVerified } from 'supertokens-web-js/recipe/emailverification';
 import { UserById } from '../types/auth/User';
 import { UNKNOWN_ERROR_MESSAGE } from './constants';
 import { TopFilmsError } from './top-films-error';
@@ -22,16 +21,8 @@ export class TopFilmsUtil {
 	}
 
 	static async navigatePostSignInUp(res: QueryResult<UserById, OperationVariables>): Promise<string> {
-		console.log('Is Email Verified isVerified()');
-		console.log(EmailVerificationClaim.validators.isVerified());
-		console.log('Is Email Verified isTrue()');
-		console.log(EmailVerificationClaim.validators.isTrue());
-		console.log('Is Email Verified isFalse()');
-		console.log(EmailVerificationClaim.validators.isFalse());
-		console.log('isEmailVerified()');
-		console.log(await isEmailVerified());
-		
-		if (!await isEmailVerified()) {
+		const isEmailVerifiedRes = await isEmailVerified();
+		if (!isEmailVerifiedRes.isVerified) {
 			return '/auth/verify-email';
 		}
 
