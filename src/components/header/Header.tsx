@@ -57,7 +57,6 @@ export default function Header() {
 					const userId = await Session.getUserId();
 					await getUserMetadata({ variables: { id: userId } })
 						.then(res => {
-							console.log(res);
 							if (!res.data?.userById?.username || !res.data?.userById?.firstName || !res.data?.userById?.lastName) {
 								Session.signOut();
 								setIsAuthenticated(false);

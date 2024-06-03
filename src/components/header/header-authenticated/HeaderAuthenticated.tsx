@@ -48,10 +48,9 @@ export default function HeaderAuthenticated(props: {
 			const userId = await Session.getUserId();
 			fetch(`${Environment.authUrl()}/user/${userId}`, {
 				method: 'DELETE'
-			})
-				.catch((e: unknown) => {
-					console.log(e);
-				});
+			}).catch((e: unknown) => {
+				console.log(e);
+			});
 
 			// Delete gql api data
 			deleteUser({ variables: { id: userId } })

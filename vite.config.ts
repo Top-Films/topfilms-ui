@@ -12,5 +12,8 @@ export default defineConfig({
 				additionalData: '@import "./src/styles/_mantine";' 
 			}
 		}
+	},
+	define: {
+		'globalThis.__DEV__': JSON.stringify(false)
 	}
 });
