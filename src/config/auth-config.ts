@@ -1,6 +1,7 @@
+import EmailPassword from 'supertokens-auth-react/recipe/emailpassword';
 import EmailVerification from 'supertokens-auth-react/recipe/emailverification';
 import Session from 'supertokens-auth-react/recipe/session';
-import ThirdPartyEmailPassword, { Discord, Github, Google } from 'supertokens-auth-react/recipe/thirdpartyemailpassword';
+import ThirdParty, { Discord, Github, Google } from 'supertokens-auth-react/recipe/thirdparty';
 import { APP_NAME } from '../common/constants';
 import { Environment } from '../common/environment';
 
@@ -21,7 +22,8 @@ export const authConfig = {
 		EmailVerification.init({
 			mode: 'OPTIONAL' // Technically it is required, just doing that logic manually
 		}),
-		ThirdPartyEmailPassword.init({
+		EmailPassword.init(),
+		ThirdParty.init({
 			signInAndUpFeature: {
 				providers: [
 					Google.init(),

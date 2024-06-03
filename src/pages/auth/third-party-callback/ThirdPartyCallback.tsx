@@ -1,7 +1,7 @@
 import { useLazyQuery } from '@apollo/client';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import ThirdPartyEmailPassword from 'supertokens-auth-react/recipe/thirdpartyemailpassword';
+import ThirdParty from 'supertokens-auth-react/recipe/thirdparty';
 import STGeneralError from 'supertokens-web-js/lib/build/error';
 import { User } from 'supertokens-web-js/types';
 import { DUPLICATE_EMAIL_ERROR_MESSAGE } from '../../../common/constants';
@@ -32,7 +32,7 @@ export default function ThirdPartyCallback() {
 	}, []);
 
 	async function thirdPartyCallback(): Promise<User> {
-		const response = await ThirdPartyEmailPassword.thirdPartySignInAndUp();
+		const response = await ThirdParty.signInAndUp();
 
 		if (response.status === 'OK') {
 			return response.user;

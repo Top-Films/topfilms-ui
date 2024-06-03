@@ -2,7 +2,7 @@ import { faDiscord, faGithub, faGoogle } from '@fortawesome/free-brands-svg-icon
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Divider, Group } from '@mantine/core';
 import React from 'react';
-import ThirdPartyEmailPassword from 'supertokens-auth-react/recipe/thirdpartyemailpassword';
+import ThirdParty from 'supertokens-auth-react/recipe/thirdparty';
 import { Environment } from '../../../common/environment';
 import { TopFilmsUtil } from '../../../common/top-films-util';
 import classnames from './auth-third-party-group.module.scss';
@@ -41,7 +41,7 @@ export default function AuthThirdPartyGroup(props: {
 		props.setIsLoading(true);
 		try {
 			// Go to third party 
-			const authUrl = await ThirdPartyEmailPassword.getAuthorisationURLWithQueryParamsAndSetState({
+			const authUrl = await ThirdParty.getAuthorisationURLWithQueryParamsAndSetState({
 				thirdPartyId,
 				frontendRedirectURI: `${Environment.frontendUrl()}/auth/callback/${thirdPartyId}`
 			});

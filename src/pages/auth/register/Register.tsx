@@ -2,7 +2,7 @@ import { Group } from '@mantine/core';
 import { hasLength, isEmail, matchesField, useForm } from '@mantine/form';
 import { FormEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import ThirdPartyEmailPassword from 'supertokens-auth-react/recipe/thirdpartyemailpassword';
+import EmailPassword from 'supertokens-auth-react/recipe/emailpassword';
 import { TopFilmsError } from '../../../common/top-films-error';
 import { TopFilmsUtil } from '../../../common/top-films-util';
 import AuthFormWrapper from '../../../components/auth/auth-form-wrapper/AuthFormWrapper';
@@ -52,7 +52,7 @@ export default function Register() {
 	 * Registers a user and navigates to verify email page on success
 	 */
 	async function register() {
-		const response = await ThirdPartyEmailPassword.emailPasswordSignUp({
+		const response = await EmailPassword.signUp({
 			formFields: [{
 				id: 'email',
 				value: form.getInputProps('email').value

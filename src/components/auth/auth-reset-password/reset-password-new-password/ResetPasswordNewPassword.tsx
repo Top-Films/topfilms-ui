@@ -2,7 +2,7 @@ import { Group } from '@mantine/core';
 import { hasLength, matchesField, useForm } from '@mantine/form';
 import { FormEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import ThirdPartyEmailPassword from 'supertokens-auth-react/recipe/thirdpartyemailpassword';
+import EmailPassword from 'supertokens-auth-react/recipe/emailpassword';
 import { RESET_PASSWORD_LOGIN_REDIRECT_TEXT, RESET_PASSWORD_TOKEN_EXPIRED_ERROR_MESSAGE } from '../../../../common/constants';
 import { TopFilmsError } from '../../../../common/top-films-error';
 import { TopFilmsUtil } from '../../../../common/top-films-util';
@@ -52,7 +52,7 @@ export default function ResetPasswordNewPassword() {
 	 */
 	async function submitNewPassword() {
 		// Attempt to submit new password
-		const response = await ThirdPartyEmailPassword.submitNewPassword({
+		const response = await EmailPassword.submitNewPassword({
 			formFields: [{
 				id: 'password',
 				value: form.getInputProps('password').value

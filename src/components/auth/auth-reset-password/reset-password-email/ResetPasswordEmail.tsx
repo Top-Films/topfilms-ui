@@ -2,7 +2,7 @@ import { Group } from '@mantine/core';
 import { isEmail, useForm } from '@mantine/form';
 import { FormEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import ThirdPartyEmailPassword from 'supertokens-auth-react/recipe/thirdpartyemailpassword';
+import EmailPassword from 'supertokens-auth-react/recipe/emailpassword';
 import { AuthFormWrapper } from '../..';
 import { RESET_PASSWORD_LOGIN_REDIRECT_TEXT, UNKNOWN_ERROR_MESSAGE } from '../../../../common/constants';
 import { TopFilmsError } from '../../../../common/top-films-error';
@@ -47,7 +47,7 @@ export default function ResetPasswordEmail() {
 	 */
 	async function submitEmail() {
 		// Attempt to submit email for password reset
-		const response = await ThirdPartyEmailPassword.sendPasswordResetEmail({
+		const response = await EmailPassword.sendPasswordResetEmail({
 			formFields: [{
 				id: 'email',
 				value: form.getInputProps('email').value

@@ -3,7 +3,7 @@ import { Group } from '@mantine/core';
 import { hasLength, isEmail, useForm } from '@mantine/form';
 import { FormEvent, useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import ThirdPartyEmailPassword from 'supertokens-auth-react/recipe/thirdpartyemailpassword';
+import EmailPassword from 'supertokens-auth-react/recipe/emailpassword';
 import { User } from 'supertokens-web-js/types';
 import { DUPLICATE_EMAIL_ERROR_MESSAGE } from '../../../common/constants';
 import { TopFilmsError } from '../../../common/top-films-error';
@@ -88,7 +88,7 @@ export default function Login() {
 	 */
 	async function signIn(): Promise<User> {
 		// Attempt to sign in or up using email and password from form
-		const response = await ThirdPartyEmailPassword.emailPasswordSignIn({
+		const response = await EmailPassword.signIn({
 			formFields: [{
 				id: 'email',
 				value: form.getInputProps('email').value
