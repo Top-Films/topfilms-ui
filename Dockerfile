@@ -1,5 +1,5 @@
 # Build app
-FROM --platform=linux/arm64 node:20.12.0-alpine as build
+FROM --platform=linux/arm64 node:22-alpine as build
 
 USER root
 

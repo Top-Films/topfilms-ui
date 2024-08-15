@@ -7,7 +7,6 @@
 ![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
 ![Apollo-GraphQL](https://img.shields.io/badge/-ApolloGraphQL-311C87?style=for-the-badge&logo=apollo-graphql)
 
-[![CircleCI](https://dl.circleci.com/status-badge/img/circleci/2ZAeGbe6WDTLfg9j64XbkD/QeWiiyQZ4eYNE4e8njTT2v/tree/main.svg?style=shield)](https://dl.circleci.com/status-badge/redirect/circleci/2ZAeGbe6WDTLfg9j64XbkD/QeWiiyQZ4eYNE4e8njTT2v/tree/main)
 ![Static Badge](https://img.shields.io/badge/license-Apache%202.0%20with%20Commons%20Clause-green)
 
 ## Overview
@@ -25,7 +24,7 @@ https://github.com/Top-Films/primary-ui.git
 ```
 2. Navigate to the directory
 ```bash
-cd primary-ui
+cd topfilms-ui
 ```
 3. Install the dependencies
 ```bash
