@@ -1,6 +1,5 @@
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import Footer from '../../components/footer/Footer';
-import Header from '../../components/header/Header';
 import classnames from './root.module.scss';
 
 /**
@@ -15,18 +14,10 @@ export default function Root() {
 			{pathname === '/' 
 				? <Navigate to='/home' replace />
 				// Content wrapper on auth page not needed due to no header/footer
-				: <div className={pathname.startsWith('/auth') ? '' : classnames.contentWrapper}>
-					{/* No header and footer for auth page -- it has its own */}
-					{/* Mobile auth ui needs to fit all in one screen */}
-					{pathname.startsWith('/auth')
-						? <main className={classnames.main}><Outlet /></main>
-						: <>
-							<header><Header /></header>
-							<main className={classnames.main}><Outlet /></main>
-							<footer className={classnames.footer}><Footer /></footer>
-						</>
-					}
-				</div>
+				: <>
+					<main className={classnames.main}><Outlet /></main>
+					<footer className={classnames.footer}><Footer /></footer>
+				</>
 			}
 		</>
 

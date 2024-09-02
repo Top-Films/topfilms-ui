@@ -3,9 +3,11 @@ import { loadDevMessages, loadErrorMessages } from '@apollo/client/dev';
 import { MantineProvider } from '@mantine/core';
 import '@mantine/core/styles.css';
 import { Notifications } from '@mantine/notifications';
+import { AuthProvider } from 'oidc-react';
 import { Route, RouterProvider, createBrowserRouter, createRoutesFromElements } from 'react-router-dom';
 import { Environment } from './common/environment';
 import { client } from './config/apollo-config';
+import { oidcConfig } from './config/oidc-config';
 import About from './pages/about/About';
 import Contact from './pages/contact/Contact';
 import Discover from './pages/discover/Discover';
@@ -36,11 +38,13 @@ const router = createBrowserRouter(
 
 export default function App() {
 	return (
-		<ApolloProvider client={client}>
-			<MantineProvider defaultColorScheme='dark'>
-				<Notifications />
-				<RouterProvider router={router} />
-			</MantineProvider>
-		</ApolloProvider>
+		<AuthProvider {...oidcConfig}>
+			<ApolloProvider client={client}>
+				<MantineProvider defaultColorScheme='dark'>
+					<Notifications />
+					<RouterProvider router={router} />
+				</MantineProvider>
+			</ApolloProvider>
+		</AuthProvider>
 	);
 }

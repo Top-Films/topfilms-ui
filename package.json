@@ -19,6 +19,7 @@
     "@mantine/hooks": "^7.10.1",
     "@mantine/notifications": "^7.10.1",
     "graphql": "^16.8.1",
+    "oidc-react": "^3.2.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.23.1"

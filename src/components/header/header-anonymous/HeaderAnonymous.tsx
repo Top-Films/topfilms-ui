@@ -1,8 +1,8 @@
 import { Button } from '@mantine/core';
-import { useNavigate } from 'react-router-dom';
+import { useAuth } from 'oidc-react';
 
 export default function HeaderAnonymous() {
-	const navigate = useNavigate();
+	const auth = useAuth();
 
 	// Show auth buttons for anonymous users
 	return (
@@ -10,13 +10,13 @@ export default function HeaderAnonymous() {
 			<Button
 				size='xs'
 				variant='outline'
-				onClick={() => navigate('/auth/login')}
+				onClick={() => auth.signIn()}
 			>
 				Sign In
 			</Button>
 			<Button 
 				size='xs'
-				onClick={() => navigate('/auth/register')}
+				onClick={() => auth.signIn()}
 			>
 				Register
 			</Button>

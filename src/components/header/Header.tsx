@@ -1,13 +1,9 @@
-import { useLazyQuery } from '@apollo/client';
 import { Burger, Group, Skeleton } from '@mantine/core';
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import { useEffect, useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import Session from 'supertokens-auth-react/recipe/session';
 import { TOP_FILMS_LOGO_FULL, TOP_FILMS_LOGO_TEXTLESS } from '../../common/constants';
-import { GET_USER_METADATA } from '../../gql/auth';
 import { SMALL_BREAKPOINT_EM } from '../../styles/variables';
-import { UserById } from '../../types/auth/User';
 import HeaderAnonymous from './header-anonymous/HeaderAnonymous';
 import HeaderAuthenticated from './header-authenticated/HeaderAuthenticated';
 import HeaderDrawer from './header-drawer/HeaderDrawer';
@@ -25,10 +21,6 @@ export default function Header() {
 	const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);	
 	const [isAuthenticated, setIsAuthenticated] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
-	const [initials, setInitials] = useState('');
-	const [getUserMetadata] = useLazyQuery<UserById>(GET_USER_METADATA, {
-		fetchPolicy: 'no-cache' 
-	});
 
 	// Nav paths based on links
 	const items = links.map(link => (
@@ -48,40 +40,8 @@ export default function Header() {
 	
 	// Check auth status on component load
 	useEffect(() => {
-		setIsLoading(true);
-		(async () => {
-			try {
-				const isUserAuthenticated = await Session.doesSessionExist();
-				setIsAuthenticated(isUserAuthenticated);
-				if (isUserAuthenticated) {
-					const userId = await Session.getUserId();
-					await getUserMetadata({ variables: { id: userId } })
-						.then(res => {
-							if (!res.data?.userById?.username || !res.data?.userById?.firstName || !res.data?.userById?.lastName) {
-								Session.signOut();
-								setIsAuthenticated(false);
-							} else {
-								setIsAuthenticated(true);
-								setInitials(`${getInitial(res.data.userById.firstName)}${getInitial(res.data.userById.lastName)}`);
-							}
-						})
-						.catch(e => {
-							setIsAuthenticated(false);
-							console.log(e);
-						});
-				}
-			} catch (_) {
-				setIsAuthenticated(false);
-			} finally {
-				setIsLoading(false);
-			}
-		})();
+		
 	}, []);
-
-	// Gets first char from name and uppercases
-	function getInitial(name: string) {
-		return name.charAt(0).toUpperCase();
-	} 
 
 	return (
 		<div className={classnames.header}>
@@ -118,7 +78,7 @@ export default function Header() {
 						: <>
 							{/* Show authenticated or anonymous part of header */}
 							{isAuthenticated
-								? <HeaderAuthenticated setIsLoading={setIsLoading} setIsAuthenticated={setIsAuthenticated} initials={initials} />
+								? <HeaderAuthenticated setIsLoading={setIsLoading} setIsAuthenticated={setIsAuthenticated} initials={'MM'} />
 								: <HeaderAnonymous />
 							}
 						</>
