@@ -94,7 +94,7 @@ spec:
 
 							echo "$DOCKER_PASSWORD" | helm registry login $DOCKER_REGISTRY --username $DOCKER_USERNAME --password-stdin
 
-							helm package helm --app-version=$VERSION_FULL --version=$VERSION_FULL
+							helm package $APP_NAME --app-version=$VERSION_FULL --version=$VERSION_FULL
 							helm push ./$CHART_NAME-$VERSION_FULL.tgz $DOCKER_REGISTRY_FULL/$DOCKER_USERNAME
 						'''
 					}
