@@ -90,8 +90,8 @@ spec:
 				script {
 					withCredentials([usernamePassword(credentialsId: 'docker', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
 						sh '''
-							cd $APP_NAME
-							
+							cd helm
+
 							echo "$DOCKER_PASSWORD" | helm registry login $DOCKER_REGISTRY --username $DOCKER_USERNAME --password-stdin
 
 							helm package helm --app-version=$VERSION_FULL --version=$VERSION_FULL
