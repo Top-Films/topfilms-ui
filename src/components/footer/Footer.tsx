@@ -1,6 +1,6 @@
 import { Group } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
-import { FOOTER_LINKS, TOP_FILMS_LOGO_FULL } from '../../common/constants';
+import { FOOTER_LINKS } from '../../common/constants';
 import classnames from './footer.module.scss';
 
 export default function Footer() {
@@ -24,7 +24,7 @@ export default function Footer() {
 		<div className={classnames.footer}>
 			<img 
 				className={classnames.logo} 
-				src={TOP_FILMS_LOGO_FULL}
+				src={'https://raw.githubusercontent.com/Top-Films/assets/main/png/top-films-white-textless.png'}
 				alt='Top Films Logo'
 			/>
 			<h3 className={classnames.copy}>© 2024 Top Films. All rights reserved</h3>

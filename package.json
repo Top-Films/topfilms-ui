@@ -9,7 +9,6 @@
     "dev": "vite"
   },
   "dependencies": {
-    "@apollo/client": "^3.10.4",
     "@fortawesome/fontawesome-svg-core": "^6.5.2",
     "@fortawesome/free-brands-svg-icons": "^6.5.2",
     "@fortawesome/free-solid-svg-icons": "^6.5.2",
@@ -18,10 +17,11 @@
     "@mantine/form": "^7.10.1",
     "@mantine/hooks": "^7.10.1",
     "@mantine/notifications": "^7.10.1",
-    "graphql": "^16.8.1",
+    "oidc-client-ts": "^3.0.1",
     "oidc-react": "^3.2.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-oidc-context": "^3.1.0",
     "react-router-dom": "^6.23.1"
   },
   "devDependencies": {

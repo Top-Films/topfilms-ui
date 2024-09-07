@@ -47,7 +47,7 @@ export default function Contact() {
 					<p>Feel free to contribute or raise an issue on our <a target='_blank' href='https://github.com/Top-Films' rel='noreferrer'>GitHub Repository</a></p>
 				</li>
 				<li>
-					<p>View our <a target='_blank' href='https://trello.com/b/UwA6fNAw/top-films' rel='noreferrer'>Trello board</a> to see our development progress</p>
+					<p>View our <a target='_blank' href='https://trello.com/b/pHccbW1X/top-films' rel='noreferrer'>Trello board</a> to see our development progress</p>
 				</li>
 			</ul>
 		</InformationPageWrapper>

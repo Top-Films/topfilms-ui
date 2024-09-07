@@ -17,7 +17,7 @@ export default function Loader(props: {
 			loaderProps={
 				{ 
 					type: 'bars', 
-					color: '#fff' 
+					color: '#309cf2' 
 				}
 			} 
 		/>

@@ -6,14 +6,14 @@ image:
   revisionHistoryLimit: 2
   env: {}
   readinessProbe:
-    path: /auth/login
+    path: /
     initialDelaySeconds: 30
     periodSeconds: 30
     timeoutSeconds: 30
     failureThreshold: 5
     successThreshold: 1
   livenessProbe:
-    path: /auth/login
+    path: /
     initialDelaySeconds: 30
     periodSeconds: 30
     timeoutSeconds: 30

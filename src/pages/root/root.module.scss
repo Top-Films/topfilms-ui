@@ -1,11 +1,11 @@
 @import '../../styles/variables.scss';
 
-.contentWrapper {
+.container {
 	position: relative;
 	min-height: 100vh;
 	padding-bottom: $footer_height;
 
-	@media (max-width: $mantine-breakpoint-sm) {
+	@media (max-width: var(--mantine-breakpoint-sm)) {
 		padding-bottom: $footer_height_breakpoint;
 	}
 }

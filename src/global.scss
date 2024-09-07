@@ -1,25 +1,11 @@
 @import './styles/variables.scss';
 @import '@mantine/notifications/styles.css';
+@import '@mantine/core/styles.css';
 
 // Set theme and remove default margin/padding
 body {
     margin: 0;
     padding: 0;
-    background-color: $main_background_color;
-	color: $main_font_color;
-}
-
-// Change link color to match background better
-a {
-	color: $link_color;
-}
-
-// Change all inputs autofill to background color
-input:-webkit-autofill,
-input:-webkit-autofill:hover, 
-input:-webkit-autofill:focus, 
-input:-webkit-autofill:active{
-    -webkit-box-shadow: 0 0 0 30px $main_background_color inset !important;
 }
 
 input {

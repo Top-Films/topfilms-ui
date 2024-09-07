@@ -21,40 +21,33 @@ spec:
 	}
 
 	parameters {
-		string(name: 'KEYWIND_BRANCH', defaultValue: params.KEYWIND_BRANCH ?: 'main', description: 'Branch to checkout in keywind repo', trim: true)
-		string(name: 'KEYWIND_VERSION', defaultValue: params.KEYWIND_VERSION ?: '1.0', description: 'Major and minor version of the application', trim: true)
-		booleanParam(name: 'DEPLOY_KEYCLOAK', defaultValue: true, description: 'Deploy Keycloak with new Keywind theme')
+		string(name: 'BRANCH', defaultValue: params.BRANCH ?: 'main', description: 'Branch to checkout', trim: true)
+		string(name: 'VERSION', defaultValue: params.VERSION ?: '1.0', description: 'Major minor version of the app', trim: true)
 		booleanParam(name: 'DEPLOY_CA_CERT', defaultValue: false, description: 'Deploy ca cert as secret to k8s')
-		string(name: 'K8S_BRANCH', defaultValue: params.K8S_BRANCH ?: 'main', description: 'Branch to checkout in k8s repo', trim: true)
-		string(name: 'KEYCLOAK_VERSION', defaultValue: '23.0.7', description: 'Full version of keycloak', trim: true)
 	}
 
 	environment { 
-		KEYWIND_NAME = 'topfilms-keywind'
-		KEYWIND_VERSION_FULL = "${params.KEYWIND_VERSION}.${env.BUILD_NUMBER}"
-		KEYWIND_GITHUB_URL = 'https://github.com/Top-Films/topfilms-keywind'
+		APP_NAME = 'topfilms-ui'
+		CHART_NAME = 'topfilms-ui-chart'
+		VERSION_FULL = "${params.VERSION}.${env.BUILD_NUMBER}"
+		GITHUB_URL = 'https://github.com/Top-Films/topfilms-ui'
 
 		DOCKER_REGISTRY = 'registry-1.docker.io'
 		DOCKER_REGISTRY_FULL = "oci://${env.DOCKER_REGISTRY}"
-
-		K8S_GITHUB_URL = 'https://github.com/Top-Films/k8s'
-		
-		KEYCLOAK_NAME = 'keycloak'
-		KEYCLOAK_VERSION_HELM = "${env.KEYCLOAK_VERSION}-${env.BUILD_NUMBER}"
 	}
 
 	stages {
 
-		stage('Git Clone Keywind') {
+		stage('Git Clone') {
 			steps {
 				script {
 					checkout scmGit(
 						branches: [[
-							name: "$KEYWIND_BRANCH"
+							name: "$BRANCH"
 						]],
 						userRemoteConfigs: [[
 							credentialsId: 'github',
-							url: "$KEYWIND_GITHUB_URL"
+							url: "$GITHUB_URL"
 						]]
 					)
 
@@ -67,123 +60,43 @@ spec:
 		stage('Node Build') {
 			steps {
 				script {
-					sh "npm version $KEYWIND_VERSION_FULL --no-git-tag-version"
-
-					sh 'npm install'
-					sh 'npm run build'
-					sh 'npm run build:jar'
-
-					sh 'cd out && unzip keywind.jar'
-
-					sh 'ls -lah'
-					sh 'ls ./out -lah'
+					sh """
+						npm version $VERSION_FULL --no-git-tag-version
+						npm install
+						npm run test
+						npm run build
+					"""
 				}
 			}
 		}
 
-		stage('Docker Push Artifact') {
+		stage('Docker CI') {
 			steps {
 				container('dind') {
 					script {
 						withCredentials([usernamePassword(credentialsId: 'docker', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
 							sh 'echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin'
 
-							sh 'docker buildx build --platform linux/arm64/v8 . --tag $DOCKER_USERNAME/$KEYWIND_NAME:$KEYWIND_VERSION_FULL --tag $DOCKER_USERNAME/$KEYWIND_NAME:latest'
-							sh 'docker push $DOCKER_USERNAME/$KEYWIND_NAME --all-tags'
+							sh 'docker buildx build --platform linux/arm64/v8 . --tag $DOCKER_USERNAME/$APP_NAME:$VERSION_FULL --tag $DOCKER_USERNAME/$APP_NAME:latest'
+							sh 'docker push $DOCKER_USERNAME/$APP_NAME --all-tags'
 						}
 					}
 				}
 			}
 		}
 
-		stage('Git Clone K8s') {
-			when {
-				expression { 
-					DEPLOY_KEYCLOAK == "true"
-				}
-			}
+		stage('Helm CI') {
 			steps {
 				script {
-					dir("${WORKSPACE}/k8s") {
-						checkout scmGit(
-							branches: [[
-								name: "$K8S_BRANCH"
-							]],
-							userRemoteConfigs: [[
-								credentialsId: 'github',
-								url: "$K8S_GITHUB_URL"
-							]]
-						)
+					withCredentials([usernamePassword(credentialsId: 'docker', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+						sh '''
+							cd $APP_NAME
+							
+							echo "$DOCKER_PASSWORD" | helm registry login $DOCKER_REGISTRY --username $DOCKER_USERNAME --password-stdin
 
-						sh 'ls -lah'
-					}
-				}
-			}
-		}
-
-		stage('Build Keycloak') {
-			when {
-				expression { 
-					DEPLOY_KEYCLOAK == "true"
-				}
-			}
-			steps {
-				script {
-					dir("${WORKSPACE}/k8s") {
-						withCredentials([usernamePassword(credentialsId: 'docker', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-							sh '''
-								cd $KEYCLOAK_NAME
-
-								echo "$DOCKER_PASSWORD" | helm registry login $DOCKER_REGISTRY --username $DOCKER_USERNAME --password-stdin
-
-								helm package helm --app-version=$KEYCLOAK_VERSION_HELM --version=$KEYCLOAK_VERSION_HELM
-								helm push ./$KEYCLOAK_NAME-$KEYCLOAK_VERSION_HELM.tgz $DOCKER_REGISTRY_FULL/$DOCKER_USERNAME
-							'''
-						}
-					}
-				}
-			}
-		}
-
-		stage('Prepare Keycloak Deployment') {
-			when {
-				expression { 
-					DEPLOY_KEYCLOAK == "true"
-				}
-			}
-			steps {
-				script {
-					dir("${WORKSPACE}/k8s") {
-						withCredentials([
-							usernamePassword(credentialsId: 'keycloak-admin-b64', usernameVariable: 'KEYCLOAK_ADMIN_USERNAME_B64', passwordVariable: 'KEYCLOAK_ADMIN_PASSWORD_B64'),
-							usernamePassword(credentialsId: 'keycloak-db-b64', usernameVariable: 'KEYCLOAK_DB_USERNAME_B64', passwordVariable: 'KEYCLOAK_DB_PASSWORD_B64'),
-							string(credentialsId: 'keycloak-db-host-b64', variable: 'KEYCLOAK_DB_HOST_B64'),
-							string(credentialsId: 'keycloak-cert-b64', variable: 'KEYCLOAK_CERT_B64'),
-							string(credentialsId: 'keycloak-cert-private-key-b64', variable: 'KEYCLOAK_CERT_PRIVATE_KEY_B64'),
-							file(credentialsId: 'kube-config', variable: 'KUBE_CONFIG')
-						]) {
-							sh 'mkdir -p $WORKSPACE/.kube && cp $KUBE_CONFIG $WORKSPACE/.kube/config'
-
-							sh '''
-								cd $KEYCLOAK_NAME
-								
-								sed -i "s/<KEYCLOAK_ADMIN_USERNAME>/$KEYCLOAK_ADMIN_USERNAME_B64/g" secret.yaml
-								sed -i "s/<KEYCLOAK_ADMIN_PASSWORD>/$KEYCLOAK_ADMIN_PASSWORD_B64/g" secret.yaml
-								sed -i "s/<KEYCLOAK_DB_USERNAME>/$KEYCLOAK_DB_USERNAME_B64/g" secret.yaml
-								sed -i "s/<KEYCLOAK_DB_PASSWORD>/$KEYCLOAK_DB_PASSWORD_B64/g" secret.yaml
-								sed -i "s/<KEYCLOAK_DB_HOST>/$KEYCLOAK_DB_HOST_B64/g" secret.yaml
-								sed -i "s/<KEYCLOAK_CERT>/$KEYCLOAK_CERT_B64/g" secret.yaml
-								sed -i "s/<KEYCLOAK_CERT_PRIVATE_KEY>/$KEYCLOAK_CERT_PRIVATE_KEY_B64/g" secret.yaml
-
-								cat secret.yaml
-							'''
-
-							sh """
-								cd $KEYCLOAK_NAME
-
-								kubectl apply --filename secret.yaml --namespace $KEYCLOAK_NAME
-							"""
-						}
+							helm package helm --app-version=$VERSION_FULL --version=$VERSION_FULL
+							helm push ./$CHART_NAME-$VERSION_FULL.tgz $DOCKER_REGISTRY_FULL/$DOCKER_USERNAME
+						'''
 					}
 				}
 			}
@@ -212,8 +125,8 @@ spec:
 
 							set +e
 
-							kubectl delete secret auth.topfilms.io-tls --namespace keycloak
-							kubectl create secret tls auth.topfilms.io-tls --cert=cert.pem --key=key.pem --namespace keycloak
+							kubectl delete secret topfilms.io-tls --namespace topfilms
+							kubectl create secret tls topfilms.io-tls --cert=cert.pem --key=key.pem --namespace topfilms
 
 							set -e
 						'''
@@ -222,12 +135,7 @@ spec:
 			}
 		}
 
-		stage('Deploy Keycloak') {
-			when {
-				expression { 
-					DEPLOY_KEYCLOAK == "true"
-				}
-			}
+		stage('Deploy') {
 			steps {
 				script {
 					withCredentials([
@@ -239,7 +147,7 @@ spec:
 						sh '''
 							echo "$DOCKER_PASSWORD" | helm registry login $DOCKER_REGISTRY --username $DOCKER_USERNAME --password-stdin
 							
-							helm upgrade $KEYCLOAK_NAME $DOCKER_REGISTRY_FULL/$DOCKER_USERNAME/$KEYCLOAK_NAME --version $KEYCLOAK_VERSION_HELM --install --atomic --debug --history-max=3 --namespace keycloak --set image.tag=$KEYCLOAK_VERSION
+							helm upgrade $CHART_NAME $DOCKER_REGISTRY_FULL/$DOCKER_USERNAME/$CHART_NAME --version $VERSION_FULL --install --atomic --debug --history-max=3 --namespace topfilms --set image.tag=$VERSION_FULL
 						'''
 					}
 				}

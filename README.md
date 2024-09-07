@@ -5,7 +5,6 @@
 
 ![TypeScript](https://img.shields.io/badge/-TypeScript-black?style=for-the-badge&logoColor=white&logo=typescript&color=2F73BF)
 ![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
-![Apollo-GraphQL](https://img.shields.io/badge/-ApolloGraphQL-311C87?style=for-the-badge&logo=apollo-graphql)
 
 ![Static Badge](https://img.shields.io/badge/license-Apache%202.0%20with%20Commons%20Clause-green)
 
@@ -20,7 +19,7 @@ The Top Films website is a user-friendly platform that provides a social platfor
 
 1. Clone this repository:
 ```bash
-https://github.com/Top-Films/primary-ui.git
+https://github.com/Top-Films/topfilms-ui.git
 ```
 2. Navigate to the directory
 ```bash
