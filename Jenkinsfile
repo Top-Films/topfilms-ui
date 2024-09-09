@@ -147,7 +147,7 @@ spec:
 						sh '''
 							echo "$DOCKER_PASSWORD" | helm registry login $DOCKER_REGISTRY --username $DOCKER_USERNAME --password-stdin
 							
-							helm upgrade $CHART_NAME $DOCKER_REGISTRY_FULL/$DOCKER_USERNAME/$CHART_NAME --version $VERSION_FULL --install --atomic --debug --history-max=3 --namespace topfilms --set image.tag=$VERSION_FULL
+							helm upgrade $APP_NAME $DOCKER_REGISTRY_FULL/$DOCKER_USERNAME/$CHART_NAME --version $VERSION_FULL --install --atomic --debug --history-max=3 --namespace topfilms --set image.tag=$VERSION_FULL
 						'''
 					}
 				}
