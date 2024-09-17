@@ -1,12 +1,12 @@
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import InformationPageWrapper from '../../components/information-page-wrapper/InformationPageWrapper';
-import classnames from './contact.module.scss';
+import classes from './contact.module.css';
 
 export default function Contact() {
 	return (
 		<InformationPageWrapper>
-			<div className={classnames.headerContainer}>
+			<div className={classes.headerContainer}>
 				<FontAwesomeIcon size='4x' icon={faEnvelope} />
 				<h1>Contact Top Films</h1>
 				<p>Thank you for visiting Top Films! We value your feedback, inquiries, and suggestions.</p>

@@ -1,7 +1,3 @@
-@import './styles/variables.scss';
-@import '@mantine/notifications/styles.css';
-@import '@mantine/core/styles.css';
-
 // Set theme and remove default margin/padding
 body {
     margin: 0;

@@ -2,8 +2,9 @@ import { useEffect } from 'react';
 import { useAuth } from 'react-oidc-context';
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import Footer from '../../components/footer/Footer';
+import { Header } from '../../components/header/Header';
 import Loader from '../../components/loader/Loader';
-import classnames from './root.module.scss';
+import classes from './root.module.css';
 
 /**
  * Root element for the UI. Wraps child component with the header and footer
@@ -27,9 +28,10 @@ export default function Root() {
 			{/* Home/Landing page at /home -- no root path */}
 			{pathname === '/' 
 				? <Navigate to='/home' replace />
-				: <div className={classnames.container}>
+				: <div className={classes.container}>
+					<header><Header /></header>
 					<main><Outlet /></main>
-					<footer className={classnames.footer}><Footer /></footer>
+					<footer className={classes.footer}><Footer /></footer>
 				</div>
 			}
 		</>
