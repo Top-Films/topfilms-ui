@@ -55,7 +55,6 @@ spec:
 						echo "Deploying version: ${env.VERSION}"
 
 						sh 'ls -lah'
-						sh 'node -v'
 					}
 				}
 			}
@@ -65,6 +64,9 @@ spec:
 			steps {
 				script {
 					sh """
+						node -v
+						npm -v
+						
 						npm version $VERSION --no-git-tag-version
 						npm install
 						npm run test
