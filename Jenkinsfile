@@ -61,7 +61,7 @@ spec:
 						node -v
 						npm -v
 
-						npm version $VERSION --no-git-tag-version
+						npm version $TAG --no-git-tag-version
 						npm install
 						npm run test
 						npm run build
@@ -77,7 +77,7 @@ spec:
 						withCredentials([usernamePassword(credentialsId: 'docker', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
 							sh 'echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin'
 
-							sh 'docker buildx build --platform linux/arm64/v8 . --tag $DOCKER_USERNAME/$APP_NAME:$VERSION --tag $DOCKER_USERNAME/$APP_NAME:latest'
+							sh 'docker buildx build --platform linux/arm64/v8 . --tag $DOCKER_USERNAME/$APP_NAME:$TAG --tag $DOCKER_USERNAME/$APP_NAME:latest'
 							sh 'docker push $DOCKER_USERNAME/$APP_NAME --all-tags'
 						}
 					}
@@ -94,8 +94,8 @@ spec:
 
 							echo "$DOCKER_PASSWORD" | helm registry login $DOCKER_REGISTRY --username $DOCKER_USERNAME --password-stdin
 
-							helm package $APP_NAME --app-version=$VERSION --version=$VERSION
-							helm push ./$CHART_NAME-$VERSION.tgz $DOCKER_REGISTRY_FULL/$DOCKER_USERNAME
+							helm package $APP_NAME --app-version=$TAG --version=$TAG
+							helm push ./$CHART_NAME-$TAG.tgz $DOCKER_REGISTRY_FULL/$DOCKER_USERNAME
 						'''
 					}
 				}
@@ -147,7 +147,7 @@ spec:
 						sh '''
 							echo "$DOCKER_PASSWORD" | helm registry login $DOCKER_REGISTRY --username $DOCKER_USERNAME --password-stdin
 							
-							helm upgrade $APP_NAME $DOCKER_REGISTRY_FULL/$DOCKER_USERNAME/$CHART_NAME --version $VERSION --install --atomic --debug --history-max=3 --namespace topfilms --set image.tag=$VERSION
+							helm upgrade $APP_NAME $DOCKER_REGISTRY_FULL/$DOCKER_USERNAME/$CHART_NAME --version $TAG --install --atomic --debug --history-max=3 --namespace topfilms --set image.tag=$TAG
 						'''
 					}
 				}
