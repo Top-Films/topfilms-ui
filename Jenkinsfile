@@ -52,7 +52,7 @@ spec:
 
 						tag = sh(script: "git describe --tags --abbrev=0", returnStdout:  true, ).trim()
 						env.VERSION = tag
-						sh "Deploying version: ${env.VERSION}"
+						echo "Deploying version: ${env.VERSION}"
 
 						sh 'ls -lah'
 						sh 'node -v'
