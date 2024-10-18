@@ -38,22 +38,25 @@ spec:
 
 		stage('Git Clone') {
 			steps {
-				script {
-					checkout scmGit(
-						branches: [[
-							name: "$BRANCH"
-						]],
-						userRemoteConfigs: [[
-							credentialsId: 'github',
-							url: "$GITHUB_URL"
-						]]
-					)
+				container('jnlp') {
+					script {
+						checkout scmGit(
+							branches: [[
+								name: "$BRANCH"
+							]],
+							userRemoteConfigs: [[
+								credentialsId: 'github',
+								url: "$GITHUB_URL"
+							]]
+						)
 
-					tag = sh(script: "git describe --tags --abbrev=0", returnStdout:  true, ).trim()
-             		env.VERSION = tag
+						tag = sh(script: "git describe --tags --abbrev=0", returnStdout:  true, ).trim()
+						env.VERSION = tag
+						sh "Deploying version: ${env.VERSION}"
 
-					sh 'ls -lah'
-					sh 'node -v'
+						sh 'ls -lah'
+						sh 'node -v'
+					}
 				}
 			}
 		}
