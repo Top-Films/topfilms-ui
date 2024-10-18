@@ -41,7 +41,7 @@ spec:
 				script {
 					checkout scmGit(
 						branches: [[
-							name: "$TAG"
+							name: "refs/tags/$TAG"
 						]],
 						userRemoteConfigs: [[
 							credentialsId: 'github',
