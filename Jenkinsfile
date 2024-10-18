@@ -21,7 +21,7 @@ spec:
 	}
 
 	parameters {
-		string(name: 'BRANCH', defaultValue: params.BRANCH ?: 'main', description: 'Branch to checkout', trim: true)
+		string(name: 'TAG', defaultValue: params.TAG ?: '0.0.1', description: 'Git tag version', trim: true)
 		booleanParam(name: 'DEPLOY_CA_CERT', defaultValue: false, description: 'Deploy ca cert as secret to k8s')
 	}
 
@@ -42,7 +42,7 @@ spec:
 					script {
 						checkout scmGit(
 							branches: [[
-								name: "$BRANCH"
+								name: "refs/tags/$TAG"
 							]],
 							userRemoteConfigs: [[
 								credentialsId: 'github',
@@ -66,7 +66,7 @@ spec:
 					sh """
 						node -v
 						npm -v
-						
+
 						npm version $VERSION --no-git-tag-version
 						npm install
 						npm run test

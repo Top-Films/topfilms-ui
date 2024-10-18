@@ -8,7 +8,7 @@ import {
 	useMantineTheme
 } from '@mantine/core';
 import { IconBookmark, IconHeart, IconShare } from '@tabler/icons-react';
-import classes from './post-card.module.css';
+import classes from './movie-list-details.module.css';
 
 export function MovieListDetails() {
 	const theme = useMantineTheme();
